@@ -1,0 +1,9 @@
+.contenedor{
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+.tarea{
+    margin-top: 2%;    
+    flex: content;
+}
