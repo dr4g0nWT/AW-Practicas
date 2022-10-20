@@ -9,37 +9,51 @@ let listaTareas = [
     ]
 
 
-function getToDoTasks(tareas){
-    return tareas.filter(function(tarea){ //Devolvemos el resultado de filtrar las tareas que no estan done y luego mapeamos al texto
-        return !tarea.done
-    }).map(function(tarea){
-        return tarea.text
-    })
+function getToDoTasks(tasks){
+    return tasks.filter(n => !n.done).map(n => n.text);
 }
 
-function findByTag(tareas, tag){
-    let t = tareas.filter(function(tarea){
-        return tarea.tags.indexOf(tag) != -1
-    })
-
-    return t.map(function(tarea){
-        return {text : tarea.text, tags : tarea.tags}
-    })
+function findByTag(tasks, tag){
+    return tasks.filter(n => n.tags.indexOf(tag) != -1).map(n => n = {text : n.text, tags: n.tags})
 }
 
-function findByTag(tareas, tag){
-    let t = tareas.filter(function(tarea){
-        return tarea.tags.indexOf(tag) != -1
-    })
+function findByTags(tasks, tags){
+    return tasks.filter(n => tags.some(m => n.tags.indexOf(m) >= 0))
+}
 
-    return t.map(function(tarea){
-        return {text : tarea.text, tags : tarea.tags}
-    })
+function countDone(tasks){
+    return tasks.filter(n => n.done == true).length
+}
+
+function createTask(texto){
+    let strs = texto.split(" ")
+
+    let tags = strs.filter(n => n[0] === "@").map(n => n.slice(1))
+    let nombre= strs.filter(n => n[0] !== "@").join(" ")
+
+    return {text: nombre, tags: tags}
 }
 
 
+console.log("Prueba de getToDoTasks\n")
+console.log(getToDoTasks(listaTareas))
+console.log("---------------")
 
-
-
-//console.log(getToDoTasks(listaTareas))
+console.log("Prueba de findByTag\n")
 console.log(findByTag(listaTareas, "personal"))
+console.log("---------------")
+
+console.log("Prueba de findByTags\n")
+console.log(findByTags(listaTareas, ["personal","practicas"]))
+console.log("---------------")
+
+console.log("Prueba de countDone\n")
+console.log(countDone(listaTareas));
+console.log("---------------")
+
+console.log("Pruebas de createTask\nCaso 1\n")
+console.log(createTask("Ir al medico @personal @salud"))
+console.log("Caso 2\n")
+console.log(createTask("@universidad @practica Peraparar practicas TP"))
+console.log("Caso 3\n")
+console.log(createTask("Ir a @deporte entrenar"))
