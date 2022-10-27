@@ -5,10 +5,10 @@ const DAOUsers = require("./DAOUsers.js");
 const DAOTasks = require("./DAOTasks");
 // Crear el pool de conexiones
 const pool = mysql.createPool({
- host: config.host,
- user: config.user,
- password: config.password,
- database: config.database
+    host: config.host,
+    user: config.user,
+    password: config.password,
+    database: config.database
 });
 let daoUser = new DAOUsers(pool);
 let daoTask = new DAOTasks(pool);
@@ -16,13 +16,24 @@ let daoTask = new DAOTasks(pool);
 // Uso de los métodos de las clases DAOUsers y DAOTasks
 
 
-daoUser.isUserCorrect("aitor.tilla@ucm.es", "aitor", cb_isUserCorrect);
-function cb_isUserCorrect(err, result){
- if (err) {
- console.log(err.message);
- } else if (result) {
- console.log("Usuario y contraseña correctos");
- } else {
- console.log("Usuario y/o contraseña incorrectos");
- }
+// daoUser.isUserCorrect("aitor.tilla@ucm.es", "aitor", cb_isUserCorrect);
+// function cb_isUserCorrect(err, result) {
+//     if (err) {
+//         console.log(err.message);
+//     } else if (result) {
+//         console.log("Usuario y contraseña correctos");
+//     } else {
+//         console.log("Usuario y/o contraseña incorrectos");
+//     }
+// }
+
+function cb_isUserCorrect(err, result) {
+    if (err) {
+        console.log(err.message);
+    } else if (result != null) {
+        console.log(result);
+    } else {
+        console.log("Usuario y/o contraseña incorrectos");
+    }
 }
+daoTask.getAllTasks("aitor.tilla@ucm.es", cb_isUserCorrect);

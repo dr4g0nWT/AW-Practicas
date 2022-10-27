@@ -56,8 +56,12 @@ VALUES (1,1), (1,2), (1,3), (2,6),(3,5), (3,6), (4,5), (4,7), (5,1), (5,3);
 
 /*
 
-select * 
-from aw_tareas_usuarios u join aw_tareas_user_tareas i1 on(u.idUser = i1.idUser) join aw_tareas_tareas t on(i1.idTarea = t.idTarea) join aw_tareas_tareas_etiquetas i2 on(t.idTarea = i2.idTarea) join aw_tareas_etiquetas e on (i2.idEtiqueta = e.idEtiqueta)
-where u.idUser = 1;
+SELECT * 
+FROM aw_tareas_usuarios u JOIN aw_tareas_user_tareas i1 ON(u.idUser = i1.idUser) 
+JOIN aw_tareas_tareas t ON(i1.idTarea = t.idTarea)
+JOIN aw_tareas_tareas_etiquetas i2 ON(t.idTarea = i2.idTarea) 
+JOIN aw_tareas_etiquetas e ON(i2.idEtiqueta = e.idEtiqueta)
+WHERE u.idUser = 1;
+
 
 */
