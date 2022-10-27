@@ -1,7 +1,7 @@
 "use strict";
 const mysql = require("mysql");
 const config = require("./config");
-const DAOUsers = require("./DAOUsers");
+const DAOUsers = require("./DAOUsers.js");
 const DAOTasks = require("./DAOTasks");
 // Crear el pool de conexiones
 const pool = mysql.createPool({
@@ -16,7 +16,7 @@ let daoTask = new DAOTasks(pool);
 // Uso de los métodos de las clases DAOUsers y DAOTasks
 
 
-daoUser.isUserCorrect("usuario@ucm.es", "mipass", cb_isUserCorrect);
+daoUser.isUserCorrect("aitor.tilla@ucm.es", "aitor", cb_isUserCorrect);
 function cb_isUserCorrect(err, result){
  if (err) {
  console.log(err.message);

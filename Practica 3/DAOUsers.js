@@ -2,7 +2,7 @@
 
 class DAOUsers{
     constructor(pool) {
-        this._pool = pool;
+        this.pool = pool;
     }
 
     isUserCorrect(email, password, callback) {
@@ -11,7 +11,7 @@ class DAOUsers{
                 callback(new Error("Error de conexión a la base de datos"));
             }
             else {
-                connection.query("SELECT * FROM user WHERE email = ? AND password = ?",
+                connection.query("SELECT * FROM aw_tareas_usuarios WHERE email = ? AND password = ?",
                     [email, password],
                     function (err, rows) {
                         connection.release(); // devolver al pool la conexión
@@ -32,3 +32,5 @@ class DAOUsers{
         );
     }
 }
+
+module.exports = DAOUsers;

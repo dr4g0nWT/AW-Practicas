@@ -21,3 +21,5 @@ class DAOTasks {
         })
     }
 }
+
+module.exports = DAOTasks;
