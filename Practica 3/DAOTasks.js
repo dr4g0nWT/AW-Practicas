@@ -42,6 +42,73 @@ class DAOTasks {
             }
         })
     }
+    
+    insertTask(email, task, callback){
+        this.pool.getConnection(function(err, connection){
+            if(err){
+                callback(new Error("Error de conexión a la base de datos"))
+            }
+            else{
+                connection.query("SELECT idUser FROM aw_tareas_usuarios WHERE email = ?;" , [email], 
+                function(err, rows){
+                    //connection.release();
+                    if(err){
+                        callback(new Error("Error de acceso a la base de datos 1"))
+                    }
+                    else{
+                        if(rows[0].idUser != null){
+                            let idUsuario = rows[0].idUser
+                            let tagsins = ""
+                            if(task != null){                              
+
+                                if(task.tags != null){
+                                    tagsins += "INSERT INTO aw_tareas_etiquetas(texto) VALUES"
+
+                                    task.tags.forEach(tag => {
+                                        tagsins += ",("+ tag + ")"
+                                    })
+
+                                    tagsins = tagsins.slice(0, tagsins.indexOf(",")) + tagsins.slice(tagsins.indexOf(",") + 1) + ";"
+                                } 
+                                                           
+                                connection.query("INSERT INTO aw_tareas_tareas(texto) VALUES(?); "+ tagsins , [task.text],
+                                function(err, rows){
+                                    if(err){
+                                        callback(err)
+                                    }
+                                    else{
+                                        let idTarea = rows.insertId
+                                        let insTareaUser = "INSERT INTO aw_tareas_usuar_tareas VALUES (" + idUsuario + "," + idTarea + ", "+ task.done + ");"
+                                        let insTareaTags = ""
+                                        if(rows.length>1){
+                                            insTareaTags = "INSERT INTO aw_tareas_tareas_etiquetas VALUES (" + idTarea + "," + rows[1].idTag  + ")"
+                                            if(rows.length > 2){
+                                                for (let i = 2; i < rows.length; i++) {
+                                                    insTareaTags += ",(" + idTarea + "," + rows[1].idTag  + ")"                                        
+                                                }
+                                            }                                           
+                                        }
+                                        
+                                        connection.query(insTareaUser + insTareaTags + ";", function(err, rows){
+                                            connection.release()
+                                            if(err){
+                                                callback(new Error("Error de acceso a la base de datos 3"))
+                                            }
+                                            else{
+                                                callback(null, idTarea)
+                                            }
+                                        })
+                                       
+                                    }
+                                })
+                            }                            
+                        }
+                    }
+                })
+            }
+        })
+    }
+
 }
 
 module.exports = DAOTasks;

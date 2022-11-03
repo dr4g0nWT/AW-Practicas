@@ -3,6 +3,7 @@ const mysql = require("mysql");
 const config = require("./config");
 const DAOUsers = require("./DAOUsers.js");
 const DAOTasks = require("./DAOTasks");
+const { database } = require("./config");
 // Crear el pool de conexiones
 const pool = mysql.createPool({
     host: config.host,
@@ -27,13 +28,28 @@ let daoTask = new DAOTasks(pool);
 //     }
 // }
 
-function cb_isUserCorrect(err, result) {
-    if (err) {
-        console.log(err.message);
-    } else if (result != null) {
-        console.log(result);
-    } else {
-        console.log("Usuario y/o contraseña incorrectos");
+// function cb_getAllTasks(err, result) {
+//     if (err) {
+//         console.log(err.message);
+//     } else if (result != null) {
+//         console.log(result);
+//     } else {
+//         console.log("Usuario y/o contraseña incorrectos");
+//     }
+// }
+// daoTask.getAllTasks("aitor.tilla@ucm.es", cb_getAllTasks);
+
+function cb_insertTaks(err, result){
+    if(err){
+        console.log(err.message)
+    }
+    else if(result != null){
+        console.log(result)
+    }
+    else{
+        console.log("Insercion fallida")
     }
 }
-daoTask.getAllTasks("aitor.tilla@ucm.es", cb_isUserCorrect);
+
+let task = {text: "Hola que tal estas", done: false, tags: ["Hola"]}
+daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)
