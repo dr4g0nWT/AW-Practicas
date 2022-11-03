@@ -59,45 +59,73 @@ class DAOTasks {
                         if(rows[0].idUser != null){
                             let idUsuario = rows[0].idUser
                             let tagsins = ""
-                            if(task != null){                              
-
-                                if(task.tags != null){
-                                    tagsins += "INSERT INTO aw_tareas_etiquetas(texto) VALUES"
-
-                                    task.tags.forEach(tag => {
-                                        tagsins += ",("+ tag + ")"
-                                    })
-
-                                    tagsins = tagsins.slice(0, tagsins.indexOf(",")) + tagsins.slice(tagsins.indexOf(",") + 1) + ";"
-                                } 
-                                                           
-                                connection.query("INSERT INTO aw_tareas_tareas(texto) VALUES(?); "+ tagsins , [task.text],
+                            if(task != null){                      
+                                connection.query("INSERT INTO aw_tareas_tareas(texto) VALUES(?); ", [task.text],
                                 function(err, rows){
                                     if(err){
                                         callback(err)
                                     }
                                     else{
                                         let idTarea = rows.insertId
-                                        let insTareaUser = "INSERT INTO aw_tareas_usuar_tareas VALUES (" + idUsuario + "," + idTarea + ", "+ task.done + ");"
-                                        let insTareaTags = ""
-                                        if(rows.length>1){
-                                            insTareaTags = "INSERT INTO aw_tareas_tareas_etiquetas VALUES (" + idTarea + "," + rows[1].idTag  + ")"
-                                            if(rows.length > 2){
-                                                for (let i = 2; i < rows.length; i++) {
-                                                    insTareaTags += ",(" + idTarea + "," + rows[1].idTag  + ")"                                        
-                                                }
-                                            }                                           
-                                        }
                                         
-                                        connection.query(insTareaUser + insTareaTags + ";", function(err, rows){
-                                            connection.release()
+                                        //Ahora asignamos el userid y la tagid a la tabla intermedia
+                                        console.log("AHORA")
+                                        connection.query("INSERT INTO aw_tareas_user_tareas (idUser, idTarea, hecho) VALUES (?,?,?);"
+                                        [idUsuario, idTarea, task.done], function(err, rows){
                                             if(err){
-                                                callback(new Error("Error de acceso a la base de datos 3"))
+                                                callback(err)
                                             }
                                             else{
-                                                callback(null, idTarea)
+                                                if(task.tags != null){ //Si hay alguna tarea
+                                                    let insertTags = ""
+                                                    console.log("LLEGO")
+                                                    insertTags += "INSERT INTO aw_tareas_etiquetas(texto) VALUES "
+                                                    task.tags.forEach(tag => {
+                                                        insertTags += ",(\"" + tag + "\")"
+                                                    });
+                                                    insertTags = insertTags.slice(0, insertTags.indexOf(",")) + insertTags.slice(insertTags.indexOf(",") + 1) + ";"
+        
+                                                    connection.query(insertTags, function(err, result){
+                                                        if(err){
+                                                            callback(err)
+                                                        }
+                                                        else{
+                                                            let idTareas = []
+                                                            let idTarea1 = result.insertId
+                                                            
+                                                            for(let i = 0; i<task.tags.length; i++){
+                                                                idTareas.push(idTarea1 + i)
+                                                            }
+                                                            console.log(idTareas + "," + task.tags.length)
+                                                            let insertTareasTags = "INSERT INTO aw_tareas_tareas_etiquetas(idTarea, idEtiqueta) VALUES ("+ idTarea +
+                                                                "," + idTarea1 + ")"
+                                                            
+                                                            for(let i = 1 ; i<task.tags.length ; i++){
+                                                                let id = i + idTarea1
+                                                                insertTareasTags += ",("+ idTarea + "," + id + ")"
+                                                            }
+                                                            //Unimos ambas inserciones con las correspondintes tablas intermedias
+                                                            connection.query(insertTareasTags, function(err, result){
+                                                                if(err){
+                                                                    callback(err)
+                                                                }
+                                                                else{
+                                                                    connection.release()
+                                                                    console.log("Tareas insertadas correctamente")
+                                                                    callback(null, result)
+                                                                }
+                                                            })
+                                                        }
+                                                    })
+                                                }
+                                                else{
+                                                    callback(null, rows)
+                                                }
                                             }
                                         })
+                                        
+                                        
+                                       
                                        
                                     }
                                 })

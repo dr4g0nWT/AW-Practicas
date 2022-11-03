@@ -51,5 +51,5 @@ function cb_insertTaks(err, result){
     }
 }
 
-let task = {text: "Hola que tal estas", done: false, tags: ["Hola"]}
+let task = {text: "Hola que tal estas", done: false, tags: ["Hola", "Adios", "Que"]}
 daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)
