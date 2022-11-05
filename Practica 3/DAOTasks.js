@@ -149,17 +149,49 @@ class DAOTasks {
 
                 connection.query("update aw_tareas_user_tareas set hecho = 1 where idTarea = ?",
                 [idTask],
-                function(err, rows){
-
+                function(err){
+                    connection.release()
                     if (err)
                         callback(new Error("Error de acceso a la base de datos"))
                     else
                         callback(null)
-                          
+
                 })
             }
 
 
+        })
+
+    }
+
+    deleteCompleted(email, callback){
+
+        this.pool.getConnection(function(err, connection){
+
+            if (err)
+                callback(new Error("Error de conexión a la base de datos"))
+            else{
+
+                connection.query(`
+
+                    delete t
+                    from aw_tareas_user_tareas t join aw_tareas_usuarios u on(t.idUser = u.idUser)
+                    where u.email = ? and t.hecho = 1
+                
+                `,
+                [email],
+                function(err){
+
+                    connection.release()
+                    if (err)
+                        callback(new Error("Error de acceso a la base de datos"))
+                    else
+                        callback(null)
+
+                })
+
+
+            }
         })
 
     }

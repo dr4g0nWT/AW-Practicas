@@ -62,7 +62,14 @@ let daoTask = new DAOTasks(pool);
 // let task = {text: "Hola que tal estas", done: false, tags: ["Hola", "Adios", "Que"]}
 // daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)
 
-// daoTask.markTaskDone(1, function(err){
+// daoTask.markTaskDone(3, function(err){
+//     if (err)
+//         console.log(err.message)
+//     else
+//         console.log("hecho")
+// })
+
+// daoTask.deleteCompleted("aitor.tilla@ucm.es", function(err){
 //     if (err)
 //         console.log(err.message)
 //     else
