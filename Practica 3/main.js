@@ -28,13 +28,13 @@ let daoTask = new DAOTasks(pool);
 //     }
 // }
 
-daoUser.getUserImageName("bill.puertas@ucm.es", function(err, res){
-    if (err)
-        console.log(err.message)
-    else
-        console.log(res)
+// daoUser.getUserImageName("bill.puertas@ucm.es", function(err, res){
+//     if (err)
+//         console.log(err.message)
+//     else
+//         console.log(res)
 
-})
+// })
 
 // function cb_getAllTasks(err, result) {
 //     if (err) {
@@ -61,3 +61,10 @@ daoUser.getUserImageName("bill.puertas@ucm.es", function(err, res){
 
 // let task = {text: "Hola que tal estas", done: false, tags: ["Hola", "Adios", "Que"]}
 // daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)
+
+// daoTask.markTaskDone(1, function(err){
+//     if (err)
+//         console.log(err.message)
+//     else
+//         console.log("hecho")
+// })

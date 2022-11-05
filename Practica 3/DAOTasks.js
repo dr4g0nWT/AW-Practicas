@@ -132,10 +132,38 @@ class DAOTasks {
                             }                            
                         }
                     }
+
                 })
             }
         })
     }
+
+
+    markTaskDone(idTask, callback){
+
+        this.pool.getConnection(function(err, connection){
+
+            if (err)
+                callback(new Error("Error de conexión a la base de datos"))
+            else{
+
+                connection.query("update aw_tareas_user_tareas set hecho = 1 where idTarea = ?",
+                [idTask],
+                function(err, rows){
+
+                    if (err)
+                        callback(new Error("Error de acceso a la base de datos"))
+                    else
+                        callback(null)
+                          
+                })
+            }
+
+
+        })
+
+    }
+
 
 }
 
