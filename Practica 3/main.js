@@ -36,16 +36,16 @@ let daoTask = new DAOTasks(pool);
 
 // })
 
-// function cb_getAllTasks(err, result) {
-//     if (err) {
-//         console.log(err.message);
-//     } else if (result != null) {
-//         console.log(result);
-//     } else {
-//         console.log("Usuario y/o contraseña incorrectos");
-//     }
-// }
-// daoTask.getAllTasks("aitor.tilla@ucm.es", cb_getAllTasks);
+function cb_getAllTasks(err, result) {
+    if (err) {
+        console.log(err.message);
+    } else if (result != null) {
+        console.log(result);
+    } else {
+        console.log("Usuario y/o contraseña incorrectos");
+    }
+}
+daoTask.getAllTasks("steve.curros@ucm.es", cb_getAllTasks);
 
 // function cb_insertTaks(err, result){
 //     if(err){

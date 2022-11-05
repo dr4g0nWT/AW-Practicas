@@ -23,19 +23,17 @@ class DAOTasks {
                         callback(new Error("Error de acceso a la base de datos"))
                     }
                     else{
-                        let tareasDistintas = null;
-                        tareasDistintas = Array.from(new Set(
-                            rows.map(t => t.idTarea))).map(idTarea => {
-								return {
-									ID: idTarea,
-									Texto: rows.find(t => t.idTarea === idTarea).texto,
-									Done: rows.find(t => t.idTarea === idTarea).hecho,
-									Tags: Array.from(rows.map(function(t){
-												if(t.idTarea === idTarea)
-													return t.tag;
-											})).filter(t => t!==undefined)
-								}
-                            })
+                        let tareasDistintas = [];
+                        rows.forEach(function(e){
+                            let i = tareasDistintas.findIndex(n => n.ID === e.idTarea)
+                            if ( i === -1)
+                                tareasDistintas.push({ID: e.idTarea, Texto: e.texto, Done: e.hecho, Tags: [e.tag]})   
+                            else
+                                tareasDistintas[i].Tags.push(e.tag)
+            
+                        })
+
+
                         callback(null, tareasDistintas)
                     }
                 })
