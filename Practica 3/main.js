@@ -28,6 +28,14 @@ let daoTask = new DAOTasks(pool);
 //     }
 // }
 
+daoUser.getUserImageName("bill.puertas@ucm.es", function(err, res){
+    if (err)
+        console.log(err.message)
+    else
+        console.log(res)
+
+})
+
 // function cb_getAllTasks(err, result) {
 //     if (err) {
 //         console.log(err.message);
@@ -39,17 +47,17 @@ let daoTask = new DAOTasks(pool);
 // }
 // daoTask.getAllTasks("aitor.tilla@ucm.es", cb_getAllTasks);
 
-function cb_insertTaks(err, result){
-    if(err){
-        console.log(err.message)
-    }
-    else if(result != null){
-        console.log(result)
-    }
-    else{
-        console.log("Insercion fallida")
-    }
-}
+// function cb_insertTaks(err, result){
+//     if(err){
+//         console.log(err.message)
+//     }
+//     else if(result != null){
+//         console.log(result)
+//     }
+//     else{
+//         console.log("Insercion fallida")
+//     }
+// }
 
-let task = {text: "Hola que tal estas", done: false, tags: ["Hola", "Adios", "Que"]}
-daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)
+// let task = {text: "Hola que tal estas", done: false, tags: ["Hola", "Adios", "Que"]}
+// daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)

@@ -31,6 +31,46 @@ class DAOUsers{
         }
         );
     }
+
+    getUserImageName(email, callback){
+
+        this.pool.getConnection(function(err, connection){
+
+            if (err) 
+                callback(new Error("Error de conexión a la base de datos"))
+            else{
+
+                connection.query(`SELECT img FROM aw_tareas_usuarios WHERE email = ?`,
+                    [email],
+                    function(err, rows){
+
+                        connection.release()
+                        if (err) 
+                            callback(new Error("Error de acceso a la base de datos"))
+                        else{
+                            if (rows.length === 0)
+                                callback(new Error("No existe el usuario"))
+                            else
+                                callback(null, rows[0].img)
+
+                            
+                        }
+                            
+
+                    
+                    }
+                )
+
+
+            }
+
+        })
+
+
+
+    }
+
+
 }
 
 module.exports = DAOUsers;
