@@ -68,7 +68,7 @@ class DAOTasks {
                                         
                                         //Ahora asignamos el userid y la tagid a la tabla intermedia
                                         console.log("AHORA")
-                                        connection.query("INSERT INTO aw_tareas_user_tareas (idUser, idTarea, hecho) VALUES (?,?,?);"
+                                        connection.query("INSERT INTO aw_tareas_user_tareas (idUser, idTarea, hecho) VALUES (?,?,?);",
                                         [idUsuario, idTarea, task.done], function(err, rows){
                                             if(err){
                                                 callback(err)

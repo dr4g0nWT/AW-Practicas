@@ -36,31 +36,31 @@ let daoTask = new DAOTasks(pool);
 
 // })
 
-function cb_getAllTasks(err, result) {
-    if (err) {
-        console.log(err.message);
-    } else if (result != null) {
-        console.log(result);
-    } else {
-        console.log("Usuario y/o contraseña incorrectos");
-    }
-}
-daoTask.getAllTasks("steve.curros@ucm.es", cb_getAllTasks);
-
-// function cb_insertTaks(err, result){
-//     if(err){
-//         console.log(err.message)
-//     }
-//     else if(result != null){
-//         console.log(result)
-//     }
-//     else{
-//         console.log("Insercion fallida")
+// function cb_getAllTasks(err, result) {
+//     if (err) {
+//         console.log(err.message);
+//     } else if (result != null) {
+//         console.log(result);
+//     } else {
+//         console.log("Usuario y/o contraseña incorrectos");
 //     }
 // }
+// daoTask.getAllTasks("steve.curros@ucm.es", cb_getAllTasks);
 
-// let task = {text: "Hola que tal estas", done: false, tags: ["Hola", "Adios", "Que"]}
-// daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)
+ function cb_insertTaks(err, result){
+     if(err){
+         console.log(err.message)
+     }
+     else if(result != null){
+         console.log(result)
+     }
+     else{
+         console.log("Insercion fallida")
+     }
+}
+
+let task = {text: "Hola que tal estas bro", done: false, tags: ["Hola", "Adios", "Que"]}
+ daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)
 
 // daoTask.markTaskDone(3, function(err){
 //     if (err)
