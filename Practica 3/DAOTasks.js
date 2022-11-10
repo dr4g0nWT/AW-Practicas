@@ -56,7 +56,7 @@ class DAOTasks {
                     else{
                         if(rows[0].idUser != null){
                             let idUsuario = rows[0].idUser
-                            let tagsins = ""
+                           
                             if(task != null){                      
                                 connection.query("INSERT INTO aw_tareas_tareas(texto) VALUES(?); ", [task.text],
                                 function(err, rows){
@@ -67,7 +67,7 @@ class DAOTasks {
                                         let idTarea = rows.insertId
                                         
                                         //Ahora asignamos el userid y la tagid a la tabla intermedia
-                                        console.log("AHORA")
+                                  
                                         connection.query("INSERT INTO aw_tareas_user_tareas (idUser, idTarea, hecho) VALUES (?,?,?);",
                                         [idUsuario, idTarea, task.done], function(err, rows){
                                             if(err){
@@ -75,32 +75,33 @@ class DAOTasks {
                                             }
                                             else{
                                                 if(task.tags != null){ //Si hay alguna tarea
-                                                    let insertTags = ""
-                                                    console.log("LLEGO")
-                                                    insertTags += "INSERT INTO aw_tareas_etiquetas(texto) VALUES "
+                                                    let insertTags = "INSERT INTO aw_tareas_etiquetas(texto) VALUES "
                                                     task.tags.forEach(tag => {
-                                                        insertTags += ",(\"" + tag + "\")"
+                                                        insertTags += ",(?)"
                                                     });
                                                     insertTags = insertTags.slice(0, insertTags.indexOf(",")) + insertTags.slice(insertTags.indexOf(",") + 1) + ";"
-        
-                                                    connection.query(insertTags, function(err, result){
+                                                    
+
+                                                    connection.query(insertTags, task.tags, function(err, result){
                                                         if(err){
                                                             callback(err)
                                                         }
                                                         else{
-                                                            let idTareas = []
-                                                            let idTarea1 = result.insertId
+                                                            let idTags = []
+                                                            let idTag1 = result.insertId
                                                             
                                                             for(let i = 0; i<task.tags.length; i++){
-                                                                idTareas.push(idTarea1 + i)
+                                                                idTags.push(idTag1 + i)
                                                             }
-                                                            console.log(idTareas + "," + task.tags.length)
-                                                            let insertTareasTags = "INSERT INTO aw_tareas_tareas_etiquetas(idTarea, idEtiqueta) VALUES ("+ idTarea +
-                                                                "," + idTarea1 + ")"
+
+                                                            console.log(idTags + "," + task.tags.length)
+
+                                                            let insertTareasTags = "INSERT INTO aw_tareas_tareas_etiquetas(idTarea, idEtiqueta) VALUES"
                                                             
-                                                            for(let i = 1 ; i<task.tags.length ; i++){
-                                                                let id = i + idTarea1
-                                                                insertTareasTags += ",("+ idTarea + "," + id + ")"
+                                                            for(let i = 0; i<task.tags.length ; i++){
+                                                                if (i == 0) insertTareasTags += "(?, ?)"
+                                                                else insertTareasTags += ",(?, ?)"
+                                                                
                                                             }
                                                             //Unimos ambas inserciones con las correspondintes tablas intermedias
                                                             connection.query(insertTareasTags, function(err, result){
