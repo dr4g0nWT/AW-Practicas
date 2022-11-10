@@ -88,10 +88,10 @@ class DAOTasks {
                                                         }
                                                         else{
                                                             let idTags = []
-                                                            let idTag1 = result.insertId
+                                                
                                                             
                                                             for(let i = 0; i<task.tags.length; i++){
-                                                                idTags.push(idTag1 + i)
+                                                                idTags.push(result.insertId + i)
                                                             }
 
                                                             console.log(idTags + "," + task.tags.length)
