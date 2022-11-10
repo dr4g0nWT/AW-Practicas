@@ -15,7 +15,7 @@ create table aw_tareas_usuarios(
 
 create table aw_tareas_tareas(
     idTarea integer primary key auto_increment,
-    texto text not null
+    texto text not null unique
 );
 
 create table aw_tareas_etiquetas(

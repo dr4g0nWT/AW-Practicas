@@ -49,29 +49,30 @@ class DAOTasks {
             else{
                 connection.query("SELECT idUser FROM aw_tareas_usuarios WHERE email = ?;" , [email], 
                 function(err, rows){
-                    //connection.release();
                     if(err){
-                        callback(new Error("Error de acceso a la base de datos 1"))
+                        connection.release()
+                        callback(new Error("Error de acceso a la base de datos"))
                     }
                     else{
                         if(rows[0].idUser != null){
                             let idUsuario = rows[0].idUser
                            
-                            if(task != null){                      
+                            if(task != null || task != undefined){                      
                                 connection.query("INSERT INTO aw_tareas_tareas(texto) VALUES(?); ", [task.text],
                                 function(err, rows){
                                     if(err){
-                                        callback(err)
+                                        connection.release()
+                                        callback(new Error("Error de acceso a la base de datos"))
                                     }
                                     else{
-                                        let idTarea = rows.insertId
-                                        
+                                        let idTarea = rows.insertId                                       
                                         //Ahora asignamos el userid y la tagid a la tabla intermedia
                                   
                                         connection.query("INSERT INTO aw_tareas_user_tareas (idUser, idTarea, hecho) VALUES (?,?,?);",
                                         [idUsuario, idTarea, task.done], function(err, rows){
                                             if(err){
-                                                callback(err)
+                                                connection.release()
+                                                callback(new Error("Error de acceso a la base de datos"))
                                             }
                                             else{
                                                 if(task.tags != null){ //Si hay alguna tarea
@@ -79,22 +80,21 @@ class DAOTasks {
                                                     task.tags.forEach(tag => {
                                                         insertTags += ",(?)"
                                                     });
-                                                    insertTags = insertTags.slice(0, insertTags.indexOf(",")) + insertTags.slice(insertTags.indexOf(",") + 1) + ";"
-                                                    
+                                                    insertTags = insertTags.slice(0, insertTags.indexOf(",")) + insertTags.slice(insertTags.indexOf(",") + 1) + ";"                                                   
 
                                                     connection.query(insertTags, task.tags, function(err, result){
                                                         if(err){
-                                                            callback(err)
+                                                            connection.release()
+                                                            callback(new Error("Error de acceso a la base de datos"))
                                                         }
                                                         else{
-                                                            let idTags = []
+                                                            let idTareaTags = []
                                                 
                                                             
                                                             for(let i = 0; i<task.tags.length; i++){
-                                                                idTags.push(result.insertId + i)
-                                                            }
-
-                                                            console.log(idTags + "," + task.tags.length)
+                                                                idTareaTags.push(idTarea)
+                                                                idTareaTags.push(result.insertId + i)
+                                                            }                                                            
 
                                                             let insertTareasTags = "INSERT INTO aw_tareas_tareas_etiquetas(idTarea, idEtiqueta) VALUES"
                                                             
@@ -104,21 +104,21 @@ class DAOTasks {
                                                                 
                                                             }
                                                             //Unimos ambas inserciones con las correspondintes tablas intermedias
-                                                            connection.query(insertTareasTags, function(err, result){
+                                                            connection.query(insertTareasTags, idTareaTags , function(err, result){
                                                                 if(err){
-                                                                    callback(err)
+                                                                    callback(new Error("Error de acceso a la base de datos"))
                                                                 }
                                                                 else{
                                                                     connection.release()
-                                                                    console.log("Tareas insertadas correctamente")
-                                                                    callback(null, result)
+                                                                    callback(null, idTarea)
                                                                 }
                                                             })
                                                         }
                                                     })
                                                 }
                                                 else{
-                                                    callback(null, rows)
+                                                    connection.release()
+                                                    callback(null, idTarea)
                                                 }
                                             }
                                         })
@@ -128,7 +128,15 @@ class DAOTasks {
                                        
                                     }
                                 })
+                            }
+                            else{
+                                connection.release()
+                                callback(new Error("La tarea recibida es vacia"))
                             }                            
+                        }
+                        else{
+                            connection.release()
+                            callback(new Error("No existe el usuario"))
                         }
                     }
 

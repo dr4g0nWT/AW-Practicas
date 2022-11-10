@@ -52,14 +52,14 @@ let daoTask = new DAOTasks(pool);
          console.log(err.message)
      }
      else if(result != null){
-         console.log(result)
+         console.log("Se ha insertado correctamente la tarea con id: " + result)
      }
      else{
          console.log("Insercion fallida")
      }
 }
 
-let task = {text: "Hola que tal estas bro", done: false, tags: ["Hola", "Adios", "Que"]}
+let task = {text: "Comprar un pc", done: false}
  daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)
 
 // daoTask.markTaskDone(3, function(err){
