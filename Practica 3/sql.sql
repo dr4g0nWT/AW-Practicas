@@ -20,7 +20,7 @@ create table aw_tareas_tareas(
 
 create table aw_tareas_etiquetas(
     idEtiqueta integer primary key auto_increment,
-    texto text not null
+    texto text not null unique
 );
 
 create table aw_tareas_user_tareas(

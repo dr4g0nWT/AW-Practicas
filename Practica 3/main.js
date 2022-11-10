@@ -59,7 +59,7 @@ let daoTask = new DAOTasks(pool);
      }
 }
 
-let task = {text: "Comprar un pc", done: false}
+let task = {text: "Hacer la colada", done: false, tags: ["Meditacion", "Avanade", "Pablo"]}
  daoTask.insertTask("aitor.tilla@ucm.es", task, cb_insertTaks)
 
 // daoTask.markTaskDone(3, function(err){
