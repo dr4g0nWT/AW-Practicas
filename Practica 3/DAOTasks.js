@@ -46,14 +46,14 @@ class DAOTasks {
             if (err) {
                 callback(new Error("Error de conexión a la base de datos"))
             }
-            else {
+            else { //Lo primero que hacemos es seleccionar el id del usuario
                 connection.query("SELECT idUser FROM aw_tareas_usuarios WHERE email = ?;", [email],
                     function (err, rows) {
                         if (err) {
                             connection.release()
                             callback(new Error("Error de acceso a la base de datos"))
                         }
-                        else {
+                        else { //Si existe el usuario entonces buscamos si ya existe la tarea que queremos insertar
                             if (rows[0].idUser != null) {
                                 let idUsuario = rows[0].idUser
 
@@ -65,7 +65,7 @@ class DAOTasks {
                                                 connection.release()
                                                 callback(new Error("Error de acceso a la base de datos"))
                                             }
-                                            else {
+                                            else { //Si existe guardamos su id, luego insertamos la tarea en caso de que no exista
                                                 let idTarea
                                                 if (rows.length != 0) {
                                                     idTarea = rows[0].idTarea
@@ -81,13 +81,13 @@ class DAOTasks {
                                                                 idTarea = rows.insertId
                                                             }
 
-                                                            //Ahora asignamos el userid y la tagid a la tabla intermedia                                                    
+                                                            //Ahora asignamos el userid y la taskid a la tabla intermedia                                                    
 
                                                             connection.query("INSERT INTO aw_tareas_user_tareas (idUser, idTarea, hecho) VALUES (?,?,?);",
                                                                 [idUsuario, idTarea, task.done], function (err, rows) {
                                                                     if (err) {
                                                                         connection.release()
-                                                                        callback(err)
+                                                                        callback(new Error("Error de acceso a la base de datos"))
                                                                     }
                                                                     else {
                                                                         if (task.tags != null) { //Si hay alguna tarea
@@ -97,7 +97,7 @@ class DAOTasks {
                                                                             for (let i = 1; i < task.tags.length; i++) {
                                                                                 where += "OR texto = ? "
                                                                             }
-
+                                                                            //Buscamos todas las tags por si alguna ya existe
                                                                             connection.query("SELECT idEtiqueta AS idTag FROM aw_tareas_etiquetas " + where + ";", task.tags,
                                                                                 function (err, rows) {
                                                                                     if (err) {
@@ -105,11 +105,12 @@ class DAOTasks {
                                                                                         callback(new Error("Erros de acceso a la base de datos select"))
                                                                                     }
                                                                                     else {
-                                                                                        let arrayIdTags = []
+                                                                                        let arrayIdTags = [] //Aqui guardamos las id de las tags que si existian
                                                                                         rows.forEach(tag => {
                                                                                             arrayIdTags.push(tag.idTag)
                                                                                         });
 
+                                                                                        //Ahora insertaremos las tags que no existian ya
                                                                                         let insertTags = "INSERT IGNORE INTO aw_tareas_etiquetas(texto) VALUES "
                                                                                         task.tags.forEach(tag => {
                                                                                             insertTags += ",(?)"
@@ -121,7 +122,9 @@ class DAOTasks {
                                                                                                 connection.release()
                                                                                                 callback(new Error("Error de acceso a la base de datos\n" + err.message))
                                                                                             }
-                                                                                            else {
+                                                                                            else { //Lo que haremos ahora es guardar los id de las tareas que acabamos de 
+                                                                                                //Ademas creamos un array con el id de la tarea y de la tag para asociarlos a la
+                                                                                                //tabla intermedia
                                                                                                 let idTareaTags = []
 
                                                                                                 arrayIdTags.forEach(id => {
@@ -133,13 +136,7 @@ class DAOTasks {
                                                                                                     idTareaTags.push(idTarea)
                                                                                                     idTareaTags.push(result.insertId + i)
                                                                                                 }
-
-
-                                                                                                // for (let i = 0; i < task.tags.length; i++) {
-                                                                                                //     idTareaTags.push(idTarea)
-                                                                                                //     idTareaTags.push(result.insertId + i)
-                                                                                                // }
-
+                                                                                                //Unimos ambas inserciones con las correspondintes tablas intermedias
                                                                                                 let insertTareasTags = "INSERT IGNORE INTO aw_tareas_tareas_etiquetas(idTarea, idEtiqueta) VALUES"
 
                                                                                                 for (let i = 0; i < task.tags.length; i++) {
@@ -147,14 +144,15 @@ class DAOTasks {
                                                                                                     else insertTareasTags += ",(?, ?)"
 
                                                                                                 }
-                                                                                                //Unimos ambas inserciones con las correspondintes tablas intermedias
+
+
                                                                                                 connection.query(insertTareasTags, idTareaTags, function (err, result) {
                                                                                                     if (err) {
                                                                                                         callback(new Error("Error de acceso a la base de datos final"))
                                                                                                     }
                                                                                                     else {
                                                                                                         connection.release()
-                                                                                                        callback(null, idTarea)
+                                                                                                        callback(null, [idTarea, email])
                                                                                                     }
                                                                                                 })
                                                                                             }
@@ -164,7 +162,7 @@ class DAOTasks {
                                                                         }
                                                                         else {
                                                                             connection.release()
-                                                                            callback(null, idTarea)
+                                                                            callback(null, [idTarea, email])
                                                                         }
                                                                     }
                                                                 })
