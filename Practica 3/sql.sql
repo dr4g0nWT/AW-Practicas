@@ -54,14 +54,3 @@ VALUES ('Universidad'), ('AW'), ('TP'), ('Práctica'), ('Personal'), ('Académic
 INSERT INTO aw_tareas_tareas_etiquetas(idTarea, idEtiqueta)
 VALUES (1,1), (1,2), (1,3), (2,6),(3,5), (3,6), (4,5), (4,7), (5,1), (5,3);
 
-/*
-
-SELECT * 
-FROM aw_tareas_usuarios u JOIN aw_tareas_user_tareas i1 ON(u.idUser = i1.idUser) 
-JOIN aw_tareas_tareas t ON(i1.idTarea = t.idTarea)
-JOIN aw_tareas_tareas_etiquetas i2 ON(t.idTarea = i2.idTarea) 
-JOIN aw_tareas_etiquetas e ON(i2.idEtiqueta = e.idEtiqueta)
-WHERE u.idUser = 1;
-
-
-*/

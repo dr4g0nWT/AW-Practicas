@@ -16,8 +16,9 @@ class DAOTasks {
                     "JOIN aw_tareas_tareas t ON(i1.idTarea = t.idTarea) " +
                     "JOIN aw_tareas_tareas_etiquetas i2 ON(t.idTarea = i2.idTarea) " +
                     "JOIN aw_tareas_etiquetas e ON(i2.idEtiqueta = e.idEtiqueta) " +
-                    "WHERE u.email = ?;", [email],
-                    function (err, rows) {
+                    "WHERE u.email = ?;"
+                    ,[email]
+                    ,function (err, rows) {
                         connection.release()
                         if (err) {
                             callback(new Error("Error de acceso a la base de datos"))
@@ -30,10 +31,7 @@ class DAOTasks {
                                     tareasDistintas.push({ ID: e.idTarea, Texto: e.texto, Done: e.hecho, Tags: [e.tag] })
                                 else
                                     tareasDistintas[i].Tags.push(e.tag)
-
                             })
-
-
                             callback(null, tareasDistintas)
                         }
                     })
@@ -213,39 +211,115 @@ class DAOTasks {
 
     }
 
-    deleteCompleted(email, callback) {
+    deleteCompleted(email, callback){
 
-        this.pool.getConnection(function (err, connection) {
-
+        this.pool.getConnection(function(err, connection){
+    
             if (err)
                 callback(new Error("Error de conexión a la base de datos"))
-            else {
-
+            else{
+    
+                //Obtenemos al usuario por su email
                 connection.query(`
-
-                    delete t
-                    from aw_tareas_user_tareas t join aw_tareas_usuarios u on(t.idUser = u.idUser)
-                    where u.email = ? and t.hecho = 1
-                
+                    select idUser
+                    from aw_tareas_usuarios
+                    where email = ?
                 `,
-                    [email],
-                    function (err) {
-
+                [email],
+                function(err, res){
+         
+                    if (err){
                         connection.release()
-                        if (err)
-                            callback(new Error("Error de acceso a la base de datos"))
-                        else
-                            callback(null)
+                        callback(new Error("Error de acceso a la base de datos"))
+                    }  
+                    else{
+                        
+                        if (res.length == 0){
+                            connection.release()
+                            callback(new Error("Usuario no existe"));
+                        }
+                        else{ // Si existe un usuario con el email especificado
+    
+                            let idUser = res[0]["idUser"]
+                            
+                            //Borramos todas las tareas terminadas del usuario
+                            connection.query(
+                                `delete
+                                 from aw_tareas_user_tareas
+                                 where idUser = ? and hecho = 1`,
+                                 [idUser],
+                                 function(err){
 
-                    })
+                                    if (err){
+                                        connection.release()
+                                        callback(new Error("Error de acceso a la base de datos"))
+                                    }        
+                                    else{
 
+                                        //Agrupamos por todas las tareas existentes y contamos cuantos usuarios las tienen
+                                        connection.query(
+                                            `select t.idTarea, count(idUser) as num
+                                             from aw_tareas_user_tareas u right join aw_tareas_tareas t on(t.idTarea = u.idTarea)
+                                             group by t.idTarea`,
+                                             function(err, res){
 
+                                                if (err){
+                                                    connection.release()
+                                                    callback(new Error("Error de acceso a la base de datos"))
+                                                }
+                                                else{
+                                                    
+                                                    //Nos quedamos con el id aquellas tareas que no tienen ningun usuario asociado
+                                                    let borrar = res.filter(e => e["num"] == 0).map(e => e["idTarea"])
+
+                                                    if (borrar.length == 0){ //Si no hay ninguna tarea "suelta" acabamos
+                                                        connection.release()
+                                                        callback(null)
+                                                    }        
+                                                    else{ //En caso contrario borramos dichas tareas de la tabla tareas y la tabla tareas_etiquetas
+
+                                                        let deleteTarea = "delete from aw_tareas_tareas where "
+                                                        let deleteTarea_etiqueta = "delete from aw_tareas_tareas_etiquetas where "
+
+                                                        let add = ""
+                                                        for (let i = 0; i < borrar.length; i++){
+                                                            if (i > 0) add += " or "
+                                                            add += "idTarea = ?"   
+                                                        }
+                                                        deleteTarea += add
+                                                        deleteTarea_etiqueta += add
+
+                                                        connection.query(deleteTarea, borrar, function(err){
+                                                                if (err){
+                                                                    connection.release()
+                                                                    callback(err)
+                                                                }      
+                                                                else{
+                                                                    connection.query(deleteTarea_etiqueta, borrar, function(err){
+                                                                        connection.release()
+                                                                        if (err)
+                                                                            callback(new Error(err))
+                                                                        else
+                                                                            callback(null)
+                                                                    })
+                                                                }
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        )
+                                    }
+                                 }
+                            )
+                        }
+                    }
+                })
             }
         })
-
     }
-
-
 }
+
+
 
 module.exports = DAOTasks;
