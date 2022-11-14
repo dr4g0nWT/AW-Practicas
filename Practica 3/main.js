@@ -59,7 +59,7 @@ function cb_getAllTasks(err, result) {
 
 let task = { text: "Hacer la colada", done: false, tags: ["Meditacion", "Hogar", "Limpieza"] }
 
-//daoTask.insertTask("steve.curros@ucm.es", task, cb_insertTaks)
+daoTask.insertTask("steve.curros@ucm.es", task, cb_insertTaks)
 function cb_insertTaks(err, result) {
     if (err) {
         console.log(err.message)
@@ -81,7 +81,7 @@ function cb_markTaskDone(err){
         console.log("Marcar Completado")
 }
 
-daoTask.deleteCompleted("aitor.tilla@ucm.es", cb_deleteCompleted)
+//daoTask.deleteCompleted("aitor.tilla@ucm.es", cb_deleteCompleted)
 function cb_deleteCompleted(err){
     if (err)
         console.log(err.message)

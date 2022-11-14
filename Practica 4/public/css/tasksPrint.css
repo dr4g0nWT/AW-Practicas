@@ -1,0 +1,22 @@
+#cabecera{
+    display: none;
+}
+button{
+    display: none;
+}
+p{
+    display: inline;
+}
+h3{
+    display: inline;
+}
+.completada{
+    margin-left: 1%;
+}
+h2{
+    size: 18px;
+}
+body{
+    font-family: Helvetica;
+    size: 12px;
+}
