@@ -17,6 +17,7 @@
         <p>Nombre Usuario</p>
         <button>Desconectar</button>
     </div>
+    
     <div id="cuerpo">
         <div id="contenedor">
             <h2>Tareas</h2>
@@ -41,7 +42,10 @@
                                         <%= tag %>
                                     </p>
                                     <% }) %>
-                                        <button>Finalizar</button>
+                                        <form action="/finish/<%=task.ID%>" method="PUT">
+                                            <input type="submit">
+                                        </form>
+                                        
                                         <% } %>
                         </div>
                     </li>

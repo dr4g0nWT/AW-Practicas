@@ -87,7 +87,7 @@ body {
     background-image: linear-gradient(to right, rgb(255, 201, 186), rgb(255, 198, 250));
 }
 
-button {
+button, input {
     text-decoration: none;
     padding: 3px;
     padding-left: 10px;
@@ -101,7 +101,7 @@ button {
     border: 3px double #9c4747;
 }
 
-button:hover {
+button:hover, input:hover {
     opacity: 0.6;
     text-decoration: none;
     cursor: pointer;
