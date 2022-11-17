@@ -82,6 +82,18 @@ app.post("/finish/:taskId", function(request, response){
 
 })
 
+app.post("/deleteCompleted", function(request, response){
+    daoT.deleteCompleted("usuario@ucm.es", function(err){
+        if (err){
+            console.log("Error")
+        }
+        else{
+            response.status(200)
+            response.redirect("/tasks")
+        }
+    })
+})
+
 // Arrancar el servidor
 app.listen(config.port, function (err) {
     if (err) {
