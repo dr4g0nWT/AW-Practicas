@@ -8,20 +8,29 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const { cachedDataVersionTag } = require("v8");
+const Utils = require("./utils");
+
 // Crear un servidor Express.js
 const app = express();
+
 // Crear un pool de conexiones a la base de datos de MySQL
 const pool = mysql.createPool(config.mysqlConfig);
+
 // Crear una instancia de DAOTasks
 const daoT = new DAOTasks(pool);
+
+const ut = new utils();
+
 //Direccion ficheros estaticos:
 const ficherosEstaticos = path.join(__dirname, "public")
+
 //Montamos motor de las ejs y ademas añadimos el path views
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 //Middleware static
 app.use(express.static(ficherosEstaticos)) //Lo que hace es permitir buscar la url estatica
+app.use(bodyParser.urlencoded({extended: false}))
 
 //Get para tasks
 app.get("/tasks", function(request, response){
@@ -31,10 +40,45 @@ app.get("/tasks", function(request, response){
             console.log(err)        
         }
         else{
-            //console.log(result)
+            response.status(200)
             response.render("tasks", {tasks: result})
         }
     })
+})
+
+app.post("/addTask", function(request, response){
+
+   let des = request.body.descripcion
+   let task = ut.createTask(des);
+   task.done = 0;
+
+    console.log(task)
+   daoT.insertTask("usuario@ucm.es", task, function(err, res){
+        if (err){
+            console.log("Error al insertar")
+        }
+        else{
+            response.status(200)
+            response.redirect("/tasks")
+        }
+   })
+
+
+})
+
+app.put("/finish/:taskId", function(request, response){
+
+    let id = request.params.id;
+    daoT.markTaskDone(id, function(err){
+        if (err){
+            console.log("Error")
+        }
+        else{
+            response.status(200)
+            response.redirect("/tasks")
+        }
+    })
+
 })
 
 // Arrancar el servidor
