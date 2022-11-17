@@ -66,9 +66,10 @@ app.post("/addTask", function(request, response){
 
 })
 
-app.put("/finish/:taskId", function(request, response){
+app.post("/finish/:taskId", function(request, response){
 
-    let id = request.params.id;
+   
+    let id = request.params.taskId
     daoT.markTaskDone(id, function(err){
         if (err){
             console.log("Error")

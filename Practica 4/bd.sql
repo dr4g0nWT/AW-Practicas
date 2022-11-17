@@ -50,5 +50,5 @@ INSERT INTO aw_tareas_etiquetas(texto)
 VALUES ('Universidad'), ('AW'), ('TP'), ('Práctica'), ('Personal'), ('Académico'), ('Deporte'), ('Básico');
 
 INSERT INTO aw_tareas_tareas_etiquetas(idTarea, idEtiqueta)
-VALUES (1,1), (1,2), (1,3),(3,5), (3,6);
+VALUES (1,1), (1,2), (1,3), (2,6),(3,5), (3,6);
 
