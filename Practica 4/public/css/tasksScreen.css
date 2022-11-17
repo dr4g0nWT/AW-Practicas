@@ -1,13 +1,5 @@
-#cabecera {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 13%;
-    background-color: #ad5ac6;
+.navbar{        
+    background-color: #ad5ac6 !important;
 }
 
 .logo{
@@ -15,16 +7,11 @@
     height: fit-content;
 }
 
-.navbar .d-flex{
-    height: fit-content;
-}
 .navbar p {
     margin-right: 1%;
     margin-left: 1%;
     color: white;
-    border: 1px solid white;
-    border-radius: 3px;
-    padding: 0.7%;
+    padding-top: 1%;
 }
 
 .navbar button {
