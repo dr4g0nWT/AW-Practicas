@@ -10,7 +10,15 @@
     background-color: #ad5ac6;
 }
 
-#cabecera p {
+.logo{
+    width: 3%;
+    height: fit-content;
+}
+
+.navbar .d-flex{
+    height: fit-content;
+}
+.navbar p {
     margin-right: 1%;
     margin-left: 1%;
     color: white;
@@ -19,8 +27,9 @@
     padding: 0.7%;
 }
 
-#cabecera button {
+.navbar button {
     margin-right: 1%;
+    height: fit-content;
 }
 
 ul {
