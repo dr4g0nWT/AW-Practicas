@@ -11,13 +11,9 @@
 </head>
 
 <body>
-    <div id="cabecera">
-        <h1>Gestor de tareas</h1>
-        <img src="img/noUser.png" alt="">
-        <p>Nombre Usuario</p>
-        <button>Desconectar</button>
-    </div>
-    
+    <nav class="navbar fixed-top navbar-light bg-light">
+        <a class="navbar-brand" href="#">Fixed top</a>
+      </nav>
     <div id="cuerpo">
         <div id="contenedor">
             <h2>Tareas</h2>
@@ -42,7 +38,8 @@
                                         <%= tag %>
                                     </p>
                                     <% }) %>
-                                        <form action="/finish/<%=task.ID%>" method="PUT">
+                                        <form action="/finish/<%=task.ID%>" method="POST">
+                                            <input type="hidden" name="_method" value="put">
                                             <input type="submit">
                                         </form>
                                         
