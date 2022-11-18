@@ -1,30 +1,26 @@
-.navbar{        
-    background-color: #ad5ac6 !important;
-    height: 10%;
+#cabecera {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 13%;
+    background-color: #ad5ac6;
 }
 
-.logo{
-    width: 3.5%;
-    height: fit-content;
-}
-
-.navbar p{
+#cabecera p {
     margin-right: 1%;
     margin-left: 1%;
     color: white;
     border: 1px solid white;
     border-radius: 3px;
     padding: 0.7%;
-    height: fit-content;
-    margin-top: auto;
-    margin-bottom: auto;
 }
 
-.navbar button {
-    height: 80%;
-    padding: 0px;
-    font-size: 10px;
-    margin-left: 3%;
+#cabecera button {
+    margin-right: 1%;
 }
 
 ul {
@@ -32,14 +28,19 @@ ul {
     padding: 0px;
 }
 
-.userimg {
-    width: 15%;
+h1 {
+    color: white;
+    flex-grow: 1;
+    margin-left: 1%;
+}
+
+img {
+    height: 60%;
     border-radius: 50%;
-    margin-right: 3%;
 }
 
 #cuerpo {
-    margin-top: 5%;
+    margin-top: 8%;
     margin-left: auto;
     margin-right: auto;
     width: 80%;
@@ -51,37 +52,31 @@ ul {
     margin-bottom: 1%;
 }
 
-.tarea form {
+.tarea button {
     margin-left: auto;
     margin-right: 1%;
 }
 
 .tag {
-    padding: 2px;
+    padding: 3px;
     margin-left: 1%;
     border: 1px solid red;
     border-radius: 3px;
-    height: fit-content;
-    margin-top: auto;
-    margin-bottom: auto;
 }
 
-h4 {
+h3 {
     margin-left: 1%;
-    margin-top: auto;
-    margin-bottom: auto;
-    height: fit-content;
 }
 
 .tarea {
+    display: flex;
     margin-top: 2%;
     align-items: center;
     background-color: white;
     border-radius: 10px;
-    
 }
 
-.anadir {
+#anadir {
     float: right;
     color: #F5EFE6;
     background-color: #8ab278;
@@ -92,7 +87,7 @@ body {
     background-image: linear-gradient(to right, rgb(255, 201, 186), rgb(255, 198, 250));
 }
 
-button, input {
+button {
     text-decoration: none;
     padding: 3px;
     padding-left: 10px;
@@ -106,7 +101,7 @@ button, input {
     border: 3px double #9c4747;
 }
 
-button:hover, input:hover {
+button:hover {
     opacity: 0.6;
     text-decoration: none;
     cursor: pointer;
