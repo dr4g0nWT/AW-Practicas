@@ -21,9 +21,11 @@ class Utils{
      createTask(texto){
         let strs = texto.split(" ")
     
-        let tags = strs.filter(n => n[0] === "@").map(n => n.slice(1))
+        let tags = strs.filter(n => n[0] === "@").map(n => n.slice(1)).map(n => n.trim()).filter(n => n !== '')
         let nombre= strs.filter(n => n[0] !== "@").join(" ")
+        nombre = nombre.trim()
     
+        if (nombre === '') return null;
         return {text: nombre, tags: tags}
     }
 

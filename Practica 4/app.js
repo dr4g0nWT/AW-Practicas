@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const { cachedDataVersionTag } = require("v8");
 const Utils = require("./utils");
+const { Console } = require("console");
 
 // Crear un servidor Express.js
 const app = express();
@@ -32,9 +33,13 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(ficherosEstaticos)) //Lo que hace es permitir buscar la url estatica
 app.use(bodyParser.urlencoded({extended: false}))
 
+app.get("/", function(request, response){
+    response.redirect("/tasks")
+})
+
 //Get para tasks
 app.get("/tasks", function(request, response){
-    //Llamamos a la funcion getAllTasks
+   
     daoT.getAllTasks("usuario@ucm.es", function(err, result){
         if(err){
             console.log(err)        
@@ -50,10 +55,10 @@ app.post("/addTask", function(request, response){
 
    let des = request.body.descripcion
    let task = ut.createTask(des);
-   task.done = 0;
-
+   
     console.log(task)
-   daoT.insertTask("usuario@ucm.es", task, function(err, res){
+
+    daoT.insertTask("usuario@ucm.es", task, function(err, res){
         if (err){
             console.log("Error al insertar")
         }
@@ -61,7 +66,10 @@ app.post("/addTask", function(request, response){
             response.status(200)
             response.redirect("/tasks")
         }
-   })
+    })
+   
+ 
+   
 
 
 })

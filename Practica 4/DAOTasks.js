@@ -14,8 +14,8 @@ class DAOTasks {
                 connection.query("SELECT t.idTarea, t.texto, i1.hecho, e.texto AS tag " +
                     "FROM aw_tareas_usuarios u JOIN aw_tareas_user_tareas i1 ON(u.idUser = i1.idUser) " +
                     "JOIN aw_tareas_tareas t ON(i1.idTarea = t.idTarea) " +
-                    "JOIN aw_tareas_tareas_etiquetas i2 ON(t.idTarea = i2.idTarea) " +
-                    "JOIN aw_tareas_etiquetas e ON(i2.idEtiqueta = e.idEtiqueta) " +
+                    "LEFT JOIN aw_tareas_tareas_etiquetas i2 ON(t.idTarea = i2.idTarea) " +
+                    "LEFT JOIN aw_tareas_etiquetas e ON(i2.idEtiqueta = e.idEtiqueta) " +
                     "WHERE u.email = ?;"
                     ,[email]
                     ,function (err, rows) {
@@ -24,11 +24,13 @@ class DAOTasks {
                             callback(new Error("Error de acceso a la base de datos"))
                         }
                         else {
+                            
                             let tareasDistintas = [];
                             rows.forEach(function (e) {
                                 let i = tareasDistintas.findIndex(n => n.ID === e.idTarea)
                                 if (i === -1)
-                                    tareasDistintas.push({ ID: e.idTarea, Texto: e.texto, Done: e.hecho, Tags: [e.tag] })
+                                    tareasDistintas.push({ ID: e.idTarea, Texto: e.texto, Done: e.hecho, 
+                                        Tags: (e.tag) ? [e.tag] : [] })
                                 else
                                     tareasDistintas[i].Tags.push(e.tag)
                             })
@@ -55,8 +57,8 @@ class DAOTasks {
                             if (rows[0].idUser != null) {
                                 let idUsuario = rows[0].idUser
 
-                                if (task != null || task != undefined) {
-
+                                if (task) {
+                                    task.done = 0
                                     connection.query("SELECT idTarea FROM aw_tareas_tareas WHERE texto = ?", task.text,
                                         function (err, rows) {
                                             if (err) {
@@ -88,7 +90,7 @@ class DAOTasks {
                                                                         callback(new Error("Error de acceso a la base de datos"))
                                                                     }
                                                                     else {
-                                                                        if (task.tags != null) { //Si hay alguna tarea
+                                                                        if (task.tags && task.tags.length > 0) { //Si hay alguna tarea
 
                                                                             let where = "WHERE texto = ? "
 
