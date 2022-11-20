@@ -1,0 +1,117 @@
+.navbar{        
+    background-color: #ad5ac6 !important;
+    height: 10%;
+}
+
+.logo{
+    width: 3.5%;
+    height: fit-content;
+}
+
+.navbar p{
+    margin-right: 1%;
+    margin-left: 1%;
+    color: white;
+    border: 1px solid white;
+    border-radius: 3px;
+    padding: 0.7%;
+    height: fit-content;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.navbar button {
+    height: 80%;
+    padding: 0px;
+    font-size: 10px;
+    margin-left: 3%;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.userimg {
+    width: 15%;
+    border-radius: 50%;
+    margin-right: 3%;
+}
+
+#cuerpo {
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+#contenedor {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1%;
+}
+
+.tarea form {
+    margin-left: auto;
+    margin-right: 1%;
+}
+
+.tag {
+    padding: 2px;
+    margin-left: 1%;
+    border: 1px solid red;
+    border-radius: 3px;
+    height: fit-content;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+h4 {
+    margin-left: 1%;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: fit-content;
+}
+
+.tarea {
+    margin-top: 2%;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    
+}
+
+.anadir {
+    float: right;
+    color: #F5EFE6;
+    background-color: #8ab278;
+    border: 3px double #4e9c47;
+}
+
+body {
+    background-image: linear-gradient(to right, rgb(255, 201, 186), rgb(255, 198, 250));
+}
+
+button, input {
+    text-decoration: none;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: 300;
+    font-size: 15px;
+    font-style: italic;
+    color: #F5EFE6;
+    background-color: #b27878;
+    border-radius: 15px;
+    border: 3px double #9c4747;
+}
+
+button:hover, input:hover {
+    opacity: 0.6;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+h2 {
+    display: none;
+}

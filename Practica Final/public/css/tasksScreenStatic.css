@@ -1,0 +1,112 @@
+#cabecera {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 13%;
+    background-color: #ad5ac6;
+}
+
+#cabecera p {
+    margin-right: 1%;
+    margin-left: 1%;
+    color: white;
+    border: 1px solid white;
+    border-radius: 3px;
+    padding: 0.7%;
+}
+
+#cabecera button {
+    margin-right: 1%;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+h1 {
+    color: white;
+    flex-grow: 1;
+    margin-left: 1%;
+}
+
+img {
+    height: 60%;
+    border-radius: 50%;
+}
+
+#cuerpo {
+    margin-top: 8%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+#contenedor {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1%;
+}
+
+.tarea button {
+    margin-left: auto;
+    margin-right: 1%;
+}
+
+.tag {
+    padding: 3px;
+    margin-left: 1%;
+    border: 1px solid red;
+    border-radius: 3px;
+}
+
+h3 {
+    margin-left: 1%;
+}
+
+.tarea {
+    display: flex;
+    margin-top: 2%;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+}
+
+#anadir {
+    float: right;
+    color: #F5EFE6;
+    background-color: #8ab278;
+    border: 3px double #4e9c47;
+}
+
+body {
+    background-image: linear-gradient(to right, rgb(255, 201, 186), rgb(255, 198, 250));
+}
+
+button {
+    text-decoration: none;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: 300;
+    font-size: 15px;
+    font-style: italic;
+    color: #F5EFE6;
+    background-color: #b27878;
+    border-radius: 15px;
+    border: 3px double #9c4747;
+}
+
+button:hover {
+    opacity: 0.6;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+h2 {
+    display: none;
+}
