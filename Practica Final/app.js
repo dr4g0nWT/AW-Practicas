@@ -42,8 +42,11 @@ app.use(bodyParser.urlencoded({extended: false}))
 //Middleware Sesiones
 const middlewareSessions = session({
     saveUninitialized : false,
-    secret : "foobar34"
+    secret : "foobar34",
+    resave: false,
+    store: sessionStore
 })
+app.use(middlewareSessions)
 
 app.get("/", function(request, response){
     response.redirect("/tasks")

@@ -1,0 +1,11 @@
+body {
+    background-image: linear-gradient(to right, rgb(255, 201, 186), rgb(255, 198, 250));
+}
+
+form{
+    width: 30%;
+    height: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+}
