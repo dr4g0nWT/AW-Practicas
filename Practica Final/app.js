@@ -6,7 +6,7 @@ const path = require("path");
 const mysql = require("mysql");
 const express = require("express");
 const session = require("express-session")
-const mysqlSession = require("express-session-mysql")
+const mysqlSession = require("express-mysql-session");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const { cachedDataVersionTag } = require("v8");
@@ -42,6 +42,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 //Middleware Sesiones
 const middlewareSessions = session({
     saveUninitialized : false,
+    name: "session-id",
     secret : "foobar34",
     resave: false,
     store: sessionStore
