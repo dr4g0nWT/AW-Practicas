@@ -53,6 +53,23 @@ app.get("/", function(request, response){
     response.redirect("/tasks")
 })
 
+//Login
+app.get("/login", function(request, response){
+    //Aqui comprobaremos si el usuario ya esta loggeado
+
+    response.status(200)
+    response.render("login")
+})
+
+
+//Registro
+app.get("/register", function(request, response){
+    //Aqui comprobaremos si el usuario ya esta loggeado
+
+    response.status(200)
+    response.render("register")
+})
+
 //Get para tasks
 app.get("/tasks", function(request, response){
    
