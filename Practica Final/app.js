@@ -6,6 +6,7 @@ const express = require("express");
 const session = require("express-session")
 const mysqlSession = require("express-mysql-session");
 const bodyParser = require("body-parser");
+const { check, validationResult } = require('express-validator');
 const fs = require("fs");
 const { cachedDataVersionTag } = require("v8");
 const { Console } = require("console");
@@ -56,14 +57,22 @@ app.get("/", function(request, response){
 
 //Login
 app.get("/login", function(request, response){
-    //Aqui comprobaremos si el usuario ya esta loggeado
-
     response.status(200)
     response.render("login")
 })
 
-app.post("/login", function(request, response){
-    
+app.post("/login", 
+
+    check("email", "Campo email vacio").not().isEmpty(),
+    check("password", "Campo contraseña vacio").not().isEmpty(),
+
+    function(request, response){
+        const errors = validationResult(request);
+        if (!errors.isEmpty()) {
+            return response.status(400).json({
+                errors: errors.array()
+            });
+        }
     daoUsers.isUserCorrect(request.body.email, request.body.password, function(err, existe){
         if (err || !existe)
             console.log("MAL")
@@ -82,7 +91,18 @@ app.get("/register", function(request, response){
 
 })
 
-app.post("/register", multerFactory.single('imagen'), function(request, response){
+app.post("/register", 
+    multerFactory.single('imagen'), 
+    check("password", "Contraseña insegura").isStrongPassword({
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1
+    }),
+    check("email", "Email inválido").isEmail(),
+    check("usuario", "Campo nombre vacío").not().isEmpty(),
+    check("password", "Campo contraseña vacío").not().isEmpty(),
+    function(request, response){
     //email
     //usuario
     //password
@@ -90,6 +110,12 @@ app.post("/register", multerFactory.single('imagen'), function(request, response
     //imagen
     //tecnico
     //numero
+    const errors = validationResult(request);
+        if (!errors.isEmpty()) {
+            return response.status(400).json({
+                errors: errors.array()
+            });
+        }
 
     let user = {
         email: request.body.email,
