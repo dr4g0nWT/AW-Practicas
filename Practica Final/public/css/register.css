@@ -21,8 +21,13 @@ input[type="file"] {
     display: none;
 }
 
+select{
+    width: 70%;
+}
+
 .custom-file-upload {
     border: 1px solid #ccc;
+    border-radius: 1px  ;
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
@@ -30,4 +35,8 @@ input[type="file"] {
 
 .botones{
     margin-top: 5%;
+}
+
+.perfil{
+    width: 25%;
 }
