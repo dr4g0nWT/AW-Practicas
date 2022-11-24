@@ -5,10 +5,10 @@ body {
 form{
     background-color: rgb(243, 205, 255);
     width: 60%;
-    height: 80%;
+    height: 60%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 5%;
+    margin-top: 3%;
 }
 
 img{
@@ -16,10 +16,6 @@ img{
     height: 40%;
     margin-left: auto;
     margin-right: auto;
-}
-
-.imgUpload{
-    width: 40%;
 }
 
 

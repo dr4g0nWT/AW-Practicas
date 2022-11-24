@@ -13,7 +13,7 @@
 
 <body>
 
-  <form>
+  <form action="/register" method="POST">
     <div class="form-group row">
       <img src="img/ucmLogin.png" alt="" class="foto-login">
     </div>
@@ -21,13 +21,13 @@
       <div class="p-2 d-flex flex-column">
         <label for="inputEmail3" class="p-2">Email</label>
         <div class="p-2">
-          <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+          <input type="email" class="form-control" id="inputEmail3" placeholder="Email" name="email">
         </div>
       </div>
       <div class="p-2 d-flex flex-column">
         <label for="nombreMostrar" class="p-2">Nombre a mostrar</label>
         <div class="p-2">
-          <input type="text" class="form-control" id="nombreMostrar" placeholder="Nombre">
+          <input type="text" class="form-control" id="nombreMostrar" placeholder="Nombre" name="usuario">
         </div>
       </div>      
     </div>
@@ -35,7 +35,7 @@
       <div class="p-2 d-flex flex-column">
         <label for="password1" class="p-2">Password</label>
         <div class="p-2">
-          <input type="password" class="form-control" id="password1" placeholder="Password">
+          <input type="password" class="form-control" id="password1" placeholder="Password" name="password">
         </div>
       </div>
       <div class="p-2 d-flex flex-column">
@@ -49,7 +49,7 @@
       <div class="p-2 d-flex flex-column">
         <label for="password1" class="p-2">Perfil universitario</label>
         <div class="p-2">
-          <select class="form-select" aria-label="Default select example">
+          <select class="form-select" aria-label="Default select example" name="perfil">
             <option selected>Open this select menu</option>
             <option value="1">One</option>
             <option value="2">Two</option>
@@ -60,12 +60,24 @@
       <div class="p-2 d-flex flex-column">
         <label for="profileImg" class="p-2">Foto de perfil</label>
         <div class="p-2">
-          <input type="file" class="imgUpload" id="profileImg" placeholder="Imagen">
+          <input type="file" class="imgUpload" id="profileImg" placeholder="Imagen" name="imagen" accept="image/*">
         </div>
       </div>      
     </div>
+    <div class="form-group row d-flex justify-content-around">
+      <div class="p-2 d-flex align-items-center justify-content-center">
+        <input type="checkbox" id="tecnico" name="tecnico" class="p-2">
+        <label class="p-2" for="tecnico">Tecnico</label>
+      </div>
+      <div class="p-2 d-flex">
+        <label for="numero" class="p-2">Nº Empleado</label>
+        <div class="p-2">
+          <input type="text" class="form-control" id="numero" placeholder="Nº Empleado" name="numero">
+        </div>
+      </div>    
+    </div>
     <div class="form-group d-flex justify-content-around align-items-center botones">
-      <button type="" class="btn btn- p-2">Iniciar sesion</button>
+      <a class="btn btn-primary" href="/login" role="button">Iniciar Sesion</a>
       <button type="submit" class="btn btn-primary p-2">Registrarse</button>
     </div>
     <div class="form-group row vacia"></div>
