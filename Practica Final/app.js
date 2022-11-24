@@ -51,12 +51,35 @@ const middlewareSessions = session({
 })
 app.use(middlewareSessions)
 
-app.get("/", function(request, response){
+//Creamos los middle para meter las sesiones
+function middleLogueado(req, res, next){
+	//if usuario loggueado, next
+	if(req.session.user){
+		next()
+	}
+	else res.redirect("/login")
+}
+
+function middleNoLogueado(req, res, next){
+	//if usuario loggueado, next
+	if(!req.session.user){
+		next()
+	}
+	else res.redirect("/avisos")
+}
+
+app.get("/",function(request, response){
     response.redirect("/login")
 })
 
+//Pagina de avisos
+app.get("/avisos",middleLogueado, function(request, response){
+    response.status(200)
+    response.render("avisos")//Falta cambiar el ejs
+})
+
 //Login
-app.get("/login", function(request, response){
+app.get("/login", middleNoLogueado, function(request, response){
     response.status(200)
     response.render("login")
 })
@@ -76,14 +99,17 @@ app.post("/login",
     daoUsers.isUserCorrect(request.body.email, request.body.password, function(err, existe){
         if (err || !existe)
             console.log("MAL")
-        else
+        else{
             console.log("Bien")
+            request.session.user = request.body.email
+            response.redirect("/avisos")
+        }
     })
 })
 
 
 //Registro
-app.get("/register", function(request, response){
+app.get("/register", middleNoLogueado,function(request, response){
     //Aqui comprobaremos si el usuario ya esta loggeado
 
     response.status(200)
