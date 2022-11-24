@@ -10,6 +10,12 @@ const fs = require("fs");
 const { cachedDataVersionTag } = require("v8");
 const { Console } = require("console");
 
+const multer = require("multer")
+const multerFactory = multer({ dest: path.join(__dirname, "images")});
+
+const DAOUsers = require("./DAOUsers.js");
+
+
 //Creamos las sesiones
 const MySqlStore = mysqlSession(session)
 const sessionStore = new MySqlStore(config.mysqlConfig)
@@ -19,7 +25,7 @@ const app = express();
 
 // Crear un pool de conexiones a la base de datos de MySQL
 const pool = mysql.createPool(config.mysqlConfig);
-
+const daoUsers = new DAOUsers(pool)
 
 
 
@@ -56,6 +62,16 @@ app.get("/login", function(request, response){
     response.render("login")
 })
 
+app.post("/login", function(request, response){
+    
+    daoUsers.isUserCorrect(request.body.email, request.body.password, function(err, existe){
+        if (err || !existe)
+            console.log("MAL")
+        else
+            console.log("Bien")
+    })
+})
+
 
 //Registro
 app.get("/register", function(request, response){
@@ -63,6 +79,38 @@ app.get("/register", function(request, response){
 
     response.status(200)
     response.render("register")
+
+})
+
+app.post("/register", multerFactory.single('imagen'), function(request, response){
+    //email
+    //usuario
+    //password
+    //perfil
+    //imagen
+    //tecnico
+    //numero
+
+    let user = {
+        email: request.body.email,
+        password: request.body.password, 
+        userName: request.body.usuario, 
+        perfil: request.body.perfil, 
+        tecnico: request.body.tecnico, 
+        numEmpleado: request.body.numero,
+        img: null
+    }
+
+    if (request.file){
+        user.img = request.file.buffer
+    }
+    console.log(user.img)
+
+    daoUsers.insertUser(user, function(err){
+        if (err)
+            console.log("Error")
+    })
+
 })
 
 

@@ -22,7 +22,7 @@ let daoTask = new DAOTasks(pool);
 // Uso de los métodos de las clases DAOUsers y DAOTasks
 
 
-daoUser.isUserCorrect("aitor.tilla@ucm.es", "aitor", cb_isUserCorrect);
+//daoUser.isUserCorrect("aitor.tilla@ucm.es", "aitor", cb_isUserCorrect);
 function cb_isUserCorrect(err, result) {
     if (err) {
         console.log(err.message);
@@ -33,7 +33,7 @@ function cb_isUserCorrect(err, result) {
     }
 }
 
-daoUser.getUserImageName("bill.puertas@ucm.es", cb_getUserImageName);
+//daoUser.getUserImageName("bill.puertas@ucm.es", cb_getUserImageName);
 function cb_getUserImageName(err,result){
     if (err){
         console.log(err.message)
@@ -45,7 +45,7 @@ function cb_getUserImageName(err,result){
 
 
 
-daoTask.getAllTasks("steve.curros@ucm.es", cb_getAllTasks);
+//daoTask.getAllTasks("steve.curros@ucm.es", cb_getAllTasks);
 function cb_getAllTasks(err, result) {
     if (err) {
         console.log(err.message);
@@ -73,7 +73,7 @@ function cb_insertTaks(err, result) {
 }
 
 
-daoTask.markTaskDone(3, cb_markTaskDone)
+//daoTask.markTaskDone(3, cb_markTaskDone)
 function cb_markTaskDone(err){
     if (err)
         console.log(err.message)
