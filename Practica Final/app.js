@@ -15,6 +15,7 @@ const multer = require("multer")
 const multerFactory = multer({ dest: path.join(__dirname, "images")});
 
 const DAOUsers = require("./DAOUsers.js");
+const { response } = require("express");
 
 
 //Creamos las sesiones
@@ -82,6 +83,11 @@ app.get("/avisos",middleLogueado, function(request, response){
 app.get("/login", middleNoLogueado, function(request, response){
     response.status(200)
     response.render("login")
+})
+
+app.get("/cerrarSesion", function(request, response){
+    request.session.user = null;
+    response.redirect("/login")
 })
 
 app.post("/login", 

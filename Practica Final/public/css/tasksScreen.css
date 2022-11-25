@@ -81,6 +81,12 @@ h4 {
     
 }
 
+.busqueda{
+    color: #F5EFE6;
+    background-color: #a768a3;
+    border: 3px double #fa76ff;
+}
+
 .anadir {
     float: right;
     color: #F5EFE6;
