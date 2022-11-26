@@ -11,29 +11,31 @@
 </head>
 
 <body>
-    
-    <nav class="navbar fixed-top navbar-light bg-light">
-        <div class="d-flex">
-            <a class="navbar-brand p-2" href="#"><img class="logo" src="img/LogoUCM.png" alt=""></a>
-            <div class="p-2 d-flex flex-row-reverse align-items-center justify-content-right">
-                <button class="p-2" onclick="window.location.href='/cerrarSesion'">Desconectar</button> 
-                <p class="">username</p>                              
-                 <img class="userimg" src="img/noUser.png" alt=""> 
-            
-                             
-                
-            </div>
+
+    <nav class="navbar fixed-top navbar-light bg-light d-flex">
+        <img class="logo" src="img/LogoUCM.png" alt="">
+        <div class="p-2 d-flex flex-row-reverse align-items-center ml-auto align-self-center">
+            <button class="p-1 float-right" onclick="window.location.href='/cerrarSesion'">Desconectar</button>
+            <p class="">username</p>
+            <img class="userimg" src="img/noUser.png" alt="">
         </div>
-        
     </nav>
 
     <div id="cuerpo">
         <div id="contenedor">
-            <div class="d-flex">
-                <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
-                <button class="busqueda" type="submit">Buscar</button>
+            <div class="d-flex align-items-center barIntermedia">
+                <a href="/misAvisos" class="linkNav">Mis Avisos</a>
+                <p>|</p>
+                <a href="/historicoAvisos" class="linkNav">Historico de avisos</a>
+                <p>|</p>
+                <!-- Mostrar dependiendo del rol otras partes de la vista -->
+                <div class="p-2 d-flex buscador ml-auto">
+                    <input class="form-control mr-sm-2 p-1" type="search" placeholder="Buscar" aria-label="Search">
+                    <button class="busqueda p-1" type="submit">Buscar</button>
+                </div>
+                
             </div>
-            
+
 
 
         </div>
@@ -41,7 +43,7 @@
             <form action="/deleteCompleted" method="POST" class="del-all">
                 <input type="submit" value="Eliminar Tareas">
             </form>
-           
+
             <button class="anadir" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Añadir
                 Tarea</button>
 
