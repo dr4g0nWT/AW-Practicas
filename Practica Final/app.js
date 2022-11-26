@@ -55,7 +55,7 @@ app.use(middlewareSessions)
 //Creamos los middle para meter las sesiones
 function middleLogueado(req, res, next){
 	//if usuario loggueado, next
-	if(req.session.user){
+	if(req.session.user != null){
 		next()
 	}
 	else res.redirect("/login")
@@ -63,7 +63,7 @@ function middleLogueado(req, res, next){
 
 function middleNoLogueado(req, res, next){
 	//if usuario loggueado, next
-	if(!req.session.user){
+	if(req.session.user === null){
 		next()
 	}
 	else res.redirect("/avisos")
