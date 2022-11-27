@@ -55,7 +55,7 @@ app.use(middlewareSessions)
 //Creamos los middle para meter las sesiones
 function middleLogueado(req, res, next){
 	//if usuario loggueado, next
-	if(req.session.user != null){
+	if(req.session.user){   
 		next()
 	}
 	else res.redirect("/login")
@@ -82,11 +82,11 @@ app.get("/avisos",middleLogueado, function(request, response){
 //Login
 app.get("/login", middleNoLogueado, function(request, response){
     response.status(200)
-    response.render("login")
+    response.render("login", {errores: []})
 })
 
 app.get("/cerrarSesion", function(request, response){
-    request.session.user = null;
+    request.session.destroy()
     response.redirect("/login")
 })
 
@@ -97,21 +97,23 @@ app.post("/login",
 
     function(request, response){
         const errors = validationResult(request);
-        if (!errors.isEmpty()) {
-            return response.status(400).json({
-                errors: errors.array()
-            });
-        }
-    daoUsers.isUserCorrect(request.body.email, request.body.password, function(err, existe){
-        if (err || !existe)
-            console.log("MAL")
+        if (!errors.isEmpty())
+            response.render("login", {errores: errors.array()})
         else{
-            console.log("Bien")
-            request.session.user = request.body.email
-            response.redirect("/avisos")
+            daoUsers.isUserCorrect(request.body.email, request.body.password, function(err, existe){
+                if (err || !existe)
+                    console.log("MAL")
+                else{
+                    console.log("Bien")
+                    request.session.user = request.body.email
+                    response.redirect("/avisos")
+                }
+            })
+        
         }
-    })
-})
+    }
+)
+
 
 
 //Registro

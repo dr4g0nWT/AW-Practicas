@@ -1,0 +1,12 @@
+<% if (errores.length > 0) {%>
+    <div style="background-color: #FF5A5A; position:fixed; 
+    top: 0px; 
+    left: 0px; 
+    width: 100%;" class="alert alert-danger" role="alert">
+        <ul>
+            <% errores.forEach(e => { %>
+            <li><%=e.msg%></li>
+            <%});%>
+        </ul>
+    </div>
+    <%}%>

@@ -6,79 +6,67 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="css/register.css">
 </head>
 
 <body>
 
-  <form action="/register" method="POST">
-    <div class="form-group row">
-      <img src="img/ucmLogin.png" alt="" class="foto-login">
-    </div>
-    <div class="form-group row d-flex justify-content-around">
-      <div class="p-2 d-flex flex-column">
-        <label for="inputEmail3" class="p-2">Email</label>
-        <div class="p-2">
-          <input type="email" class="form-control" id="inputEmail3" placeholder="Email" name="email">
-        </div>
+  <form action="/register" method="POST" class="p-5">
+    <div class="row align-items-center">
+      <div style="text-align: center;">
+        <img src="img/ucmLogin.png" alt="">
       </div>
-      <div class="p-2 d-flex flex-column">
-        <label for="nombreMostrar" class="p-2">Nombre a mostrar</label>
-        <div class="p-2">
-          <input type="text" class="form-control" id="nombreMostrar" placeholder="Nombre" name="usuario">
-        </div>
+    </div>
+
+    <div class="row align-items-center mb-2">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <label for="inputEmail3">Email</label>
+        <input type="email" class="form-control" id="inputEmail3" placeholder="Email" name="email">
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <label for="nombreMostrar">Nombre a mostrar</label>
+        <input type="text" class="form-control" id="nombreMostrar" placeholder="Nombre" name="usuario">
       </div>      
     </div>
-    <div class="form-group row d-flex justify-content-around">
-      <div class="p-2 d-flex flex-column">
-        <label for="password1" class="p-2">Password</label>
-        <div class="p-2">
-          <input type="password" class="form-control" id="password1" placeholder="Password" name="password">
-        </div>
+
+    <div class="row align-items-center mb-2">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <label for="password1">Password</label>
+        <input type="password" class="form-control" id="password1" placeholder="Password" name="password">
       </div>
-      <div class="p-2 d-flex flex-column">
-        <label for="password2" class="p-2">Confirm password</label>
-        <div class="p-2">
-          <input type="password" class="form-control" id="password2" placeholder="Password">
-        </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <label for="password2">Confirm password</label>
+        <input type="password" class="form-control" id="password2" placeholder="Password">
       </div>      
     </div>
-    <div class="form-group row d-flex justify-content-around">
-      <div class="p-2 d-flex flex-column perfil">
-        <label for="selector" class="p-2">Perfil universitario</label>
-        <div class="p-2">
-          <select class="form-select" id="selector" aria-label="Default select example" name="perfil">
-            <option selected>Selecciona uno</option>
-            <option value="Alumno">Alumno</option>
-            <option value="PAS">Personal de administracion y servicios</option>
-            <option value="PDI">Personal Docente e Investigador</option>
-            <option value="Antiguo Alumno">Antiguo Alumno</option>
-          </select>
-        </div>
+    <div class="row align-items-center mb-2">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <label for="selector">Perfil universitario</label>
+        <select class="form-select" id="selector" aria-label="Default select example" name="perfil">
+          <option value="Alumno">Alumno</option>
+          <option value="PAS">Personal de administracion y servicios</option>
+          <option value="PDI">Personal Docente e Investigador</option>
+          <option value="Antiguo Alumno">Antiguo Alumno</option>
+        </select>
       </div>
-      <div class="p-2 d-flex align-items-center align-self-end">
-        <label for="profileImg" class="p-2">Foto de perfil</label>
-        <div class="p-2">
-          <label class="custom-file-upload btn-secondary">
-            <input type="file" accept="image/*" name="imagen"/>
-            Subir archivo
-          </label>
-        </div>
-      </div>      
-    </div>
-    <div class="form-group row d-flex justify-content-around">
-      <div class="p-2 d-flex align-items-center justify-content-center">
-        <input type="checkbox" id="tecnico" name="tecnico" class="p-2">
-        <label class="p-2" for="tecnico">Tecnico</label>
-      </div>
-      <div class="p-2 d-flex">
-        <label for="numero" class="p-2">Nº Empleado</label>
-        <div class="p-2">
-          <input type="text" class="form-control" id="numero" placeholder="Nº Empleado" name="numero">
+      <div class="col-lg-5 col-md-5 col-sm-12">
+        <label for="numero">Nº Empleado</label>
+        <input type="text" class="form-control" id="numero" placeholder="Nº Empleado" name="numero">
+      </div>  
+      <div class="col-lg-1 col-md-1 col-sm-12 mt-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">Tecnico</label>
         </div>
       </div>    
+    </div>
+
+    <div class="row align-items-center">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <label for="formFile" class="form-label mb-0">Foto de perfil</label>
+        <input class="form-control" type="file" id="formFile">
+      </div>  
     </div>
 
     <div class="form-group d-flex justify-content-around align-items-center botones">
@@ -96,9 +84,7 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 
 </html>
