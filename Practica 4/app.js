@@ -56,7 +56,6 @@ app.post("/addTask", function(request, response){
    let des = request.body.descripcion
    let task = ut.createTask(des);
    
-    console.log(task)
 
     daoT.insertTask("usuario@ucm.es", task, function(err, res){
         if (err){
