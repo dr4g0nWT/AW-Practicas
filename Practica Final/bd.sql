@@ -24,7 +24,9 @@ create table UCM_AW_CAU_AVI_Avisos(
     respuesta varchar(1000)
 );
 
+INSERT INTO `ucm_aw_cau_usu_usuarios`(`email`, `password`, `img`, `userName`, `perfil`, `tecnico`, `numEmpleado`) VALUES ('samu@ucm.es','Xd01',null,'Samuel','Alumno',null,null);
 
+INSERT INTO `ucm_aw_cau_usu_usuarios`(`email`, `password`, `img`, `userName`, `perfil`, `tecnico`, `numEmpleado`) VALUES ('pablo@ucm.es','Xd01',null,'Pablo','PAS',1,'agdr123');
 
 
 
