@@ -46,10 +46,10 @@
       </div>      
     </div>
     <div class="form-group row d-flex justify-content-around">
-      <div class="p-2 d-flex flex-column">
-        <label for="password1" class="p-2">Perfil universitario</label>
+      <div class="p-2 d-flex flex-column perfil">
+        <label for="selector" class="p-2">Perfil universitario</label>
         <div class="p-2">
-          <select class="form-select" aria-label="Default select example" name="perfil">
+          <select class="form-select" id="selector" aria-label="Default select example" name="perfil">
             <option selected>Selecciona uno</option>
             <option value="Alumno">Alumno</option>
             <option value="PAS">Personal de administracion y servicios</option>
@@ -62,7 +62,7 @@
         <label for="profileImg" class="p-2">Foto de perfil</label>
         <div class="p-2">
           <label class="custom-file-upload btn-secondary">
-            <input type="file" accept="image/*"/>
+            <input type="file" accept="image/*" name="imagen"/>
             Subir archivo
           </label>
         </div>
@@ -80,6 +80,7 @@
         </div>
       </div>    
     </div>
+
     <div class="form-group d-flex justify-content-around align-items-center botones">
       <a class="btn btn-outline-primary" href="/login" role="button">Iniciar Sesion</a>
       <button type="submit" class="btn btn-primary p-2">Registrarse</button>

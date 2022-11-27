@@ -1,6 +1,6 @@
 
 drop table UCM_AW_CAU_USU_Usuarios;
-
+drop table UCM_AW_CAU_AVI_Avisos;
 
 
 create table UCM_AW_CAU_USU_Usuarios(
@@ -13,6 +13,18 @@ create table UCM_AW_CAU_USU_Usuarios(
     tecnico integer,
     numEmpleado varchar(30)
 );
+
+create table UCM_AW_CAU_AVI_Avisos(
+    idAviso integer primary key auto_increment,
+    texto varchar(1000) not null,
+    fecha date not null,
+    tipo integer,
+    idTecnico integer references UCM_AW_CAU_USU_Usuarios(idUser),
+    idUser integer references UCM_AW_CAU_USU_Usuarios(idUser),
+    respuesta varchar(1000)
+);
+
+
 
 
 

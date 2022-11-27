@@ -1,10 +1,9 @@
 .navbar{        
     background-color: #ad5ac6 !important;
-    height: 10%;
 }
 
 .logo{
-    width: 3.5%;
+    width: 3em;
     height: fit-content;
 }
 
@@ -27,10 +26,6 @@
     margin-left: 3%;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0px;
-}
 
 .userimg {
     width: 15%;
@@ -39,7 +34,7 @@ ul {
 }
 
 #cuerpo {
-    margin-top: 5%;
+    margin-top: 4em;
     margin-left: auto;
     margin-right: auto;
     width: 80%;
@@ -51,34 +46,45 @@ ul {
     margin-bottom: 1%;
 }
 
-.tarea form {
-    margin-left: auto;
-    margin-right: 1%;
+.barIntermedia{
+    margin-top: 2%;    
 }
 
-.tag {
-    padding: 2px;
+.barIntermedia p{
     margin-left: 1%;
-    border: 1px solid red;
-    border-radius: 3px;
-    height: fit-content;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-top: 0.8em;
 }
 
-h4 {
+.linkNav{
     margin-left: 1%;
-    margin-top: auto;
-    margin-bottom: auto;
-    height: fit-content;
+    color: #fa76ff;
 }
 
-.tarea {
-    margin-top: 2%;
-    align-items: center;
-    background-color: white;
-    border-radius: 10px;
-    
+.linkNav:hover{
+    text-decoration: none;
+    color: #f64afc;
+}
+
+.buscador{
+    width: 40%;
+}
+
+tbody tr:hover{
+    cursor: pointer;
+}
+
+.busqueda{
+    color: #F5EFE6;
+    background-color: #ce93ca;
+    border: 3px double #fa76ff;
+}
+
+.tipoLogo{
+    width: 2em;
+}
+
+table{
+    margin-top: 1em;
 }
 
 .anadir {
@@ -110,8 +116,4 @@ button:hover, input:hover {
     opacity: 0.6;
     text-decoration: none;
     cursor: pointer;
-}
-
-h2 {
-    display: none;
 }
