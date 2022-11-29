@@ -82,7 +82,7 @@ app.get("/avisos",middleLogueado, function(request, response){
 //Login
 app.get("/login", middleNoLogueado, function(request, response){
     response.status(200)
-    response.render("login", {errores: []})
+    response.render("login", {errores: [], error_inicio: false})
 })
 
 app.get("/cerrarSesion", function(request, response){
@@ -98,13 +98,12 @@ app.post("/login",
     function(request, response){
         const errors = validationResult(request);
         if (!errors.isEmpty())
-            response.render("login", {errores: errors.array()})
+            response.render("login", {errores: errors.array(), error_inicio: false})
         else{
             daoUsers.isUserCorrect(request.body.email, request.body.password, function(err, existe){
                 if (err || !existe)
-                    console.log("MAL")
+                    response.render("login", {errores: [], error_inicio: true})
                 else{
-                    console.log("Bien")
                     request.session.user = request.body.email
                     response.redirect("/avisos")
                 }

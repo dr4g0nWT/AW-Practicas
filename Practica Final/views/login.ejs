@@ -14,34 +14,43 @@
 <body>
   
   <%- include("errores") %>
-  
-  <form method="POST" action="/login" class="p-5">
-    <div class="row">
-      <div class="container">
-        <img src="img/ucmLogin.png" alt="" class="img-fluid mx-auto d-block">
+
+  <div class="container">
+    <form method="POST" action="/login" class="p-5">
+      <div class="row">
+        <div class="container">
+          <img src="img/ucmLogin.png" alt="" class="img-fluid mx-auto d-block">
+        </div>
       </div>
-    </div>
-    <div class="row align-items-center mb-2">
-      <div class="col-lg-2 col-md-2 col-sm-12">
-        <label for="inputEmail3" class="col-form-label">Email</label>
+      <div class="row align-items-center mb-2">
+        <div class="col-lg-2 col-md-2 col-sm-12">
+          <label for="inputEmail3" class="col-form-label">Email</label>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-12">
+          <input type="email" class="form-control" id="inputEmail3" placeholder="Email" name="email">
+        </div>
       </div>
-      <div class="col-lg-10 col-md-10 col-sm-12">
-        <input type="email" class="form-control" id="inputEmail3" placeholder="Email" name="email">
+      <div class="row align-items-center mb-2">
+        <div class="col-lg-2 col-md-2 col-sm-12">
+          <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-12">
+          <input type="password" class="form-control" id="inputPassword3" placeholder="Password" name="password">
+        </div>
       </div>
-    </div>
-    <div class="row align-items-center mb-2">
-      <div class="col-lg-2 col-md-2 col-sm-12">
-        <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+
+      <% if (error_inicio) { %>
+      <div style="background-color: #FF5A5A;" class="alert alert-danger" role="alert">
+        Todo lo que podia fallar, ha fallado
       </div>
-      <div class="col-lg-10 col-md-10 col-sm-12">
-        <input type="password" class="form-control" id="inputPassword3" placeholder="Password" name="password">
+      <%}%>
+
+      <div class="form-group d-flex justify-content-around align-items-center botones">
+        <a class="btn btn-outline-primary" href="/register" role="button">Registrarse</a>
+        <button type="submit" class="btn btn-primary p-2">Iniciar Sesion</button>
       </div>
-    </div>
-    <div class="form-group d-flex justify-content-around align-items-center botones">
-      <a class="btn btn-outline-primary" href="/register" role="button">Registrarse</a>
-      <button type="submit" class="btn btn-primary p-2">Iniciar Sesion</button>
-    </div>
-  </form>
+    </form>
+  </div>
 
 
   <%- include("scripts") %>
