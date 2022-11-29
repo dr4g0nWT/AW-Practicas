@@ -1,0 +1,6 @@
+<% let msg = getAndClearFlash();
+    if (msg) { %>
+        <div class="alert alert-danger" role="alert">
+             <%=msg%>
+        </div>
+<% } %>

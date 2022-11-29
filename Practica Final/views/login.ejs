@@ -12,8 +12,6 @@
 </head>
 
 <body>
-  
-  <%- include("errores") %>
 
   <div class="container">
     <form method="POST" action="/login" class="p-5">
@@ -38,13 +36,10 @@
           <input type="password" class="form-control" id="inputPassword3" placeholder="Password" name="password">
         </div>
       </div>
+      
+      <%- include("flash") %>
 
-      <% if (error_inicio) { %>
-      <div style="background-color: #FF5A5A;" class="alert alert-danger" role="alert">
-        Todo lo que podia fallar, ha fallado
-      </div>
-      <%}%>
-
+      
       <div class="form-group d-flex justify-content-around align-items-center botones">
         <a class="btn btn-outline-primary" href="/register" role="button">Registrarse</a>
         <button type="submit" class="btn btn-primary p-2">Iniciar Sesion</button>

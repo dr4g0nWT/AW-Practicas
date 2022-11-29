@@ -50,7 +50,24 @@ const middlewareSessions = session({
     resave: false,
     store: sessionStore
 })
+
 app.use(middlewareSessions)
+
+function flashMiddleware(request, response, next){
+    response.setFlash = function(msg){
+        request.session.flashMsg = msg
+    }
+    response.locals.getAndClearFlash = function(){
+        let msg = request.session.flashMsg
+        delete request.session.flashMsg
+        return msg
+    }
+    
+    next()
+}
+
+
+app.use(flashMiddleware)
 
 //Creamos los middle para meter las sesiones
 function middleLogueado(req, res, next){
@@ -82,7 +99,7 @@ app.get("/avisos",middleLogueado, function(request, response){
 //Login
 app.get("/login", middleNoLogueado, function(request, response){
     response.status(200)
-    response.render("login", {errores: [], error_inicio: false})
+    response.render("login")
 })
 
 app.get("/cerrarSesion", function(request, response){
@@ -97,12 +114,18 @@ app.post("/login",
 
     function(request, response){
         const errors = validationResult(request);
-        if (!errors.isEmpty())
-            response.render("login", {errores: errors.array(), error_inicio: false})
+        if (!errors.isEmpty()){
+            response.status(200)
+            response.setFlash("Formulario incompleto")
+            response.redirect("/login")
+        }       
         else{
             daoUsers.isUserCorrect(request.body.email, request.body.password, function(err, existe){
-                if (err || !existe)
-                    response.render("login", {errores: [], error_inicio: true})
+                if (err || !existe){
+                    response.status(200)
+                    response.setFlash("Usuario o contraseña incorrectos")
+                    response.redirect("/login")
+                }
                 else{
                     request.session.user = request.body.email
                     response.redirect("/avisos")
@@ -117,10 +140,8 @@ app.post("/login",
 
 //Registro
 app.get("/register", middleNoLogueado,function(request, response){
-    //Aqui comprobaremos si el usuario ya esta loggeado
-
     response.status(200)
-    response.render("register")
+    response.render("register", {errores: []})
 
 })
 
@@ -134,7 +155,6 @@ app.post("/register",
     }),
     check("email", "Email inválido").isEmail(),
     check("usuario", "Campo nombre vacío").not().isEmpty(),
-    check("password", "Campo contraseña vacío").not().isEmpty(),
     function(request, response){
     //email
     //usuario
@@ -145,9 +165,7 @@ app.post("/register",
     //numero
     const errors = validationResult(request);
         if (!errors.isEmpty()) {
-            return response.status(400).json({
-                errors: errors.array()
-            });
+            response.render("register", {errores: errors.array()})
         }
 
     let user = {
