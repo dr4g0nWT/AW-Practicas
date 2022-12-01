@@ -21,7 +21,9 @@ create table UCM_AW_CAU_AVI_Avisos(
     tipo integer,
     idTecnico integer references UCM_AW_CAU_USU_Usuarios(idUser),
     idUser integer references UCM_AW_CAU_USU_Usuarios(idUser),
-    respuesta varchar(1000)
+    respuesta varchar(1000),
+    area varchar(100),
+    activo integer
 );
 
 INSERT INTO `ucm_aw_cau_usu_usuarios`(`email`, `password`, `img`, `userName`, `perfil`, `tecnico`, `numEmpleado`) VALUES ('samu@ucm.es','Xd01',null,'Samuel','Alumno',null,null);
