@@ -78,7 +78,7 @@ app.use(flashMiddleware)
 //Creamos los middle para meter las sesiones
 function middleLogueado(req, res, next){
 	//if usuario loggueado, next
-	if(req.session.user){   
+	if(req.session.email){   
 		next()
 	}
 	else res.redirect("/login")
@@ -86,7 +86,7 @@ function middleLogueado(req, res, next){
 
 function middleNoLogueado(req, res, next){
 	//if usuario loggueado, next
-	if(!req.session.user){
+	if(!req.session.email){
 		next()
 	}
 	else res.redirect("/avisos")
@@ -99,7 +99,11 @@ app.get("/",function(request, response){
 //Pagina de avisos
 app.get("/avisos",middleLogueado, function(request, response){
     response.status(200)
-    response.render("avisos", {tipo: true})//Falta cambiar el ejs
+    response.render("avisos", {
+        tipo: true, 
+        email: request.session.email,
+        nombre: request.session.nombre
+    })//Falta cambiar el ejs
 })
 
 //Login
@@ -133,7 +137,10 @@ app.post("/login",
                     response.redirect("/login")
                 }
                 else{
-                    request.session.user = request.body.email
+                    request.session.email = request.body.email
+                    request.session.nombre = existe.nombre
+                    request.session.perfil = existe.perfil
+                    request.session.tecnico = existe.tecnico
                     response.redirect("/avisos")
                 }
             })
@@ -166,7 +173,6 @@ app.post("/register", multerFactory.single('imagen'),
     const errors = validationResult(request);
 
     if (!errors.isEmpty()) {
-        console.log(errors);
         response.setFlash("Contraseña insegura");
         response.redirect("/register")
     }
@@ -175,7 +181,6 @@ app.post("/register", multerFactory.single('imagen'),
         response.redirect("/register") 
     }
         
-    console.log(request.body)
 
     let user = {
         email: request.body.email,
@@ -204,6 +209,17 @@ app.post("/register", multerFactory.single('imagen'),
 
 })
 
+app.get("/imagen/:correo", middleLogueado, function(request, response){
+    daoUsers.getUserImageName(request.params.correo, function(err, img){
+        if (!err){
+            response.end(img)
+        }  
+        else{
+            console.log("error")
+        }
+    })
+    
+})
 
 // Arrancar el servidor
 app.listen(config.port, function (err) {
