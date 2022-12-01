@@ -12,7 +12,8 @@ const { cachedDataVersionTag } = require("v8");
 const { Console } = require("console");
 
 const multer = require("multer")
-const multerFactory = multer({ dest: path.join(__dirname, "images")});
+
+
 
 const DAOUsers = require("./DAOUsers.js");
 const { response } = require("express");
@@ -30,9 +31,10 @@ const pool = mysql.createPool(config.mysqlConfig);
 const daoUsers = new DAOUsers(pool)
 
 
-
 //Direccion ficheros estaticos:
 const ficherosEstaticos = path.join(__dirname, "public")
+
+
 
 //Montamos motor de las ejs y ademas añadimos el path views
 app.set("view engine", "ejs");
@@ -67,6 +69,10 @@ function flashMiddleware(request, response, next){
 }
 
 
+
+
+const multerFactory = multer({ storage: multer.memoryStorage()});
+
 app.use(flashMiddleware)
 
 //Creamos los middle para meter las sesiones
@@ -93,7 +99,7 @@ app.get("/",function(request, response){
 //Pagina de avisos
 app.get("/avisos",middleLogueado, function(request, response){
     response.status(200)
-    response.render("avisos")//Falta cambiar el ejs
+    response.render("avisos", {tipo: true})//Falta cambiar el ejs
 })
 
 //Login
@@ -141,32 +147,35 @@ app.post("/login",
 //Registro
 app.get("/register", middleNoLogueado,function(request, response){
     response.status(200)
-    response.render("register", {errores: []})
+    response.render("register")
 
 })
 
-app.post("/register", 
-    multerFactory.single('imagen'), 
-    check("password", "Contraseña insegura").isStrongPassword({
+app.post("/register", multerFactory.single('imagen'), 
+
+    check("password", "Contraseña insegura").not().isStrongPassword({
         minLength: 8,
         minLowercase: 1,
         minUppercase: 1,
-        minNumbers: 1
+        minNumbers: 1,
+        minSymbols: 1,
     }),
-    check("email", "Email inválido").isEmail(),
-    check("usuario", "Campo nombre vacío").not().isEmpty(),
+
     function(request, response){
-    //email
-    //usuario
-    //password
-    //perfil
-    //imagen
-    //tecnico
-    //numero
+ 
     const errors = validationResult(request);
-        if (!errors.isEmpty()) {
-            response.render("register", {errores: errors.array()})
-        }
+
+    if (!errors.isEmpty()) {
+        console.log(errors);
+        response.setFlash("Contraseña insegura");
+        response.redirect("/register")
+    }
+    if (request.body.password !== request.body.cpassword){
+        response.setFlash("Las contraseñas no coinciden")
+        response.redirect("/register") 
+    }
+        
+    console.log(request.body)
 
     let user = {
         email: request.body.email,
@@ -181,11 +190,16 @@ app.post("/register",
     if (request.file){
         user.img = request.file.buffer
     }
-    console.log(user.img)
 
     daoUsers.insertUser(user, function(err){
-        if (err)
-            console.log("Error")
+        if (err){
+            response.setFlash("Error al registrarse")
+            response.redirect("/register")
+        }
+        else{
+            response.redirect("/login")
+        }
+
     })
 
 })

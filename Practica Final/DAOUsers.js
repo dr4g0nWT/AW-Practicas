@@ -14,7 +14,7 @@ class DAOUsers{
                 connection.query(
                     `insert into UCM_AW_CAU_USU_Usuarios (email, password, img, userName, perfil, tecnico, numEmpleado) 
                     values (?, ?, ?, ?, ?, ?, ?)`,
-                    [user.email, user.password, null, user.userName, user.perfil, user.tecnico, user.numEmpleado],
+                    [user.email, user.password, user.img, user.userName, user.perfil, user.tecnico, user.numEmpleado],
                     function(err){
                         if (err)
                             callback(new Error("Error de acceso a la base de datos"));
