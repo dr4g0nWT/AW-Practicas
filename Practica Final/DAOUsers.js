@@ -45,7 +45,7 @@ class DAOUsers{
                             }
                             else {
                                 callback(null, {
-                                    nombre: rows[0].userName, 
+                                    username: rows[0].userName, 
                                     perfil: rows[0].perfil,
                                     tecnico: rows[0].tecnico,
                                     numero: rows[0].numEmpleado

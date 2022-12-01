@@ -99,8 +99,7 @@ app.get("/",function(request, response){
 //Pagina de avisos
 app.get("/avisos",middleLogueado, function(request, response){
     response.status(200)
-    response.render("avisos", {
-        tipo: true, 
+    response.render("avisos", {tipo: true, 
         email: request.session.email,
         nombre: request.session.nombre
     })//Falta cambiar el ejs

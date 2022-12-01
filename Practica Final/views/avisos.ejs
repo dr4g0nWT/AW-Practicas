@@ -15,7 +15,9 @@
         <img class="logo" src="img/LogoUCM.png" alt="">
         <div class="p-2 d-flex flex-row-reverse align-items-center ml-auto align-self-center">
             <button class="p-1 float-right" onclick="window.location.href='/cerrarSesion'">Desconectar</button>
-            <p class=""><%=nombre%></p>
+            <button type="button" id="botonPerfil" class="btn" data-bs-toggle="modal" data-bs-target="#modalPerfil">
+                <%=nombre%>
+            </button>
             <img class="userimg" src="imagen/<%=email%>" alt="">
         </div>
     </nav>
@@ -138,9 +140,9 @@
         </div>
     </div>
 
-
-
     
+
+    <%- include("perfil") %>
     <%- include("scripts") %>
 </body>
 

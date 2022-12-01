@@ -117,3 +117,8 @@ button:hover, input:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+#botonPerfil{
+    font-size: 20px;
+    color: white;
+}
