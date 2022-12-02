@@ -1,0 +1,98 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Añadir tarea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/nuevoAviso">
+                    <div class="p-2 d-flex align-items-center form-group">
+                        <label for="selector" class="p-2 align-self-center">Tipo de aviso</label>
+                        <div class="p-2">
+                                <select onchange="mostrarSelectorInciSugeFeli()" class="form-select" id="selectorTipo" aria-label="Default select example"
+                                    name="tipo">
+                                    <option selected>Selecciona uno</option>
+                                    <option value=1>Incidencia</option>
+                                    <option value=2>Sugerencia</option>
+                                    <option value=3>Felicitacion</option>
+                                </select>
+                        </div>
+                    </div>
+                    <hr class="in-su" style="display: none !important;">
+                    <div class="p-2 d-flex align-items-center form-group in-su" style="display: none !important;">
+                        <label for="area" class="align-self-center">Area del aviso</label>
+                        <div class="p-2">
+                            <select class="form-select" id="area" aria-label="Default select example" name="area">
+                                <option selected>Selecciona uno</option>
+                                <option value=1>Certificado digital de persona física</option>
+                                <option value=2>Registro electronico</option>
+                                <option value=3>Sede electrónica</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="felicitacion" style="display: none !important;">
+                    <div class="p-2 d-flex align-items-center form-group felicitacion" style="display: none !important;">
+                        <label for="area" class="align-self-center">Area del aviso</label>
+                        <div class="p-2">
+                            <select class="form-select" id="area" aria-label="Default select example" name="area">
+                                <option selected>Selecciona uno</option>
+                                <option value=1>Uni y derivados</option>
+                                <option value=2>Otros</option>
+                                <option value=3>Sede electrónica</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="desc" style="display: none !important;">
+                    <div class="d-flex form-group desc" style="display: none !important;">
+                        <label for="message-text" class="col-form-label">Descripción del aviso</label>
+                        <textarea required class="form-control" name="descripcion" id="message-text"
+                            placeholder="Ponga la descripcion de su problema"></textarea>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="anadir" value="Añadir">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function mostrarSelectorInciSugeFeli() {
+        
+        let valor = document.getElementById("selectorTipo").value
+        let inciSuge = document.getElementsByClassName("in-su")
+        let felicitaciones = document.getElementsByClassName("felicitacion")
+        if(valor === 1 || valor === 2){
+            for (let i = 0; i < inciSuge.length; i++) {
+                inciSuge[i].style.setProperty('display', 'block', 'important')      
+            }
+            for (let i = 0; i < felicitaciones.length; i++) {
+                felicitaciones[i].style.setProperty('display', 'none', 'important')    
+                console.log(felicitaciones[i].style.display)     
+            }
+        }
+        else if(valor === 3){
+            for (let i = 0; i < inciSuge.length; i++) {
+                inciSuge[i].style.display = "none"           
+            }
+            for (let i = 0; i < felicitaciones.length; i++) {
+                felicitaciones[i].style.display = "block"           
+            }
+        }
+        else{
+            for (let i = 0; i < inciSuge.length; i++) {
+                inciSuge[i].style.display = "none"           
+            }
+            for (let i = 0; i < felicitaciones.length; i++) {
+                felicitaciones[i].style.display = "none"           
+            }
+        }
+
+    }
+    
+</script>
