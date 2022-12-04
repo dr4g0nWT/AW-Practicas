@@ -15,14 +15,18 @@ class DAOAvisos{
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
+                console.log("Aqui estoy")
                 connection.query(`INSERT INTO UCM_AW_CAU_AVI_Avisos (texto, fecha, tipo, idUser, area, activo)
                 VALUES (?, ?, ?, ?, ?, ?)`,
                 [aviso.texto, aviso.fecha, aviso.tipo, aviso.idUser, aviso.area, true],
                 function(err, result){
                     if(err){
+                        connection.release()
                         callback(new Error("Problema en el acceso a la base de datos"))
                     }
                     else{
+                        connection.release()
+                        console.log("Final de insert")
                         callback(null)
                     }
                 })
@@ -40,9 +44,11 @@ class DAOAvisos{
                 [idTecnico, idAviso],
                 function(err, result){
                     if(err){
+                        connection.release()
                         callback(new Error("Problema en el acceso a la base de datos"))
                     }
                     else{
+                        connection.release()
                         callback(null)
                     }
                 })
@@ -60,9 +66,11 @@ class DAOAvisos{
                 [respuesta, idAviso],
                 function(err, result){
                     if(err){
+                        connection.release()
                         callback(new Error("Problema en el acceso a la base de datos"))
                     }
                     else{
+                        connection.release()
                         callback(null)
                     }
                 })
@@ -82,10 +90,12 @@ class DAOAvisos{
                 [idUser],
                 function(err, result){
                     if(err){
+                        connection.release()
                         callback(new Error("Problema en el acceso a la base de datos"))
                     }
                     else{
-                        callback(null)
+                        connection.release()
+                        callback(null, result)
                     }
                 })
             }
@@ -98,14 +108,16 @@ class DAOAvisos{
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
-                connection.query(`SELECT texto, fecha, tipo, respuesta, area, activo, idTecnico FROM
+                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, activo, idTecnico FROM
                 UCM_AW_CAU_AVI_Avisos WHERE idTecnico = ?`,
                 [idTecnico],
                 function(err, result){
                     if(err){
+                        connection.release()
                         callback(new Error("Problema en el acceso a la base de datos"))
                     }
                     else{
+                        connection.release()
                         callback(null)
                     }
                 })
@@ -114,4 +126,4 @@ class DAOAvisos{
     }
 }
 
-module.exports(DAOAvisos)
+module.exports = DAOAvisos

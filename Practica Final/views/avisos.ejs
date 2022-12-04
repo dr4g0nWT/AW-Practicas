@@ -4,7 +4,7 @@
 <head>
     <title>Práctica 1</title>
     <meta charset="utf-8" />
-
+    <link rel="stylesheet" href="css/nuevoAviso.css">
     <%- include("links") %>
     <link rel="stylesheet" href="css/avisos.css">
 </head>
@@ -47,28 +47,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>12/10/2022</th>
-                        <th>Esto es un texto de prueba para ver si funciona bien</th>
-                        <th><img class="tipoLogo" src="/img/Incidencia.png" alt=""></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th>15/07/2022</th>
-                        <th>Estamos probando como funciona la tabla de bootstrap y ademas a ver si se ve bien el la
-                            pagina</th>
-                        <th><img class="tipoLogo" src="/img/Sugerencia.png" alt=""></th>
-                        <th>Aitor Tilla</th>
-                    </tr>
-                    <tr>
-                        <th>15/07/2022</th>
-                        <th>Estamos probando como funciona la tabla de bootstrap y ademas a ver si se ve bien el la
-                            queremos ver cuando se
-                            expande la tabla hacia abajo
-                        </th>
-                        <th><img class="tipoLogo" src="/img/Felicitacion.png" alt=""></th>
-                        <th>Carmelo Coton</th>
-                    </tr>
+                    <% avisos.forEach(function(aviso){%>
+                        <tr>
+                            <th> <%= aviso.fecha %> </th>
+                            <th> <%= aviso.texto.substr(0,200) %> </th>
+                            <th> <img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></th>
+                            <th> <%= aviso.idTecnico %> </th>
+                        </tr>
+
+                    <% }) %> 
                 </tbody>
             </table>
 

@@ -30,6 +30,7 @@ INSERT INTO `ucm_aw_cau_usu_usuarios`(`email`, `password`, `img`, `userName`, `p
 
 INSERT INTO `ucm_aw_cau_usu_usuarios`(`email`, `password`, `img`, `userName`, `perfil`, `tecnico`, `numEmpleado`) VALUES ('pablo@ucm.es','Xd01',null,'Pablo','PAS',1,'agdr123');
 
+INSERT INTO `ucm_aw_cau_avi_avisos` (`idAviso`, `texto`, `fecha`, `tipo`, `idTecnico`, `idUser`, `respuesta`, `area`, `activo`) VALUES (NULL, 'Hola', '2022-12-18', '1', NULL, '1', NULL, 'Adm. Digital: Registro electrónico', '1')
 
-
+INSERT INTO `ucm_aw_cau_avi_avisos` (`idAviso`, `texto`, `fecha`, `tipo`, `idTecnico`, `idUser`, `respuesta`, `area`, `activo`) VALUES (NULL, 'Suegerencia 1', '2022-12-04', '2', NULL, '1', NULL, 'Comunicaciones: Correo electrónico', '1')
 

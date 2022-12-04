@@ -5,56 +5,81 @@
                 <h5 class="modal-title" id="exampleModalLabel">Añadir tarea</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form method="POST" action="/nuevoAviso">
+            <form action="/nuevoAviso" method="POST">
+
+                <div class="modal-body">
                     <div class="p-2 d-flex align-items-center form-group">
                         <label for="selector" class="p-2 align-self-center">Tipo de aviso</label>
                         <div class="p-2">
-                                <select onchange="mostrarSelectorInciSugeFeli()" class="form-select" id="selectorTipo" aria-label="Default select example"
-                                    name="tipo">
+                            <select onchange="mostrarSelectorInciSugeFeli()" class="form-select" id="selectorTipo"
+                                aria-label="Default select example" name="tipo">
+                                <option selected>Selecciona uno</option>
+                                <option value=1>Incidencia</option>
+                                <option value=2>Sugerencia</option>
+                                <option value=3>Felicitacion</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="in-su">
+                        <hr>
+                        <div class="p-2 d-flex align-items-center form-group">
+                            <label for="area" class="align-self-center">Area del aviso</label>
+                            <div class="p-2">
+                                <select class="form-select area" onchange="mostrarDesc()" id="area"
+                                    aria-label="Default select example" name="area">
                                     <option selected>Selecciona uno</option>
-                                    <option value=1>Incidencia</option>
-                                    <option value=2>Sugerencia</option>
-                                    <option value=3>Felicitacion</option>
+                                    <% areas.forEach(function(area){ %>
+                                        <option value="<%= area %>">
+                                            <%= area %>
+                                        </option>
+                                        <% }) %>
+
                                 </select>
+                            </div>
                         </div>
-                    </div>
-                    <hr class="in-su" style="display: none !important;">
-                    <div class="p-2 d-flex align-items-center form-group in-su" style="display: none !important;">
-                        <label for="area" class="align-self-center">Area del aviso</label>
-                        <div class="p-2">
-                            <select class="form-select" id="area" aria-label="Default select example" name="area">
-                                <option selected>Selecciona uno</option>
-                                <option value=1>Certificado digital de persona física</option>
-                                <option value=2>Registro electronico</option>
-                                <option value=3>Sede electrónica</option>
-                            </select>
-                        </div>
-                    </div>
-                    <hr class="felicitacion" style="display: none !important;">
-                    <div class="p-2 d-flex align-items-center form-group felicitacion" style="display: none !important;">
-                        <label for="area" class="align-self-center">Area del aviso</label>
-                        <div class="p-2">
-                            <select class="form-select" id="area" aria-label="Default select example" name="area">
-                                <option selected>Selecciona uno</option>
-                                <option value=1>Uni y derivados</option>
-                                <option value=2>Otros</option>
-                                <option value=3>Sede electrónica</option>
-                            </select>
-                        </div>
-                    </div>
-                    <hr class="desc" style="display: none !important;">
-                    <div class="d-flex form-group desc" style="display: none !important;">
-                        <label for="message-text" class="col-form-label">Descripción del aviso</label>
-                        <textarea required class="form-control" name="descripcion" id="message-text"
-                            placeholder="Ponga la descripcion de su problema"></textarea>
                     </div>
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" class="anadir" value="Añadir">
-            </div>
+                    <div class="felicitacion">
+                        <hr>
+                        <div class="p-2 d-flex align-items-center form-group">
+                            <label for="area" class="align-self-center">Area del aviso</label>
+                            <div class="p-2">
+                                <select class="form-select area" onchange="mostrarDesc()" id="area"
+                                    aria-label="Default select example" name="area">
+                                    <option selected>Selecciona uno</option>
+                                    <option value="Archivo Universitario">Archivo Universitario</option>
+                                    <option value="Asesoría Jurídica">Asesoría Jurídica</option>
+                                    <option value="Biblioteca">Biblioteca</option>
+                                    <option value="Centro de Información">Centro de Información</option>
+                                    <option value="Departamentos docentes">Departamentos docentes</option>
+                                    <option value="Inspección de Servicios">Inspección de Servicios</option>
+                                    <option value="Oficina de Gestión de Infraestructuras y Mantenimiento">
+                                        Oficina de Gestión de Infraestructuras y Mantenimiento</option>
+                                    <option value="Servicio de Administración">Servicio de Administración</option>
+                                    <option value="Servicios Informáticos">Servicios Informáticos</option>
+                                    <option value="Servicio de Documentación">Servicio de Documentación</option>
+                                    <option value="Servicio de Imprenta">Servicio de Imprenta</option>
+                                    <option value="Servicio de Cafetería">Servicio de Cafetería</option>
+                                    <option value="Toda la Universidad">Toda la Universidad</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="desc">
+                        <hr>
+                        <div class="d-flex form-group">
+                            <label for="message-text" class="col-form-label">Descripción del aviso</label>
+                            <textarea required class="form-control" name="descripcion" id="message-text"
+                                placeholder="Ponga la descripcion de su problema" maxlength="1000"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="anadir" value="Añadir">
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -63,36 +88,50 @@
 <script>
 
     function mostrarSelectorInciSugeFeli() {
-        
+
         let valor = document.getElementById("selectorTipo").value
         let inciSuge = document.getElementsByClassName("in-su")
         let felicitaciones = document.getElementsByClassName("felicitacion")
-        if(valor === 1 || valor === 2){
+        if (valor == 1 || valor == 2) {
             for (let i = 0; i < inciSuge.length; i++) {
-                inciSuge[i].style.setProperty('display', 'block', 'important')      
+                inciSuge[i].style.setProperty('display', 'block')
             }
             for (let i = 0; i < felicitaciones.length; i++) {
-                felicitaciones[i].style.setProperty('display', 'none', 'important')    
-                console.log(felicitaciones[i].style.display)     
+                felicitaciones[i].style.setProperty('display', 'none')
             }
         }
-        else if(valor === 3){
+        else if (valor == 3) {
             for (let i = 0; i < inciSuge.length; i++) {
-                inciSuge[i].style.display = "none"           
+                inciSuge[i].style.display = "none"
             }
             for (let i = 0; i < felicitaciones.length; i++) {
-                felicitaciones[i].style.display = "block"           
+                felicitaciones[i].style.display = "block"
             }
         }
-        else{
+        else {
             for (let i = 0; i < inciSuge.length; i++) {
-                inciSuge[i].style.display = "none"           
+                inciSuge[i].style.display = "none"
             }
             for (let i = 0; i < felicitaciones.length; i++) {
-                felicitaciones[i].style.display = "none"           
+                felicitaciones[i].style.display = "none"
             }
         }
 
     }
-    
+
+    function mostrarDesc() {
+        let valor = document.getElementsByClassName("area")[0].value
+        let desc = document.getElementsByClassName("desc")
+        if (valor != undefined || valor != "Selecciona uno") {
+            for (let i = 0; i < desc.length; i++) {
+                desc[i].style.display = "block"
+            }
+        }
+        if (valor === "Selecciona uno") {
+            for (let i = 0; i < desc.length; i++) {
+                desc[i].style.display = "none"
+            }
+        }
+    }
+
 </script>
