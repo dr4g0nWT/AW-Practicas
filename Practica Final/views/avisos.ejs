@@ -11,14 +11,19 @@
 
 <body>
 
-    <nav class="navbar fixed-top navbar-light bg-light d-flex">
-        <img class="logo" src="img/LogoUCM.png" alt="">
-        <div class="p-2 d-flex flex-row-reverse align-items-center ml-auto align-self-center">
-            <button class="p-1 float-right" onclick="window.location.href='/cerrarSesion'">Desconectar</button>
-            <button type="button" id="botonPerfil" class="btn" data-bs-toggle="modal" data-bs-target="#modalPerfil">
-                <%=nombre%>
-            </button>
-            <img class="userimg" src="imagen/<%=email%>" alt="">
+    <nav class="fixed-top">
+        <div class="row align-items-center">
+            <div class="col-2">
+                <img class="logo" src="img/LogoUCM.png" alt="">
+            </div>
+            <div class="col-10 d-flex flex-row-reverse">
+                <button class="p-1 float-right" onclick="window.location.href='/cerrarSesion'">Desconectar</button>
+                <img class="userimg" src="imagen/<%=email%>" alt="">
+                <button type="button" id="botonPerfil" class="btn" data-bs-toggle="modal" data-bs-target="#modalPerfil">
+                    <%=nombre%>
+                </button> 
+            </div>
+
         </div>
     </nav>
 

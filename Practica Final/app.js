@@ -6,10 +6,8 @@ const express = require("express");
 const session = require("express-session")
 const mysqlSession = require("express-mysql-session");
 const bodyParser = require("body-parser");
-const { check, validationResult, checkSchema } = require('express-validator');
-const fs = require("fs");
-const { cachedDataVersionTag } = require("v8");
-const { Console } = require("console");
+const { check, validationResult} = require('express-validator');
+const moment = require("moment")
 
 const multer = require("multer")
 
@@ -119,7 +117,7 @@ app.use(flashMiddleware)
 //Creamos los middle para meter las sesiones
 function middleLogueado(req, res, next) {
     //if usuario loggueado, next
-    if (req.session.email) {
+    if (req.session.usuario) {
         next()
     }
     else res.redirect("/login")
@@ -127,7 +125,7 @@ function middleLogueado(req, res, next) {
 
 function middleNoLogueado(req, res, next) {
     //if usuario loggueado, next
-    if (!req.session.email) {
+    if (!req.session.usuario) {
         next()
     }
     else res.redirect("/avisos")
@@ -138,10 +136,10 @@ function middleNoLogueado(req, res, next) {
 
 function middleIncidencias(request, response, next){
     
-    if (request.session.perfil === "Alumno") areasDisponibles = areasIncidenciasA
-    else if (request.session.perfil === "Antiguo Alumno") areasDisponibles = areasIncidenciasAA
-    else if (request.session.perfil === "PAS") areasDisponibles = areasIncidenciasPAS
-    else if (request.session.perfil === "PDI") areasDisponibles =  areasIncidenciasPDI
+    if (request.session.usuario.perfil === "Alumno") areasDisponibles = areasIncidenciasA
+    else if (request.session.usuario.perfil === "Antiguo Alumno") areasDisponibles = areasIncidenciasAA
+    else if (request.session.usuario.perfil === "PAS") areasDisponibles = areasIncidenciasPAS
+    else if (request.session.usuario.perfil === "PDI") areasDisponibles =  areasIncidenciasPDI
 
     next()
 }
@@ -152,18 +150,23 @@ app.get("/", function (request, response) {
 
 //Pagina de avisos
 app.get("/avisos", middleLogueado, middleIncidencias, function (request, response) {
-    daoAvisos.listarAvisosUsuario(1, function(err, result){
+    console.log(request.session.usuario.idUser)
+    daoAvisos.listarAvisosUsuario(request.session.usuario.idUser, function(err, result){
         if(err){
+            console.log("Error en avisos")
             response.status(404)
         }
         else{
             response.status(200)
             response.render("avisos", {
                 tipo: true,
-                email: request.session.email,
-                nombre: request.session.nombre,
+                email: request.session.usuario.email,
+                nombre: request.session.usuario.nombre,
+                fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
+                perfil: request.session.usuario.perfil,
                 areas: areasDisponibles,
-                avisos: result
+                avisos: result,
+                
             })//Falta cambiar el ejs
         }
     })
@@ -173,12 +176,12 @@ app.get("/avisos", middleLogueado, middleIncidencias, function (request, respons
 //Nuevo aviso
 app.post("/nuevoAviso", middleLogueado, function(request, response){
     let date = new Date()
-    //Aqui hay que poner el id del usuario sacado de la sesion
+
     let aviso = {
         texto : request.body.descripcion,
         fecha : date.toISOString(),
         tipo : request.body.tipo,
-        idUser : 1,
+        idUser : request.session.usuario.idUser,
         area : request.body.area.filter((item) => item !== "Selecciona uno")
     }
     console.log(aviso)
@@ -224,10 +227,14 @@ app.post("/login",
                     response.redirect("/login")
                 }
                 else {
-                    request.session.email = request.body.email
-                    request.session.nombre = existe.nombre
-                    request.session.perfil = existe.perfil
-                    request.session.tecnico = existe.tecnico
+                    request.session.usuario = {
+                        email:request.body.email,
+                        nombre: existe.nombre,
+                        perfil: existe.perfil,
+                        tecnico: existe.tecnico,
+                        idUser: existe.idUser,
+                        fecha: existe.fecha
+                        }
                     response.redirect("/avisos")
                 }
             })
@@ -268,7 +275,7 @@ app.post("/register", multerFactory.single('imagen'),
             response.redirect("/register")
         }
 
-
+        let fecha = moment()
         let user = {
             email: request.body.email,
             password: request.body.password,
@@ -276,11 +283,8 @@ app.post("/register", multerFactory.single('imagen'),
             perfil: request.body.perfil,
             tecnico: request.body.tecnico,
             numEmpleado: request.body.numero,
-            img: null
-        }
-
-        if (request.file) {
-            user.img = request.file.buffer
+            img: (request.file) ? request.file.buffer : null,
+            fecha: fecha.toISOString() //fecha.format("YYYY-MM-DD-HH-mm-ss")
         }
 
         daoUsers.insertUser(user, function (err) {

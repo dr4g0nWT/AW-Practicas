@@ -11,7 +11,8 @@ create table UCM_AW_CAU_USU_Usuarios(
     userName varchar(30) not null,
     perfil varchar(100) not null,
     tecnico integer,
-    numEmpleado varchar(30)
+    numEmpleado varchar(30),
+    fecha datetime not null
 );
 
 create table UCM_AW_CAU_AVI_Avisos(

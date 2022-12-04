@@ -1,29 +1,10 @@
-.navbar{        
+nav{        
     background-color: #ad5ac6 !important;
 }
 
 .logo{
-    width: 3em;
+    width: 4em;
     height: fit-content;
-}
-
-.navbar p{
-    margin-right: 1%;
-    margin-left: 1%;
-    color: white;
-    border: 1px solid white;
-    border-radius: 3px;
-    padding: 0.7%;
-    height: fit-content;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-.navbar button {
-    height: 80%;
-    padding: 0px;
-    font-size: 10px;
-    margin-left: 3%;
 }
 
 

@@ -12,9 +12,9 @@ class DAOUsers{
                 callback(new Error("Error de conexión a la base de datos"))
             else{
                 connection.query(
-                    `insert into UCM_AW_CAU_USU_Usuarios (email, password, img, userName, perfil, tecnico, numEmpleado) 
-                    values (?, ?, ?, ?, ?, ?, ?)`,
-                    [user.email, user.password, user.img, user.userName, user.perfil, user.tecnico, user.numEmpleado],
+                    `insert into UCM_AW_CAU_USU_Usuarios (email, password, img, userName, perfil, tecnico, numEmpleado, fecha) 
+                    values (?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [user.email, user.password, user.img, user.userName, user.perfil, user.tecnico, user.numEmpleado, user.fecha],
                     function(err){
                         if (err)
                             callback(new Error("Error de acceso a la base de datos"));
@@ -45,10 +45,12 @@ class DAOUsers{
                             }
                             else {
                                 callback(null, {
+                                    idUser: rows[0].idUser,
                                     nombre: rows[0].userName, 
                                     perfil: rows[0].perfil,
                                     tecnico: rows[0].tecnico,
-                                    numero: rows[0].numEmpleado
+                                    numero: rows[0].numEmpleado,
+                                    fecha: rows[0].fecha
                                 });
                             }
                         }
