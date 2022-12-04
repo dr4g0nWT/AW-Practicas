@@ -157,6 +157,7 @@ app.get("/avisos", middleLogueado, middleIncidencias, function (request, respons
             response.status(404)
         }
         else{
+            console.log(new moment(result[1].fecha).format("DD/MM/YYYY"))
             response.status(200)
             response.render("avisos", {
                 tipo: true,

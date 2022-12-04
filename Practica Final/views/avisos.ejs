@@ -53,12 +53,14 @@
                 </thead>
                 <tbody>
                     <% avisos.forEach(function(aviso){%>
-                        <tr>
-                            <th> <%= aviso.fecha %> </th>
+                        <tr data-toggle="modal"data-bs-toggle="modal" data-bs-target="#verAviso">
+                            <th> <%= aviso.fecha.toLocaleDateString("en-US") %> </th>
                             <th> <%= aviso.texto.substr(0,200) %> </th>
                             <th> <img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></th>
                             <th> <%= aviso.idTecnico %> </th>
                         </tr>
+
+                        <%- include("verAviso") %> 
 
                     <% }) %> 
                 </tbody>

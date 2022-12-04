@@ -85,7 +85,7 @@ class DAOAvisos{
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
-                connection.query(`SELECT texto, fecha, tipo, respuesta, area, activo, idTecnico FROM
+                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, activo, idTecnico FROM
                 UCM_AW_CAU_AVI_Avisos WHERE idUser = ?`,
                 [idUser],
                 function(err, result){
