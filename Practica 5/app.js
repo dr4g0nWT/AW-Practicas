@@ -148,7 +148,7 @@ app.post("/deleteCompleted", middleLogueado, function(request, response){
 
 app.get("/imagenUsuario", middleLogueado, function(request, response){
     daoU.getUserImageName(request.session.currentUser, function(err, img){
-        response.sendFile(path.join(__dirname, "public", "img", (err || !img) ?"noUser.png" : img))
+        response.sendFile(path.join(__dirname, "public", "profile_imgs", (err || !img) ?"noUser.png" : img))
     })
 })
 
