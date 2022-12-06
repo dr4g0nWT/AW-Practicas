@@ -47,7 +47,7 @@
             </div>
             <div class="col">
                 <div class="d-flex">
-                    <input class="form-control me-1" type="search" placeholder="Buscar" aria-label="Search">
+                    <input class="form-control me-1" id="buscar" type="search" placeholder="Buscar" aria-label="Search">
                     <button class="btn btn-primary" type="submit">Buscar</button>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                     <% avisos.forEach(function(aviso){%>
                         <tr data-toggle="modal"data-bs-toggle="modal" data-bs-target="#verAviso">
                             <td> <%= aviso.fecha.toLocaleDateString("en-US") %> </td>
-                            <td> <%= aviso.texto.substr(0,200) %> </td>
+                            <td class="texto"> <%= aviso.texto.substr(0,200) %> </td>
                             <td> <img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></td>
                             <td> <%= aviso.idTecnico %> </td>
                         </tr>
@@ -94,3 +94,23 @@
 
 
 </html>
+
+<script>
+
+    $("#buscar").on("keyup", function(event){
+
+        let texto = $("#buscar").prop("value").toUpperCase()
+        let cols = $(".texto") //busca por campo nombre
+
+        for (let i = 0; i < cols.length; i++){
+            let t = cols.eq(i).text().toUpperCase() //Valor del campo texto
+            if (t.indexOf(texto) < 0)
+                cols.eq(i).parent().hide() //El padre de la columna es la fila entera. Se oculta
+            else
+                cols.eq(i).parent().show() //El padre de la columna es la fila entera. Se muestra
+           
+        }
+        
+    })
+
+</script>
