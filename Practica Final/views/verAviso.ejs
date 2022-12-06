@@ -1,19 +1,39 @@
 <div class="modal fade" id="verAviso" tabindex="-1" aria-labelledby="verAviso" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="border: none;">
+            <div class="modal-header bg-dark text-white">
                 <h5 class="modal-title" id="exampleModalLabel">Añadir tarea</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="d-flex justify-content-between">
                     <h5 class="p-1"><%= nombre %> </h5>
-                    <h5>Aviso <%= avisos[0].idAviso%> </h5>
+                    <h5 id="modal_idAviso"></h5>
                 </div>
-                <div class="d-flex flex-column">
-                    <p>Fecha: <%= avisos[0].fecha.toLocaleDateString("en-US") %> </p>
-                    <p><%= avisos[0].area %> </p>
-                    <p>Perfil: <%= perfil %> </p>
+                <div class="row mb-2">
+                    <label for="modal_fecha" class="col-sm-3 col-form-label">Fecha: </label>
+                    <div class="col-sm-9">
+                      <input type="text" readonly class="form-control" id="modal_fecha" value="">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="modal_area" class="col-sm-3 col-form-label">Comunicación: </label>
+                    <div class="col-sm-9">
+                      <input type="text" readonly class="form-control" id="modal_area" value="">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="modal_perfil" class="col-sm-3 col-form-label">Perfil: </label>
+                    <div class="col-sm-9">
+                      <input type="text" readonly class="form-control" id="modal_perfil" value="<%=perfil %>">
+                    </div>
+                </div>
+                <div>    
+                    <label class="form-label" for="modal_obs">Observaciones: </label>
+                    <textarea readonly id="modal_obs" class="form-control" rows="3"></textarea>
+
+                    <label class="form-label" for="modal_res">Comentarios del técnico: </label>
+                    <textarea readonly id="modal_res" class="form-control" rows="3"></textarea>
                 </div>
 
 

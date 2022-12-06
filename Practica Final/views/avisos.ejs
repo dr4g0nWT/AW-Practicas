@@ -64,21 +64,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% avisos.forEach(function(aviso){%>
-                        <tr data-toggle="modal"data-bs-toggle="modal" data-bs-target="#verAviso">
+                    <% avisos.forEach(function(aviso, i){%>
+                        <tr data-id="<%=i%>" data-toggle="modal"data-bs-toggle="modal" data-bs-target="#verAviso">
                             <td> <%= aviso.fecha.toLocaleDateString("en-US") %> </td>
                             <td class="texto"> <%= aviso.texto.substr(0,200) %> </td>
                             <td> <img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></td>
                             <td> <%= aviso.idTecnico %> </td>
                         </tr>
 
-                        <%- include("verAviso") %> 
-
                     <% }) %> 
                 </tbody>
             </table>
 
-
+            <%- include("verAviso") %> 
 
             <div class="d-flex justify-content-end">
                 <button class="btn btn-success" data-toggle="modal"data-bs-toggle="modal" data-bs-target="#exampleModal">Nuevo
@@ -92,10 +90,30 @@
 </body>
 
 
-
 </html>
 
 <script>
+
+    $("tr").on("click", function(event){
+        let id = $(this).data("id")
+        let avisos =  `<%-JSON.stringify(avisos)%>`
+        avisos = JSON.parse(avisos)
+
+        console.log(avisos[id])
+        let t = `Aviso ${avisos[id].idAviso}`
+        $("#modal_idAviso").text(t)
+
+        let date = new Date(avisos[id].fecha)
+        $("#modal_fecha").prop("value", date.toLocaleDateString("en-US"))
+        $("#modal_area").prop("value", avisos[id].area)
+        $("#modal_obs").text(avisos[id].texto)
+
+        let comentarios = (avisos[id].respuesta) ? avisos[id].respuesta : ""
+        $("#modal_res").text(comentarios)
+    })
+   
+
+   
 
     $("#buscar").on("keyup", function(event){
 
