@@ -1,0 +1,13 @@
+body {
+    background-image: linear-gradient(to right, rgb(192, 230, 242), rgb(250, 191, 245));
+}
+
+form{
+    background-color: rgba(249, 250, 249, 0.381);
+}
+
+img{
+    width: 45%;
+}
+
+

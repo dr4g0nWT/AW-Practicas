@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Práctica 4</title>
+    <meta charset="utf-8" />
+
+    <%-include("links")%>
+        <link rel="stylesheet" href="css/tasksScreen.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark">
+        <div class="container-fluid">
+            <div class="nav-brand">
+                <img src="img/LogoUCM.png" alt="">
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <p class="text-white fs-4 mt-2"><%=userEmail%></p>
+                    </li>
+                    <li class="nav-item">
+                        <img class="rounded-circle me-4 ms-4 " src="/imagenUsuario" alt="">
+                    </li>
+                    <li class="nav-item mt-auto mb-auto">
+                        <form action="/logout" method="post">
+                            <input type="submit" class="btn btn-danger" value="Desconectar"></button>
+                        </form>
+
+                        
+                    </li> 
+                </ul>
+            </div>
+        </div>
+    </nav>
+   
+
+    <div id="cuerpo">
+        <div id="contenedor">
+            <ul>
+                <!--Lo que hacemos aqui es un for para cada task que recibe el ejs
+                despues depende de si la tarea se ha completado o no elimina el contenido innecesario
+                por ultimo para cada tag de la tarea escribimos su texto-->
+
+                <% tasks.forEach(function(task){ %>
+                    <li>
+                        <div class="d-flex tarea align-items-center">
+                            <h4 class="p-2">
+                                <% if(task.Done) {%> <del>
+                                        <% } %>
+                                            <%= task.Texto %>
+                                                <% if(task.Done) {%> <del>
+                                                        <% } %>
+                            </h4>
+                            <% if (!task.Done) { %>
+                                <% task.Tags.forEach(function(tag){ %>
+                                    <p class="tag">
+                                        <%= tag %>
+                                    </p>
+                                    <% }) %>
+                                        <form class="p-2" action="/finish/<%=task.ID%>" method="POST">
+                                            <input class="btn btn-danger" type="submit" value="Completar">
+                                        </form>
+
+                                        <% } %>
+                        </div>
+                    </li>
+                    <% }) %>
+
+            </ul>
+        </div>
+        <div class="d-flex justify-content-between">
+            <form action="/deleteCompleted" method="POST" class="del-all">
+                <input class="btn btn-danger" type="submit" value="Eliminar Tareas">
+            </form>
+
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Añadir</button>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="/addTask">
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Descripción de la tarea</label>
+                                    <textarea required class="form-control" name="descripcion" id="message-text"
+                                        placeholder="Ponga la descripcion con @ en cada etiqueta"></textarea>
+                                </div>
+                                <button class="btn btn-danger mt-2" type="button" data-dismiss="modal">Cancelar</button>
+                                <input type="submit" class="btn btn-success mt-2" value="Añadir">
+                            </form>
+                        </div>
+                        <div class="modal-footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <%-include("scripts")%>
+</body>
+
+
+
+</html>
