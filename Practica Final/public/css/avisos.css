@@ -12,7 +12,7 @@ nav img{
     width: 9em;
 }
 
-#modal_idAvisoEnviar, #modalAsig_idAvisoEnviar{
+#modal_idAvisoEnviar, #modalAsig_idAvisoEnviar, #respuestaEliminar{
     display: none;
 }
 

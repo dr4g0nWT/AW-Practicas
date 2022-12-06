@@ -107,7 +107,7 @@ class DAOAvisos{
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
-                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, activo, idTecnico FROM
+                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, idTecnico FROM
                 UCM_AW_CAU_AVI_Avisos WHERE idUser = ? AND activo = ?`,
                 [idUser, activo],
                 function(err, result){
@@ -124,15 +124,15 @@ class DAOAvisos{
         })
     }
 
-    listarAvisosTecnico(idTecnico, callback){
+    listarAvisosTecnico(idTecnico, activo, callback){
         this.pool.getConnection(function(err, connection){
             if(err){
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
-                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, activo, idTecnico FROM
-                UCM_AW_CAU_AVI_Avisos WHERE idTecnico = ?`,
-                [idTecnico],
+                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, idTecnico FROM
+                UCM_AW_CAU_AVI_Avisos WHERE idTecnico = ? AND activo = ?`,
+                [idTecnico, activo],
                 function(err, result){
                     if(err){
                         connection.release()
@@ -153,7 +153,7 @@ class DAOAvisos{
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
-                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, activo, idTecnico FROM
+                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, activo, area, idTecnico FROM
                 UCM_AW_CAU_AVI_Avisos WHERE idTecnico IS NULL`,
                 function(err, result){
                     if(err){
@@ -168,6 +168,8 @@ class DAOAvisos{
             }
         })
     }
+
+    listarAvisos
 }
 
 module.exports = DAOAvisos
