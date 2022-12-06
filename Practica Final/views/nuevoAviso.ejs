@@ -44,7 +44,7 @@
                         <div class="p-2 d-flex align-items-center form-group">
                             <label for="area" class="align-self-center">Area del aviso</label>
                             <div class="p-2">
-                                <select class="form-select area" onchange="mostrarDesc()" id="area"
+                                <select class="form-select area" onchange="mostrarDesc()" id="area2"
                                     aria-label="Default select example" name="area">
                                     <option selected>Selecciona uno</option>
                                     <option value="Archivo Universitario">Archivo Universitario</option>
@@ -77,7 +77,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" class="anadir" value="Añadir">
+                    <input type="submit" class="btn btn-success" value="Añadir">
                 </div>
             </form>
         </div>
@@ -98,11 +98,13 @@
             }
             for (let i = 0; i < felicitaciones.length; i++) {
                 felicitaciones[i].style.setProperty('display', 'none')
+                document.getElementsByClassName("area")[1].value = "Selecciona uno"
             }
         }
         else if (valor == 3) {
             for (let i = 0; i < inciSuge.length; i++) {
                 inciSuge[i].style.display = "none"
+                document.getElementsByClassName("area")[0].value = "Selecciona uno"
             }
             for (let i = 0; i < felicitaciones.length; i++) {
                 felicitaciones[i].style.display = "block"
@@ -111,9 +113,11 @@
         else {
             for (let i = 0; i < inciSuge.length; i++) {
                 inciSuge[i].style.display = "none"
+                document.getElementsByClassName("area")[0].value = "Selecciona uno"
             }
             for (let i = 0; i < felicitaciones.length; i++) {
                 felicitaciones[i].style.display = "none"
+                document.getElementsByClassName("area")[1].value = "Selecciona uno"
             }
         }
 
@@ -121,13 +125,16 @@
 
     function mostrarDesc() {
         let valor = document.getElementsByClassName("area")[0].value
+        let valor2 = document.getElementsByClassName("area")[1].value
         let desc = document.getElementsByClassName("desc")
-        if (valor != undefined || valor != "Selecciona uno") {
+        console.log(valor + "   " + valor2)
+        if (valor != undefined || valor != "Selecciona uno" ||
+            valor2 != undefined || valor2 != "Selecciona uno") {
             for (let i = 0; i < desc.length; i++) {
                 desc[i].style.display = "block"
             }
         }
-        if (valor === "Selecciona uno") {
+        if (valor === "Selecciona uno" && valor2 === "Selecciona uno") {
             for (let i = 0; i < desc.length; i++) {
                 desc[i].style.display = "none"
             }

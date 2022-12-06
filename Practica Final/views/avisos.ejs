@@ -41,8 +41,14 @@
         <div class="row mt-5">
             <div class="col">
                 <div class="btn-group">
+                    <% if(tecnico){ %> 
+                        <a href="/avisosEntrantes" class="btn btn-outline-primary">Avisos Entrantes</a>
+                    <% } %> 
                     <a href="/avisos" class="btn btn-outline-primary">Mis Avisos</a>
                     <a href="/historicoAvisos" class="btn btn-outline-primary">Historico de avisos</a>
+                    <% if(tecnico){ %>
+                        <a href="/avisos" class="btn btn-outline-primary">Gestion de usuarios</a>
+                    <% } %> 
                 </div>
             </div>
             <div class="col">
@@ -60,7 +66,12 @@
                         <th>Fecha</th>
                         <th>Texto</th>
                         <th>Tipo</th>
-                        <th>Tecnico</th>
+                        <% if(!tecnico) {%> 
+                            <th>Tecnico</th>
+                        <% }else{ %> 
+                            <th>Acciones</th>
+                        <% } %> 
+
                     </tr>
                 </thead>
                 <tbody>
@@ -68,21 +79,37 @@
                         <tr data-id="<%=i%>" data-toggle="modal"data-bs-toggle="modal" data-bs-target="#verAviso">
                             <td> <%= aviso.fecha.toLocaleDateString("en-US") %> </td>
                             <td class="texto"> <%= aviso.texto.substr(0,200) %> </td>
-                            <td> <img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></td>
-                            <td> <%= aviso.idTecnico %> </td>
+                            <td> <img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></td>                            
+                            <% if(!tecnico) {%> 
+                                <td> <%= aviso.idTecnico %> </td>
+                            <% }else{ %> 
+                                <td class="acciones">
+                                    <img class="tipoLogo asignarTecnico" data-id="<%=i%>" data-toggle="modal"data-bs-toggle="modal" data-bs-target="#asignarTecnico" src="/img/<%= url %>.png" alt="">
+                                    <% if(!entrantes){ %> 
+                                    <form action="/completarAviso/<%= aviso.idAviso %> ", method="POST" class="">
+                                        <input type="image" src="/img/basura.png" class="tipoLogo" alt="Submit">
+                                    </form>       
+                                    <% }else{ %>
+                                        <img class="tipoLogo" src="/img/basura.png" alt="">
+                                    <% } %> 
+                                </td>
+                            <% } %> 
                         </tr>
 
                     <% }) %> 
                 </tbody>
             </table>
 
-            <%- include("verAviso") %> 
-
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-success" data-toggle="modal"data-bs-toggle="modal" data-bs-target="#exampleModal">Nuevo
-                    aviso</button>
-                <%- include("nuevoAviso")%>             
-            </div>
+            <%- include("verAviso") %>
+            <%- include("asignarTecnico") %>
+            
+            <% if(!tecnico){%> 
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-success" data-toggle="modal"data-bs-toggle="modal" data-bs-target="#exampleModal">Nuevo
+                        aviso</button>
+                    <%- include("nuevoAviso")%>             
+                </div>
+            <%  } %> 
     </div>
 
     <%- include("perfil") %>
@@ -92,28 +119,57 @@
 
 </html>
 
+
+<% if(entrantes){ %> 
+
 <script>
 
-    $("tr").on("click", function(event){
+  $(".asignarTecnico").on("click", function(event){
         let id = $(this).data("id")
         let avisos =  `<%-JSON.stringify(avisos)%>`
         avisos = JSON.parse(avisos)
 
         console.log(avisos[id])
         let t = `Aviso ${avisos[id].idAviso}`
-        $("#modal_idAviso").text(t)
+        $("#modalAsig_idAviso").text(t)
+        $("#modalAsig_idAvisoEnviar").text(t)
 
         let date = new Date(avisos[id].fecha)
-        $("#modal_fecha").prop("value", date.toLocaleDateString("en-US"))
-        $("#modal_area").prop("value", avisos[id].area)
-        $("#modal_obs").text(avisos[id].texto)
+        $("#modalAsig_fecha").prop("value", date.toLocaleDateString("en-US"))
+        $("#modalAsig_area").prop("value", avisos[id].area)
+        $("#modalAsig_obs").text(avisos[id].texto)
 
         let comentarios = (avisos[id].respuesta) ? avisos[id].respuesta : ""
-        $("#modal_res").text(comentarios)
+        $("#modalAsig_res").text(comentarios)
     })
-   
 
-   
+</script>
+
+<% } %> 
+
+<script>
+    $("tr").on("click", function(event){
+       let id = $(this).data("id")
+       let avisos =  `<%-JSON.stringify(avisos)%>`
+       avisos = JSON.parse(avisos)
+
+       console.log(avisos[id])
+       let t = `Aviso ${avisos[id].idAviso}`
+       $("#modal_idAviso").text(t)
+       $("#modal_idAvisoEnviar").text(t)
+
+       let date = new Date(avisos[id].fecha)
+       $("#modal_fecha").prop("value", date.toLocaleDateString("en-US"))
+       $("#modal_area").prop("value", avisos[id].area)
+       $("#modal_obs").text(avisos[id].texto)
+
+       let comentarios = (avisos[id].respuesta) ? avisos[id].respuesta : ""
+       $("#modal_res").text(comentarios)
+   })
+</script> 
+
+
+<script>
 
     $("#buscar").on("keyup", function(event){
 

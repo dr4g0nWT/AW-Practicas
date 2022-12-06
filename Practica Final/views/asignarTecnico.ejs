@@ -1,0 +1,56 @@
+<div class="modal fade" id="asignarTecnico" tabindex="-1" aria-labelledby="verAviso" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="border: none;">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Vista de la tarea</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <form action="/asignarTecnico" method="POST">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="p-1">
+                            <%= nombre %>
+                        </h5>
+                        <h5 id="modalAsig_idAviso"></h5>
+                        <textarea type="text" name="idAviso" id="modalAsig_idAvisoEnviar"></textarea>
+                    </div>
+                    <div class="row mb-2">
+                        <label for="modalAsig_fecha" class="col-sm-3 col-form-label">Fecha: </label>
+                        <div class="col-sm-9">
+                            <input type="text" readonly class="form-control" id="modalAsig_fecha" value="">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <label for="modalAsig_area" class="col-sm-3 col-form-label">Comunicación: </label>
+                        <div class="col-sm-9">
+                            <input type="text" readonly class="form-control" id="modalAsig_area" value="">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <label for="modalAsig_perfil" class="col-sm-3 col-form-label">Perfil: </label>
+                        <div class="col-sm-9">
+                            <input type="text" readonly class="form-control" id="modalAsig_perfil" value="<%=perfil %>">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label" for="modalAsig_obs">Observaciones: </label>
+                        <textarea readonly id="modalAsig_obs" class="form-control" rows="3"></textarea>
+
+                        <label class="form-label" for="idTecnicoAsignado">Tecnico asignado </label>
+                        <select class="form-select" name="idTecnicoAsig" id="idTecnicoAsignado" required>
+                            <% tecnicos.forEach(function(tec){ %> 
+                                <option value="<%= tec.idUser %> "><%= tec.userName %> </option>
+                            <% }) %> 
+                        </select>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success" value="Asignar Tecnico">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

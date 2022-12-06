@@ -78,16 +78,38 @@ class DAOAvisos{
         })
     }
 
+    completarAviso(idAviso, callback){
+        this.pool.getConnection(function(err, connection){
+            if(err){
+                callback(new Error("Error de conexión a la base de datos"))
+            }
+            else{
+                connection.query(`UPDATE UCM_AW_CAU_AVI_Avisos SET activo = 0 WHERE idAviso = ?`,
+                [idAviso],
+                function(err, result){
+                    if(err){
+                        connection.release()
+                        callback(new Error("Problema en el acceso a la base de datos"))
+                    }
+                    else{
+                        connection.release()
+                        callback(null)
+                    }
+                })
+            }
+        })
+    }
 
-    listarAvisosUsuario(idUser, callback){
+
+    listarAvisosUsuario(idUser, activo, callback){
         this.pool.getConnection(function(err, connection){
             if(err){
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
                 connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, activo, idTecnico FROM
-                UCM_AW_CAU_AVI_Avisos WHERE idUser = ?`,
-                [idUser],
+                UCM_AW_CAU_AVI_Avisos WHERE idUser = ? AND activo = ?`,
+                [idUser, activo],
                 function(err, result){
                     if(err){
                         connection.release()
@@ -118,7 +140,29 @@ class DAOAvisos{
                     }
                     else{
                         connection.release()
-                        callback(null)
+                        callback(null, result)
+                    }
+                })
+            }
+        })
+    }
+
+    listarAvisosSinTencico(callback){
+        this.pool.getConnection(function(err, connection){
+            if(err){
+                callback(new Error("Error de conexión a la base de datos"))
+            }
+            else{
+                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, activo, idTecnico FROM
+                UCM_AW_CAU_AVI_Avisos WHERE idTecnico IS NULL`,
+                function(err, result){
+                    if(err){
+                        connection.release()
+                        callback(new Error("Problema en el acceso a la base de datos"))
+                    }
+                    else{
+                        connection.release()
+                        callback(null, result)
                     }
                 })
             }

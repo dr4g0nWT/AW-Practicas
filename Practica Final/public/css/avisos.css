@@ -5,10 +5,25 @@ nav img{
 
 .tipoLogo{
     width: 2em;
+    margin-left: 0.5em;
+}
+
+.acciones{
+    width: 9em;
+}
+
+#modal_idAvisoEnviar, #modalAsig_idAvisoEnviar{
+    display: none;
+}
+
+.acciones form{
+    width: fit-content;
 }
 
 body {
     background-image: linear-gradient(to right, rgb(192, 230, 242), rgb(250, 191, 245));
 }
 
-
+tbody tr{
+    cursor: pointer;
+}
