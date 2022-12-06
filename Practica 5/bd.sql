@@ -39,6 +39,9 @@ create table aw_tareas_tareas_etiquetas(
 INSERT INTO aw_tareas_usuarios(email, password, img)
 VALUES('usuario@ucm.es', 'user', 'user.jpg');
 
+INSERT INTO aw_tareas_usuarios(email, password, img)
+VALUES('otro@ucm.es', 'user', null);
+
 INSERT INTO aw_tareas_tareas(texto)
 VALUES('Preparar prácticas AW'), ('Mirar fechas de congreso'),
 ('Hablar con el profesor');
