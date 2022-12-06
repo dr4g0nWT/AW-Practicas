@@ -114,9 +114,6 @@ app.post("/addTask", middleLogueado, function(request, response){
         }
     })
    
- 
-   
-
 
 })
 
