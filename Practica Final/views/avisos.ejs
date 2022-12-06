@@ -11,39 +11,51 @@
 
 <body>
 
-    <nav class="fixed-top">
-        <div class="row align-items-center">
-            <div class="col-2">
-                <img class="logo" src="img/LogoUCM.png" alt="">
+    <nav class="navbar navbar-expand-sm bg-dark">
+        <div class="container-fluid">
+            <div class="nav-brand">
+                <img src="img/LogoUCM.png" alt="">
             </div>
-            <div class="col-10 d-flex flex-row-reverse">
-                <button class="p-1 float-right" onclick="window.location.href='/cerrarSesion'">Desconectar</button>
-                <img class="userimg" src="imagen/<%=email%>" alt="">
-                <button type="button" id="botonPerfil" class="btn" data-bs-toggle="modal" data-bs-target="#modalPerfil">
-                    <%=nombre%>
-                </button> 
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item mt-auto mb-auto ms-2">
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalPerfil">
+                            <%=nombre%>
+                        </button> 
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <img class="rounded-circle me-4 ms-4 " src="imagen/<%=email%>" alt="">
+                    </li>
+                    <li class="nav-item mt-auto mb-auto">
+                        <button type="button" class="btn btn-danger" onclick="window.location.href='/cerrarSesion'">Desconectar</button>
+                    </li> 
+                </ul>
             </div>
-
         </div>
     </nav>
 
-    <div id="cuerpo">
-        <div id="contenedor">
-            <div class="d-flex align-items-center barIntermedia">
-                <a href="/avisos" class="linkNav">Mis Avisos</a>
-                <p>|</p>
-                <a href="/historicoAvisos" class="linkNav">Historico de avisos</a>
-                <p>|</p>
-                <!-- Mostrar dependiendo del rol otras partes de la vista -->
-                <div class="p-2 d-flex buscador ms-auto">
-                    <input class="form-control mr-sm-2 p-1" type="search" placeholder="Buscar" aria-label="Search">
-                    <button class="busqueda p-1" type="submit">Buscar</button>
+    <div class="container">
+
+        <div class="row mt-5">
+            <div class="col">
+                <div class="btn-group">
+                    <a href="/avisos" class="btn btn-outline-primary">Mis Avisos</a>
+                    <a href="/historicoAvisos" class="btn btn-outline-primary">Historico de avisos</a>
                 </div>
-
             </div>
-
-            <table class="table table-hover">
-                <thead>
+            <div class="col">
+                <div class="d-flex">
+                    <input class="form-control me-1" type="search" placeholder="Buscar" aria-label="Search">
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                </div>
+            </div>
+        </div>
+        
+    
+            <table class="table table-striped table-hover mt-3">
+                <thead class="table-dark">
                     <tr>
                         <th>Fecha</th>
                         <th>Texto</th>
@@ -54,10 +66,10 @@
                 <tbody>
                     <% avisos.forEach(function(aviso){%>
                         <tr data-toggle="modal"data-bs-toggle="modal" data-bs-target="#verAviso">
-                            <th> <%= aviso.fecha.toLocaleDateString("en-US") %> </th>
-                            <th> <%= aviso.texto.substr(0,200) %> </th>
-                            <th> <img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></th>
-                            <th> <%= aviso.idTecnico %> </th>
+                            <td> <%= aviso.fecha.toLocaleDateString("en-US") %> </td>
+                            <td> <%= aviso.texto.substr(0,200) %> </td>
+                            <td> <img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></td>
+                            <td> <%= aviso.idTecnico %> </td>
                         </tr>
 
                         <%- include("verAviso") %> 
@@ -68,16 +80,12 @@
 
 
 
-        </div>
-        <div class="d-flex justify-content-end">
-
-            <button class="anadir" data-toggle="modal"data-bs-toggle="modal" data-bs-target="#exampleModal">Nuevo
-                aviso</button>
-            <%- include("nuevoAviso")%>             
-        </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-success" data-toggle="modal"data-bs-toggle="modal" data-bs-target="#exampleModal">Nuevo
+                    aviso</button>
+                <%- include("nuevoAviso")%>             
+            </div>
     </div>
-
-    
 
     <%- include("perfil") %>
     <%- include("scripts") %>

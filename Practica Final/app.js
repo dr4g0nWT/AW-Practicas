@@ -157,7 +157,7 @@ app.get("/avisos", middleLogueado, middleIncidencias, function (request, respons
             response.status(404)
         }
         else{
-            console.log(new moment(result[1].fecha).format("DD/MM/YYYY"))
+            
             response.status(200)
             response.render("avisos", {
                 tipo: true,
@@ -210,37 +210,20 @@ app.get("/cerrarSesion", function (request, response) {
 
 app.post("/login",
 
-    check("email", "Campo email vacio").not().isEmpty(),
-    check("password", "Campo contraseña vacio").not().isEmpty(),
-
     function (request, response) {
-        const errors = validationResult(request);
-        if (!errors.isEmpty()) {
-            response.status(200)
-            response.setFlash("Formulario incompleto")
-            response.redirect("/login")
-        }
-        else {
-            daoUsers.isUserCorrect(request.body.email, request.body.password, function (err, existe) {
-                if (err || !existe) {
-                    response.status(200)
-                    response.setFlash("Usuario o contraseña incorrectos")
-                    response.redirect("/login")
-                }
-                else {
-                    request.session.usuario = {
-                        email:request.body.email,
-                        nombre: existe.nombre,
-                        perfil: existe.perfil,
-                        tecnico: existe.tecnico,
-                        idUser: existe.idUser,
-                        fecha: existe.fecha
-                        }
-                    response.redirect("/avisos")
-                }
-            })
+       
+        daoUsers.isUserCorrect(request.body.email, request.body.password, function (err, existe) {
+            if (err || !existe) {
+                response.setFlash("Usuario o contraseña incorrectos")
+                response.redirect("/login")
+            }
+            else {
+                request.session.usuario = { email:request.body.email, nombre: existe.nombre, perfil: existe.perfil,
+                    tecnico: existe.tecnico, idUser: existe.idUser, fecha: existe.fecha}
+                response.redirect("/avisos")
+            }
+        })
 
-        }
     }
 )
 

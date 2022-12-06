@@ -13,11 +13,11 @@
 
 <body>
 
-  <div class="container">
-    <form method="POST" action="/login" class="p-5">
+  <div class="container w-50">
+    <form method="POST" action="/login" class="mt-5 p-5">
       <div class="row">
         <div class="container">
-          <img src="img/ucmLogin.png" alt="" class="img-fluid mx-auto d-block">
+          <img src="img/ucmLogin.png" alt="" class="mx-auto d-block">
         </div>
       </div>
       <div class="row align-items-center mb-2">
@@ -25,7 +25,7 @@
           <label for="inputEmail3" class="col-form-label">Email</label>
         </div>
         <div class="col-lg-10 col-md-10 col-sm-12">
-          <input type="email" class="form-control" id="inputEmail3" placeholder="Email" name="email">
+          <input required type="email" class="form-control" id="inputEmail3" placeholder="Email" name="email">
         </div>
       </div>
       <div class="row align-items-center mb-2">
@@ -33,7 +33,7 @@
           <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
         </div>
         <div class="col-lg-10 col-md-10 col-sm-12">
-          <input type="password" class="form-control" id="inputPassword3" placeholder="Password" name="password">
+          <input required type="password" class="form-control" id="inputPassword3" placeholder="Password" name="password">
         </div>
       </div>
       
@@ -41,9 +41,9 @@
       <%- include("flash") %>
 
       
-      <div class="form-group d-flex justify-content-around align-items-center botones">
-        <a class="btn btn-outline-primary" href="/register" role="button">Registrarse</a>
-        <button type="submit" class="btn btn-primary p-2">Iniciar Sesion</button>
+      <div class="form-group d-flex justify-content-around">
+        <a class="btn btn-outline-primary mt-4" href="/register" role="button">Registrarse</a>
+        <button type="submit" class="btn btn-primary mt-4">Iniciar Sesion</button>
       </div>
     </form>
   </div>

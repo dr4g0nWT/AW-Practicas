@@ -1,21 +1,11 @@
 body {
-    background-image: linear-gradient(to right, rgb(255, 201, 186), rgb(255, 198, 250));
+    background-image: linear-gradient(to right, rgb(192, 230, 242), rgb(250, 191, 245));
 }
 
 form{
-    background-color: rgb(243, 205, 255);
-    width: 60%;
-    height: 60%;
-    margin-left: auto;
-    margin-right: auto;
+    background-color: rgba(249, 250, 249, 0.381);
 }
 
-img{
-    width: 45%;
-    height: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
 
 .ocultar{
     display: none;
@@ -25,6 +15,4 @@ img{
     margin-top: 5%;
 }
 
-.perfil{
-    width: 25%;
-}
+
