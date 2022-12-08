@@ -6,14 +6,12 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
-            <form action="/asignarRespuesta" method="POST">
                 <div class="modal-body">
                     <div class="d-flex justify-content-between">
                         <h5 class="p-1">
                             <%= nombre %>
                         </h5>
                         <h5 id="modal_idAviso"></h5>
-                        <textarea type="text" name="idAviso" id="modal_idAvisoEnviar"></textarea>
                     </div>
                     <div class="row mb-2">
                         <label for="modal_fecha" class="col-sm-3 col-form-label">Fecha: </label>
@@ -37,18 +35,23 @@
                         <label class="form-label" for="modal_obs">Observaciones: </label>
                         <textarea readonly id="modal_obs" class="form-control" rows="3"></textarea>
 
+                       
+                    </div>
+                    
+                    <form action="<% if (!entrantes) {%>/asignarRespuesta<%}else{ %>/completarAviso<% } %>" method="POST">
+                        <input type="hidden" name="idAviso" id="modal_idAvisoEnviar"></textarea>
+                        <input type="hidden" name="nombre" value="<%=nombre%>">
                         <label class="form-label" for="modal_res">Comentarios del técnico: </label>
                         <textarea <% if(!tecnico){%> readonly <% } %>  id="modal_res" class="form-control" name="respuesta" rows="3" required></textarea>
-                    </div>
-
+                        <% if(tecnico){ %>
+                            <input type="submit" class="btn btn-success" value="<% if(!entrantes){ %> Añadir Comentario <% }else{ %> Cerrar aviso <% } %>">
+                            <% } %>
+                    </form>
 
                 </div>
                 <div class="modal-footer">
-                    <% if(tecnico){ %>
-                        <input type="submit" class="btn btn-success" value="<% if(!entrantes){ %> Añadir Comentario <% }else{ %> Cerrar aviso <% } %>">
-                        <% } %>
+                    
                 </div>
-            </form>
         </div>
     </div>
 </div>

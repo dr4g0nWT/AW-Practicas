@@ -154,7 +154,7 @@ class DAOAvisos{
             }
             else{
                 connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, activo, area, idTecnico FROM
-                UCM_AW_CAU_AVI_Avisos WHERE idTecnico IS NULL`,
+                UCM_AW_CAU_AVI_Avisos WHERE idTecnico IS NULL AND activo = 1`,
                 function(err, result){
                     if(err){
                         connection.release()

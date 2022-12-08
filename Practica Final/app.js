@@ -198,115 +198,71 @@ app.get("/avisosEntrantes", middleLogueado, middleTecnico, middleGetAllTecnicos,
 //Pagina de avisos
 app.get("/avisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, function (request, response) {
 
-    if(!request.session.usuario.tecnico){
-        daoAvisos.listarAvisosUsuario(request.session.usuario.idUser, true, function(err, result){
-            if(err){
-                console.log("Error en avisos")
-                response.status(404)
-            }
-            else{
+    let func_callback = function(err, result){
+        if(err){
+            console.log("Error en avisos")
+            response.status(404)
+        }
+        else{
+            response.status(200)
+            response.render("avisos", {
+                tipo: true,
+                entrantes: false,
+                tecnico: request.session.usuario.tecnico,
+                url: "avisos",
+                email: request.session.usuario.email,
+                nombre: request.session.usuario.nombre,
+                fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
+                perfil: request.session.usuario.perfil,
+                areas: areasDisponibles,
+                avisos: result,
+                tecnicos: allTecnicos
                 
-                response.status(200)
-                response.render("avisos", {
-                    tipo: true,
-                    entrantes: false,
-                    tecnico: request.session.usuario.tecnico,
-                    url: "avisos",
-                    email: request.session.usuario.email,
-                    nombre: request.session.usuario.nombre,
-                    fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
-                    perfil: request.session.usuario.perfil,
-                    areas: areasDisponibles,
-                    avisos: result,
-                    tecnicos: allTecnicos
-                    
-                })//Falta cambiar el ejs
-            }
-        })
+            })
+        }
     }
-    else{
-        daoAvisos.listarAvisosTecnico(request.session.usuario.idUser, true, function(err, result){
-            if(err){
-                console.log("Error en avisos")
-                response.status(404)
-            }
-            else{
-                
-                response.status(200)
-                response.render("avisos", {
-                    tipo: true,
-                    entrantes: false,
-                    tecnico: request.session.usuario.tecnico,
-                    url: "avisos",
-                    email: request.session.usuario.email,
-                    nombre: request.session.usuario.nombre,
-                    fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
-                    perfil: request.session.usuario.perfil,
-                    areas: areasDisponibles,
-                    avisos: result,
-                    tecnicos: allTecnicos
-                    
-                })//Falta cambiar el ejs
-            }
-        })
-    }    
+
+    if(!request.session.usuario.tecnico)
+        daoAvisos.listarAvisosUsuario(request.session.usuario.idUser, true, func_callback)
+
+    else
+        daoAvisos.listarAvisosTecnico(request.session.usuario.idUser, true, func_callback)
+              
 })
 
 
 //Pagina de avisos
 app.get("/historicoAvisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, function (request, response) {
 
-    if(!request.session.usuario.tecnico){
-        daoAvisos.listarAvisosUsuario(request.session.usuario.idUser, false, function(err, result){
-            if(err){
-                console.log("Error en avisos")
-                response.status(404)
-            }
-            else{
+    let func_callback = function(err, result){
+        if(err){
+            console.log("Error en avisos")
+            response.status(404)
+        }
+        else{
+            response.status(200)
+            response.render("avisos", {
+                tipo: true,
+                entrantes: false,
+                tecnico: request.session.usuario.tecnico,
+                url: "avisos",
+                email: request.session.usuario.email,
+                nombre: request.session.usuario.nombre,
+                fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
+                perfil: request.session.usuario.perfil,
+                areas: areasDisponibles,
+                avisos: result,
+                tecnicos: allTecnicos
                 
-                response.status(200)
-                response.render("avisos", {
-                    tipo: true,
-                    entrantes: false,
-                    tecnico: request.session.usuario.tecnico,
-                    url: "historico",
-                    email: request.session.usuario.email,
-                    nombre: request.session.usuario.nombre,
-                    fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
-                    perfil: request.session.usuario.perfil,
-                    areas: areasDisponibles,
-                    avisos: result,
-                    tecnicos: allTecnicos
-                    
-                })//Falta cambiar el ejs
-            }
-        })
+            })
+        }
+    }
+
+    if(!request.session.usuario.tecnico){
+        daoAvisos.listarAvisosUsuario(request.session.usuario.idUser, false, func_callback)
     }
     else{
-        daoAvisos.listarAvisosTecnico(request.session.usuario.idUser, false, function(err, result){
-            if(err){
-                console.log("Error en avisos")
-                response.status(404)
-            }
-            else{
-                
-                response.status(200)
-                response.render("avisos", {
-                    tipo: true,
-                    entrantes: false,
-                    tecnico: request.session.usuario.tecnico,
-                    url: "historico",
-                    email: request.session.usuario.email,
-                    nombre: request.session.usuario.nombre,
-                    fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
-                    perfil: request.session.usuario.perfil,
-                    areas: areasDisponibles,
-                    avisos: result,
-                    tecnicos: allTecnicos
-                    
-                })
-            }
-        })
+        daoAvisos.listarAvisosTecnico(request.session.usuario.idUser, false, func_callback)
     }    
 })
 
@@ -323,31 +279,33 @@ app.post("/asignarTecnico", middleLogueado, middleTecnico, function(request, res
 })
 
 //Eliminamos un aviso
-app.post("/completarAviso/:id", middleLogueado, middleTecnico, function(request,response){
-    let id = request.params.id
-    let respuesta = request.body.respuesta 
-    if(respuesta == ""){
-        respuesta = "El comentario ha sido elimiando de manera automatica por un tecnico"
-        daoAvisos.asignarRespuesta(id, respuesta, function(err,resutl){
-            if(err){
-                console.log("Fallo en la BD")
-                response.status(404)
-            }
-        })
-    }
-    daoAvisos.completarAviso(id, function(err, result){
+app.post("/completarAviso", middleLogueado, middleTecnico, function(request,response){
+    let id = request.body.idAviso
+    let respuesta = "Este aviso ha sido eliminado por el técnico " + request.body.nombre  + " debido a: "
+                        +request.body.respuesta 
+    console.log(id)
+    daoAvisos.asignarRespuesta(id, respuesta, function(err,resutl){
         if(err){
             console.log("Fallo en la BD")
             response.status(404)
         }
         else{
-            response.redirect("/avisos")
+            daoAvisos.completarAviso(id, function(err, result){
+                if(err){
+                    console.log("Fallo en la BD")
+                    response.status(404)
+                }
+                else{
+                    response.redirect("/avisos")
+                }
+            })
         }
     })
+    
 })
 
 app.post("/asignarRespuesta", middleLogueado, middleTecnico, function(request, response){
-    daoAvisos.asignarRespuesta(request.body.idAviso.slice(6), request.body.respuesta, 
+    daoAvisos.asignarRespuesta(request.body.idAviso, request.body.respuesta, 
         function(err, result){
             if (err){
                 console.log("Fallo en la BD")
@@ -423,7 +381,7 @@ app.get("/register", middleNoLogueado, function (request, response) {
 
 app.post("/register", multerFactory.single('imagen'),
 
-    check("password", "Contraseña insegura").not().isStrongPassword({
+    check("password", "Contraseña insegura").isStrongPassword({
         minLength: 8,
         minLowercase: 1,
         minUppercase: 1,
@@ -460,6 +418,7 @@ app.post("/register", multerFactory.single('imagen'),
 
         daoUsers.insertUser(user, function (err, result) {
             if (err) {
+                console.log("Aqui")
                 response.setFlash("Error al registrarse")
                 response.redirect("/register")
             }

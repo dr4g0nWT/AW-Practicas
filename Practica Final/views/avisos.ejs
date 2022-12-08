@@ -77,7 +77,6 @@
             </thead>
             <tbody>
                 <% avisos.forEach(function(aviso, i){%>
-
                   
                     <tr data-id="<%=i%>" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#verAviso">
                         <td>
@@ -96,8 +95,10 @@
                                     <div class="d-flex">
                                     <% if(!entrantes){ %>
                                         <img class="tipoLogo" src="/img/avisos.png" alt="">
-                                        <form action="/completarAviso/<%= aviso.idAviso %> " , method="POST" class="">
+                                        <form action="/completarAviso" , method="POST" class="">
                                             <input type="text" name="respuesta" id="respuestaEliminar" value="<%= aviso.respuesta %>">
+                                            <input type="hidden" name="nombre" value="<%=nombre%>">
+                                            <input type="hidden" name="idAviso" value="<%=aviso.idAviso%>">
                                             <input type="image" src="/img/basura.png" class="tipoLogo" alt="Submit">
                                         </form>
                                     <% }else{ %>
@@ -169,7 +170,7 @@
                 console.log(avisos[id])
                 let t = `Aviso ${avisos[id].idAviso}`
                 $("#modal_idAviso").text(t)
-                $("#modal_idAvisoEnviar").text(t)
+                $("#modal_idAvisoEnviar").prop("value", avisos[id].idAviso)
 
                 let date = new Date(avisos[id].fecha)
                 $("#modal_fecha").prop("value", date.toLocaleDateString("en-US"))
