@@ -424,19 +424,21 @@ app.get("/register", middleNoLogueado, function (request, response) {
 
 app.post("/register", multerFactory.single('imagen'),
 
-    check("password", "Contraseña insegura").not().isStrongPassword({
+    check("password", "Contraseña insegura").isStrongPassword({
         minLength: 8,
         minLowercase: 1,
         minUppercase: 1,
         minNumbers: 1,
         minSymbols: 1,
     }),
+    
 
     function (request, response) {
 
         const errors = validationResult(request);
 
         if (!errors.isEmpty()) {
+            console.log(errors)
             response.setFlash("Contraseña insegura");
             response.redirect("/register")
         }
@@ -457,8 +459,9 @@ app.post("/register", multerFactory.single('imagen'),
             fecha: fecha.toISOString() //fecha.format("YYYY-MM-DD-HH-mm-ss")
         }
 
-        daoUsers.insertUser(user, function (err) {
+        daoUsers.insertUser(user, function (err, result) {
             if (err) {
+                console.log("Aqui")
                 response.setFlash("Error al registrarse")
                 response.redirect("/register")
             }
