@@ -304,15 +304,14 @@ app.get("/historicoAvisos", middleLogueado, middleIncidencias, middleGetAllTecni
                     avisos: result,
                     tecnicos: allTecnicos
                     
-                })//Falta cambiar el ejs
+                })
             }
         })
     }    
 })
 
 app.post("/asignarTecnico", middleLogueado, middleTecnico, function(request, response){
-    console.log(request.body.idAviso.slice(6))
-    daoAvisos.asignarTecnico(request.body.idAviso.slice(6), request.body.idTecnicoAsig, function(err, result){
+    daoAvisos.asignarTecnico(request.body.idAviso, request.body.idTecnicoAsig, function(err, result){
         if(err){
             console.log("Fallo en la BD")
             response.status(404)
@@ -424,7 +423,7 @@ app.get("/register", middleNoLogueado, function (request, response) {
 
 app.post("/register", multerFactory.single('imagen'),
 
-    check("password", "Contraseña insegura").isStrongPassword({
+    check("password", "Contraseña insegura").not().isStrongPassword({
         minLength: 8,
         minLowercase: 1,
         minUppercase: 1,
@@ -453,7 +452,7 @@ app.post("/register", multerFactory.single('imagen'),
             password: request.body.password,
             userName: request.body.usuario,
             perfil: request.body.perfil,
-            tecnico: request.body.tecnico,
+            tecnico: (request.body.tecnico == '1') ? 1 : 0,
             numEmpleado: request.body.numero,
             img: (request.file) ? request.file.buffer : null,
             fecha: fecha.toISOString() //fecha.format("YYYY-MM-DD-HH-mm-ss")
@@ -461,7 +460,6 @@ app.post("/register", multerFactory.single('imagen'),
 
         daoUsers.insertUser(user, function (err, result) {
             if (err) {
-                console.log("Aqui")
                 response.setFlash("Error al registrarse")
                 response.redirect("/register")
             }

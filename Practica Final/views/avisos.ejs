@@ -77,6 +77,8 @@
             </thead>
             <tbody>
                 <% avisos.forEach(function(aviso, i){%>
+
+                  
                     <tr data-id="<%=i%>" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#verAviso">
                         <td>
                             <%= aviso.fecha.toLocaleDateString("en-US") %>
@@ -91,6 +93,7 @@
                             </td>
                             <% }else{ %>
                                 <td class="acciones">
+                                    <div class="d-flex">
                                     <% if(!entrantes){ %>
                                         <img class="tipoLogo" src="/img/avisos.png" alt="">
                                         <form action="/completarAviso/<%= aviso.idAviso %> " , method="POST" class="">
@@ -98,11 +101,10 @@
                                             <input type="image" src="/img/basura.png" class="tipoLogo" alt="Submit">
                                         </form>
                                     <% }else{ %>
-                                            <img class="tipoLogo asignarTecnico" data-id="<%=i%>" data-toggle="modal"
-                                                data-bs-toggle="modal" data-bs-target="#asignarTecnico"
-                                                src="/img/asignar.png" alt="">
+                                            <img class="tipoLogo asignarTecnico" data-id="<%=i%>" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#asignarTecnico" src="/img/asignar.png" alt="">
                                             <img class="tipoLogo" src="/img/basura.png" alt="">
                                     <% } %>
+                                    </div>
                                 </td>
                                 <% } %>
                     </tr>
@@ -141,10 +143,9 @@
             let avisos = `<%-JSON.stringify(avisos)%>`
             avisos = JSON.parse(avisos)
 
-            console.log(avisos[id])
             let t = `Aviso ${avisos[id].idAviso}`
             $("#modalAsig_idAviso").text(t)
-            $("#modalAsig_idAvisoEnviar").text(t)
+            $("#modalAsig_idAvisoEnviar").prop("value", avisos[id].idAviso)
 
             let date = new Date(avisos[id].fecha)
             $("#modalAsig_fecha").prop("value", date.toLocaleDateString("en-US"))
