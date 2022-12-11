@@ -100,6 +100,31 @@ class DAOAvisos{
         })
     }
 
+    listarAvisosUsuarioCategorias(idUser, callback){
+        this.pool.getConnection(function(err, connection){
+            if (err){
+                callback(new Error("Error de conexión a la base de datos"))
+            }
+            else{
+                connection.query(
+                    `SELECT tipo, COUNT(*) as contador
+                     FROM UCM_AW_CAU_AVI_Avisos
+                     WHERE idUser = ?
+                     GROUP BY tipo`,
+                     [idUser],
+                function(err, result){
+                    connection.release()
+                    if (err)
+                        callback(new Error("Problema en el acceso a la base de datos"))
+                    else
+                        callback(null, result)
+
+                })
+            }
+        })
+
+
+    }
 
     listarAvisosUsuario(idUser, activo, callback){
         this.pool.getConnection(function(err, connection){
@@ -147,14 +172,14 @@ class DAOAvisos{
         })
     }
 
-    listarAvisosSinTencico(callback){
+    listarAvisos(callback){
         this.pool.getConnection(function(err, connection){
             if(err){
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
                 connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, activo, area, idTecnico FROM
-                UCM_AW_CAU_AVI_Avisos WHERE idTecnico IS NULL AND activo = 1`,
+                UCM_AW_CAU_AVI_Avisos`,
                 function(err, result){
                     if(err){
                         connection.release()
@@ -169,7 +194,6 @@ class DAOAvisos{
         })
     }
 
-    listarAvisos
 }
 
 module.exports = DAOAvisos

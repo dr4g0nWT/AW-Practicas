@@ -9,7 +9,7 @@
                 <div class="modal-body">
                     <div class="d-flex justify-content-between">
                         <h5 class="p-1">
-                            <%= nombre %>
+                            <%= usuario.nombre %>
                         </h5>
                         <h5 id="modal_idAviso"></h5>
                     </div>
@@ -28,24 +28,21 @@
                     <div class="row mb-2">
                         <label for="modal_perfil" class="col-sm-3 col-form-label">Perfil: </label>
                         <div class="col-sm-9">
-                            <input type="text" readonly class="form-control" id="modal_perfil" value="<%=perfil %>">
+                            <input type="text" readonly class="form-control" id="modal_perfil" value="<%=usuario.perfil %>">
                         </div>
                     </div>
                     <div>
                         <label class="form-label" for="modal_obs">Observaciones: </label>
                         <textarea readonly id="modal_obs" class="form-control" rows="3"></textarea>
-
-                       
                     </div>
                     
-                    <form action="<% if (!entrantes) {%>/asignarRespuesta<%}else{ %>/completarAviso<% } %>" method="POST">
-                        <input type="hidden" name="idAviso" id="modal_idAvisoEnviar"></textarea>
-                        <input type="hidden" name="nombre" value="<%=nombre%>">
+                    <form action="<% if (vista != 0) {%>/asignarRespuesta<%}else{ %>/completarDirecto<% } %>" method="POST">
+                        <input type="hidden" name="idAviso" id="modal_idAvisoEnviar">
                         <label class="form-label" for="modal_res">Comentarios del técnico: </label>
-                        <textarea <% if(!tecnico){%> readonly <% } %>  id="modal_res" class="form-control" name="respuesta" rows="3" required></textarea>
-                        <% if(tecnico){ %>
-                            <input type="submit" class="btn btn-success" value="<% if(!entrantes){ %> Añadir Comentario <% }else{ %> Cerrar aviso <% } %>">
-                            <% } %>
+                        <textarea <% if(!usuario.tecnico || vista == 2){%> readonly <% } %>  id="modal_res" class="form-control" name="respuesta" rows="3" required></textarea>
+                        <% if(usuario.tecnico && vista != 2){ %>
+                            <input id="modal_submit" type="submit" class="btn btn-success mt-3" value="<% if(vista != 0){ %> Añadir Comentario <% }else{ %> Cerrar aviso <% } %>">
+                        <% } %>
                     </form>
 
                 </div>

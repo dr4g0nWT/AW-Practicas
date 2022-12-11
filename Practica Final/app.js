@@ -20,8 +20,6 @@ const { createUnzip } = require("zlib");
 
 let areasDisponibles = []
 
-let allTecnicos = []
-
 const areasIncidenciasAA = ["Adm. Digital: Registro electrónico", "Adm. Digital: Sede Electrónica",
     "Comunicaciones: Correo electrónico", "Comunicaciones: Google Meet",
     "Comunicaciones: Cuenta de alumno", "Web: Portal de eventos"]
@@ -120,6 +118,7 @@ app.use(flashMiddleware)
 //Creamos los middle para meter las sesiones
 function middleLogueado(req, res, next) {
     //if usuario loggueado, next
+  
     if (req.session.usuario) {
         next()
     }
@@ -129,7 +128,7 @@ function middleLogueado(req, res, next) {
 function middleNoLogueado(req, res, next) {
     //if usuario loggueado, next
     if (!req.session.usuario) {
-        next()
+        next()  
     }
     else res.redirect("/avisos")
 }
@@ -161,7 +160,22 @@ function middleGetAllTecnicos(request, response, next) {
             response.redirect("avisos")
         }
         else {
-            allTecnicos = result
+            response.allTecnicos = result
+            next()
+        }
+    })
+}
+
+function middleGetCategorias(request, response, next){
+    daoAvisos.listarAvisosUsuarioCategorias(request.session.usuario.idUser, function(err, res){
+        if (err){
+            console.log("Error")
+            response.status(404)
+            response.redirect("avisos")
+        }
+        else{
+            response.categorias = [0, 0, 0]
+            res.forEach(e => response.categorias[e.tipo - 1] = e.contador)
             next()
         }
     })
@@ -171,7 +185,7 @@ app.get("/", function (request, response) {
     response.redirect("/login")
 })
 
-app.get("/gestionUsuarios", middleLogueado, middleTecnico, function (request, response) {
+app.get("/gestionUsuarios", middleLogueado, middleTecnico, middleGetAllTecnicos, function (request, response) {
     daoUsers.getAllUsers(function (err, result) {
         if (err) {
             console.log("Error en avisos")
@@ -180,26 +194,20 @@ app.get("/gestionUsuarios", middleLogueado, middleTecnico, function (request, re
         else {
             response.status(200)
             response.render("avisos", {
-                tipo: true,
-                entrantes: false,
-                gestion: true,
-                tecnico: request.session.usuario.tecnico,
-                url: "avisos",
-                email: request.session.usuario.email,
-                nombre: request.session.usuario.nombre,
+                usuario: request.session.usuario,
+                vista: 3,
                 fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
-                perfil: request.session.usuario.perfil,
                 areas: areasDisponibles,
                 avisos: [],
                 usuarios: result,
-                tecnicos: allTecnicos
+                tecnicos: response.allTecnicos
             })
         }
     })
 })
 
 app.get("/avisosEntrantes", middleLogueado, middleTecnico, middleGetAllTecnicos, function (request, response) {
-    daoAvisos.listarAvisosSinTencico(function (err, result) {
+    daoAvisos.listarAvisos(function (err, result) {
         if (err) {
             console.log("Error en avisos")
             response.status(404)
@@ -207,55 +215,43 @@ app.get("/avisosEntrantes", middleLogueado, middleTecnico, middleGetAllTecnicos,
         else {
             response.status(200)
             response.render("avisos", {
-                tipo: true,
-                entrantes: true,
-                gestion: false,
-                tecnico: request.session.usuario.tecnico,
-                url: "asignar",
-                email: request.session.usuario.email,
-                nombre: request.session.usuario.nombre,
+                usuario: request.session.usuario,
+                vista: 0,
                 fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
-                perfil: request.session.usuario.perfil,
                 areas: areasDisponibles,
                 avisos: result,
                 usuarios: [],
-                tecnicos: allTecnicos
-            })//Falta cambiar el ejs
+                tecnicos: response.allTecnicos
+            })
         }
     })
 })
 
 //Pagina de avisos
-app.get("/avisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, function (request, response) {
+app.get("/avisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, middleGetCategorias, function (request, response) {
 
-    let func_callback = function (err, result) {
-        if (err) {
+    function func_callback(err, result){
+        if (err){
             console.log("Error en avisos")
             response.status(404)
         }
-        else {
-            response.status(200)
+        else{
+            response.status(200)  
             response.render("avisos", {
-                tipo: true,
-                entrantes: false,
-                gestion: false,
-                tecnico: request.session.usuario.tecnico,
-                url: "avisos",
-                email: request.session.usuario.email,
-                nombre: request.session.usuario.nombre,
+                usuario: request.session.usuario,
+                vista: 1,
                 fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
-                perfil: request.session.usuario.perfil,
                 areas: areasDisponibles,
-                avisos: result,
                 usuarios: [],
-                tecnicos: allTecnicos
-            })
+                tecnicos: response.allTecnicos,
+                categorias: response.categorias,
+                avisos: result})
         }
     }
+  
 
     if (!request.session.usuario.tecnico)
         daoAvisos.listarAvisosUsuario(request.session.usuario.idUser, true, func_callback)
-
     else
         daoAvisos.listarAvisosTecnico(request.session.usuario.idUser, true, func_callback)
 
@@ -263,7 +259,7 @@ app.get("/avisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, func
 
 
 //Pagina de avisos
-app.get("/historicoAvisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, function (request, response) {
+app.get("/historicoAvisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, middleGetCategorias, function (request, response) {
 
     let func_callback = function (err, result) {
         if (err) {
@@ -273,19 +269,14 @@ app.get("/historicoAvisos", middleLogueado, middleIncidencias, middleGetAllTecni
         else {
             response.status(200)
             response.render("avisos", {
-                tipo: true,
-                entrantes: false,
-                gestion: false,
-                tecnico: request.session.usuario.tecnico,
-                url: "avisos",
-                email: request.session.usuario.email,
-                nombre: request.session.usuario.nombre,
+                usuario: request.session.usuario,
+                vista: 2,
                 fecha: (new moment(request.session.usuario.fecha)).format("YYYY/MM/DD HH:mm:ss"),
-                perfil: request.session.usuario.perfil,
                 areas: areasDisponibles,
                 avisos: result,
                 usuarios: [],
-                tecnicos: allTecnicos
+                tecnicos: response.allTecnicos,
+                categorias: response.categorias
             })
         }
     }
@@ -325,10 +316,8 @@ app.post("/eliminarUsuario", middleLogueado, middleTecnico, function (request, r
 //Eliminamos un aviso
 app.post("/completarAviso", middleLogueado, middleTecnico, function (request, response) {
     let id = request.body.idAviso
-    let respuesta = "Este aviso ha sido eliminado por el técnico " + request.body.nombre + " debido a: "
-        + request.body.respuesta
-    console.log(id)
-    daoAvisos.asignarRespuesta(id, respuesta, function (err, resutl) {
+    let respuesta = "Este aviso ha sido eliminado por el técnico " + request.body.nombre + " debido a: " + request.body.respuesta
+    daoAvisos.asignarRespuesta(id, respuesta, function (err, result) {
         if (err) {
             console.log("Fallo en la BD")
             response.status(404)
@@ -346,6 +335,38 @@ app.post("/completarAviso", middleLogueado, middleTecnico, function (request, re
         }
     })
 
+})
+
+app.post("/completarDirecto", middleLogueado, middleTecnico, function(request, response){
+    let id = request.body.idAviso
+    let respuesta = "Este aviso ha sido eliminado por el técnico " + request.session.usuario.nombre + " debido a: " + request.body.respuesta
+    daoAvisos.asignarRespuesta(id, respuesta, function (err, result) {
+        if (err) {
+            console.log("Fallo en la BD")
+            response.status(404)
+        }
+        else {
+            daoAvisos.completarAviso(id, function (err, result) {
+                if (err) {
+                    console.log("Fallo en la BD")
+                    response.status(404)
+                }
+                else {
+                    console.log(id)
+                    console.log(request.session.idUser)
+                    daoAvisos.asignarTecnico(id, request.session.usuario.idUser, function(err){
+                        if (err){
+                            console.log("Fallo en la BD")
+                            response.status(404)
+                        }
+                        else{
+                            response.redirect("/avisos")
+                        }
+                    })    
+                }
+            })
+        }
+    })
 })
 
 app.post("/asignarRespuesta", middleLogueado, middleTecnico, function (request, response) {
@@ -407,7 +428,7 @@ app.post("/login",
             else {
                 request.session.usuario = {
                     email: request.body.email, nombre: existe.nombre, perfil: existe.perfil,
-                    tecnico: existe.tecnico, idUser: existe.idUser, fecha: existe.fecha
+                    tecnico: existe.tecnico, idUser: existe.idUser, fecha: existe.fecha, activo: existe.activo
                 }
                 response.redirect("/avisos")
             }
@@ -439,28 +460,43 @@ app.post("/register", multerFactory.single('imagen'),
     function (request, response) {
 
         const errors = validationResult(request);
-
+        
         if (!errors.isEmpty()) {
-            console.log(errors)
             response.setFlash("Contraseña insegura");
             response.redirect("/register")
         }
-        if (request.body.password !== request.body.cpassword) {
+        else if (request.body.password !== request.body.cpassword){
             response.setFlash("Las contraseñas no coinciden")
             response.redirect("/register")
         }
+        else{
 
-        let fecha = moment()
-        let user = {
-            email: request.body.email,
-            password: request.body.password,
-            userName: request.body.usuario,
-            perfil: request.body.perfil,
-            tecnico: (request.body.tecnico == '1') ? 1 : 0,
-            numEmpleado: request.body.numero,
-            img: (request.file) ? request.file.buffer : null,
-            fecha: fecha.toISOString() //fecha.format("YYYY-MM-DD-HH-mm-ss")
+            let fecha = moment()
+            let user = {
+                email: request.body.email,
+                password: request.body.password,
+                userName: request.body.usuario,
+                perfil: request.body.perfil,
+                tecnico: (request.body.tecnico == '1') ? 1 : 0,
+                numEmpleado: request.body.numero,
+                img: (request.file) ? request.file.buffer : null,
+                fecha: fecha.toISOString() //fecha.format("YYYY-MM-DD-HH-mm-ss")
+            }
+
+            daoUsers.insertUser(user, function (err, result) {
+                if (err) {
+                    console.log("Aqui")
+                    response.setFlash("Error al registrarse")
+                    response.redirect("/register")
+                }
+                else {
+                    response.redirect("/login")
+                }
+            })
+
         }
+
+        
 
         //Descomentar si quieres que se pueda reactivar el user en el register
 
@@ -498,16 +534,7 @@ app.post("/register", multerFactory.single('imagen'),
         //     }
         // })
 
-        daoUsers.insertUser(user, function (err, result) {
-            if (err) {
-                console.log("Aqui")
-                response.setFlash("Error al registrarse")
-                response.redirect("/register")
-            }
-            else {
-                response.redirect("/login")
-            }
-        })
+        
 
 
     })

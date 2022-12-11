@@ -3,6 +3,10 @@ nav img{
     width: 4em;
 }
 
+.desactivado{
+    opacity: 0.5;
+}
+
 .tipoLogo{
     width: 2em;
     margin-left: 0.5em;
@@ -12,7 +16,7 @@ nav img{
     width: 9em;
 }
 
-#modal_idAvisoEnviar, #modalAsig_idAvisoEnviar, #respuestaEliminar{
+#modal_idAvisoEnviar, #modalAsig_idAvisoEnviar{
     display: none;
 }
 

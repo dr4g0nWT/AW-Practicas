@@ -10,7 +10,7 @@
                 <div class="modal-body">
                     <div class="d-flex justify-content-between">
                         <h5 class="p-1">
-                            <%= nombre %>
+                            <%= usuario.nombre %>
                         </h5>
                         <h5 id="modalAsig_idAviso"></h5>
                         <input type="hidden" name="idAviso" id="modalAsig_idAvisoEnviar"></input>
@@ -30,7 +30,7 @@
                     <div class="row mb-2">
                         <label for="modalAsig_perfil" class="col-sm-3 col-form-label">Perfil: </label>
                         <div class="col-sm-9">
-                            <input type="text" readonly class="form-control" id="modalAsig_perfil" value="<%=perfil %>">
+                            <input type="text" readonly class="form-control" id="modalAsig_perfil" value="<%=usuario.perfil %>">
                         </div>
                     </div>
                     <div>

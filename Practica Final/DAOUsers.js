@@ -50,7 +50,8 @@ class DAOUsers {
                                     perfil: rows[0].perfil,
                                     tecnico: rows[0].tecnico,
                                     numero: rows[0].numEmpleado,
-                                    fecha: rows[0].fecha
+                                    fecha: rows[0].fecha,
+                                    activo: rows[0].activo
                                 });
                             }
                         }
