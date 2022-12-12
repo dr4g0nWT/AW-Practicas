@@ -20,7 +20,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="in-su">
+                    <div id="in-su">
                         <hr>
                         <div class="p-2 d-flex align-items-center form-group">
                             <label for="area" class="align-self-center">Area del aviso</label>
@@ -39,7 +39,7 @@
                         </div>
                     </div>
 
-                    <div class="felicitacion">
+                    <div id="felicitacion">
                         <hr>
                         <div class="p-2 d-flex align-items-center form-group">
                             <label for="area" class="align-self-center">Area del aviso</label>
@@ -66,7 +66,7 @@
                         </div>
                     </div>
 
-                    <div class="desc">
+                    <div id="desc">
                         <hr>
                         <div class="d-flex form-group">
                             <label for="message-text" class="col-form-label">Descripción del aviso</label>
@@ -85,60 +85,3 @@
 </div>
 
 
-<script>
-
-    function mostrarSelectorInciSugeFeli() {
-
-        let valor = document.getElementById("selectorTipo").value
-        let inciSuge = document.getElementsByClassName("in-su")
-        let felicitaciones = document.getElementsByClassName("felicitacion")
-        if (valor == 1 || valor == 2) {
-            for (let i = 0; i < inciSuge.length; i++) {
-                inciSuge[i].style.setProperty('display', 'block')
-            }
-            for (let i = 0; i < felicitaciones.length; i++) {
-                felicitaciones[i].style.setProperty('display', 'none')
-                document.getElementsByClassName("area")[1].value = "Selecciona uno"
-            }
-        }
-        else if (valor == 3) {
-            for (let i = 0; i < inciSuge.length; i++) {
-                inciSuge[i].style.display = "none"
-                document.getElementsByClassName("area")[0].value = "Selecciona uno"
-            }
-            for (let i = 0; i < felicitaciones.length; i++) {
-                felicitaciones[i].style.display = "block"
-            }
-        }
-        else {
-            for (let i = 0; i < inciSuge.length; i++) {
-                inciSuge[i].style.display = "none"
-                document.getElementsByClassName("area")[0].value = "Selecciona uno"
-            }
-            for (let i = 0; i < felicitaciones.length; i++) {
-                felicitaciones[i].style.display = "none"
-                document.getElementsByClassName("area")[1].value = "Selecciona uno"
-            }
-        }
-
-    }
-
-    function mostrarDesc() {
-        let valor = document.getElementsByClassName("area")[0].value
-        let valor2 = document.getElementsByClassName("area")[1].value
-        let desc = document.getElementsByClassName("desc")
-        console.log(valor + "   " + valor2)
-        if (valor != undefined || valor != "Selecciona uno" ||
-            valor2 != undefined || valor2 != "Selecciona uno") {
-            for (let i = 0; i < desc.length; i++) {
-                desc[i].style.display = "block"
-            }
-        }
-        if (valor === "Selecciona uno" && valor2 === "Selecciona uno") {
-            for (let i = 0; i < desc.length; i++) {
-                desc[i].style.display = "none"
-            }
-        }
-    }
-
-</script>

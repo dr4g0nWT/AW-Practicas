@@ -11,7 +11,7 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-sm bg-dark">
+    <nav class="navbar navbar-expand-sm bg-dark fixed-top">
         <div class="container-fluid">
             <div class="nav-brand">
                 <img src="img/LogoUCM.png" alt="">
@@ -37,8 +37,7 @@
         </div>
     </nav>
 
-    <div class="container">
-
+    <div id="cont" class="container">
         <div class="row mt-5">
             <div class="col">
                 <div class="btn-group">
@@ -248,3 +247,49 @@
             })
 
         </script>
+
+
+<script>
+
+    //Al principio se ocultan todos los campos y luego se muestran los que sean necesarios
+    $("#in-su").hide()
+    $("#felicitacion").hide()
+    $("#desc").hide()
+
+    function mostrarSelectorInciSugeFeli() {
+
+        let valor = document.getElementById("selectorTipo").value
+        let inciSuge = $("#in-su")
+        let felicitaciones = $("#felicitacion")
+
+        $(".area").eq(0).prop("value", "Selecciona uno")
+        $(".area").eq(1).prop("value", "Selecciona uno")
+        $("#desc").hide()
+
+        if (valor == 1 || valor == 2) {
+            inciSuge.show()
+            felicitaciones.hide()
+        }
+        else if (valor == 3) {
+            inciSuge.hide()
+            felicitaciones.show()
+        }
+        else {
+            inciSuge.hide()
+            felicitaciones.hide()
+        }
+
+    }
+   
+    function mostrarDesc() {
+        let valor = $(".area").eq(0).prop("value")
+        let valor2 = $(".area").eq(1).prop("value")
+   
+        if (valor || valor2) 
+            $("#desc").show()
+        if (valor === "Selecciona uno" && valor2 === "Selecciona uno")
+            $("#desc").hide()
+        
+    }
+
+</script>
