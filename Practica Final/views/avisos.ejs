@@ -2,11 +2,11 @@
 <html>
 
 <head>
-    <title>Práctica 1</title>
+    <title>UCM CAU</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/nuevoAviso.css">
     <%- include("links") %>
-    <link rel="stylesheet" href="css/avisos.css">
+        <link rel="stylesheet" href="css/avisos.css">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
                     <li class="nav-item mt-auto mb-auto ms-2">
                         <a class="nav-link text-white fs-2" href="">UCM-CAU</a>
                     </li>
-                    
+
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mt-auto mb-auto">
@@ -30,7 +30,7 @@
                         </button>
                     </li>
                     <li class="nav-item">
-                        <img class="rounded-circle me-4 ms-4 " src="imagen/<%=usuario.email%>" >
+                        <img class="rounded-circle me-4 ms-4 " src="imagen/<%=usuario.email%>">
                     </li>
                     <li class="nav-item mt-auto mb-auto">
                         <button type="button" class="btn btn-danger"
@@ -47,23 +47,30 @@
                 <div class="btn-group">
                     <% if(usuario.tecnico){ %>
                         <a href="/avisosEntrantes" class="btn btn-outline-primary">Avisos Entrantes</a>
-                    <% } %>
-                        <a href="/avisos" class="btn btn-outline-primary">Mis Avisos</a>
-                        <a href="/historicoAvisos" class="btn btn-outline-primary">Historico de avisos</a>
-                    <% if(usuario.tecnico){ %>
-                        <a href="/gestionUsuarios" class="btn btn-outline-primary">Gestion de usuarios</a>
-                    <% } %>
+                        <% } %>
+                            <a href="/avisos" class="btn btn-outline-primary">Mis Avisos</a>
+                            <a href="/historicoAvisos" class="btn btn-outline-primary">Historico de avisos</a>
+                            <% if(usuario.tecnico){ %>
+                                <a href="/gestionUsuarios" class="btn btn-outline-primary">Gestion de usuarios</a>
+                                <% } %>
                 </div>
             </div>
             <div class="col">
-                <div class="d-flex">
-                    <input class="form-control me-1" id="buscar" type="search" placeholder="Buscar" aria-label="Search">
+                <div class="d-flex align-items-center">
+                    <input class="form-control me-1 barraBusq" id="buscar" type="search" placeholder="Buscar"
+                        aria-label="Search">
                     <button class="btn btn-primary" type="submit">Buscar</button>
+                    <% if(usuario.tecnico){ %>
+                        <input class="form-check-input" type="checkbox" value="" id="buscUsuarios">
+                        <label class="form-check-label check" for="buscUsuarios">
+                            Usuarios
+                        </label>
+                        <% } %>
                 </div>
             </div>
         </div>
 
-        <% if(vista != 3){%>
+        <% if(vista !=3){%>
             <table class="table table-striped table-hover mt-3">
                 <thead class="table-dark">
                     <tr>
@@ -72,112 +79,138 @@
                         <th>Tipo</th>
                         <% if(!usuario.tecnico) {%>
                             <th>Tecnico</th>
-                        <% }else{ %>
-                            <th>Acciones</th>
-                        <% } %>
+                            <% }else{ %>
+                                <th>Acciones</th>
+                                <% } %>
 
                     </tr>
                 </thead>
                 <tbody>
                     <% avisos.forEach(function(aviso, i){%>
-                        <tr <%if(vista !=0){%>class="modal_ver_borrar" data-id="<%=i%>" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#verAviso" <%}%>>
-                            <td><%= aviso.fecha.toLocaleDateString("en-US") %></td>
-                            <td class="texto"><%= aviso.texto.substr(0,200) %></td>
-                            <td><img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></td>
-                            <% if(!usuario.tecnico) {%>
-                                <td><%= tecnicos.filter(tecn=> tecn.idUser == aviso.idTecnico).map(tecn => tecn.userName) %></td>
-                            <% }else{ %>
-                                    <td class="acciones">
-                                        <div class="d-flex">
-                                            <% if(vista != 0){ %>
-                                                <img class="tipoLogo" src="/img/avisos.png" alt="">
-                                                <% if (vista == 1) { %>
-                                                <form action="/completarAviso" , method="POST">
-                                                    <input type="hidden" name="respuesta" value="<%=aviso.respuesta %>">
-                                                    <input type="hidden" name="nombre" value="<%=usuario.nombre%>">
-                                                    <input type="hidden" name="idAviso" value="<%=aviso.idAviso%>">
-                                                    <input id="completar_submit" type="image" src="/img/basura.png" class="tipoLogo" alt="Submit">
-                                                </form>
-                                                <%}%>
-                                            <% }else{ %>
-                                                <input <%if(aviso.idTecnico){%> disabled <%}%> type="image" src="/img/asignar.png" class="tipoLogo modal_asignar modal_img_asignar" 
-                                                    data-id="<%=i%>" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#asignarTecnico">
-                                                <input type="image" src="/img/basura.png" class="tipoLogo modal_ver_borrar modal_img_borrar" 
-                                                    data-id="<%=i%>" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#verAviso">
-                                            <% } %>
-                                        </div>
+                        <tr <%if(vista !=0){%>class="modal_ver_borrar" data-id="<%=i%>" data-toggle="modal"
+                                data-bs-toggle="modal" data-bs-target="#verAviso" <%}%>>
+                                    <td>
+                                        <%= aviso.fecha.toLocaleDateString("en-US") %>
                                     </td>
-                                    <% } %>
+                                    <td class="texto" id="<%= aviso.userName %> ">
+                                        <%= aviso.texto.substr(0,200) %>
+                                    </td>
+                                    <td><img class="tipoLogo" src="/img/<%= aviso.tipo %>.png" alt=""></td>
+                                    <% if(!usuario.tecnico) {%>
+                                        <td>
+                                            <%= tecnicos.filter(tecn=> tecn.idUser == aviso.idTecnico).map(tecn =>
+                                                tecn.userName) %>
+                                        </td>
+                                        <% }else{ %>
+                                            <td class="acciones">
+                                                <div class="d-flex">
+                                                    <% if(vista !=0){ %>
+                                                        <img class="tipoLogo" src="/img/avisos.png" alt="">
+                                                        <% if (vista==1) { %>
+                                                            <form action="/completarAviso" , method="POST">
+                                                                <input type="hidden" name="respuesta"
+                                                                    value="<%=aviso.respuesta %>">
+                                                                <input type="hidden" name="nombre"
+                                                                    value="<%=usuario.nombre%>">
+                                                                <input type="hidden" name="idAviso"
+                                                                    value="<%=aviso.idAviso%>">
+                                                                <input id="completar_submit" type="image"
+                                                                    src="/img/basura.png" class="tipoLogo" alt="Submit">
+                                                            </form>
+                                                            <%}%>
+                                                                <% }else{ %>
+                                                                    <input <%if(aviso.idTecnico){%> disabled <%}%>
+                                                                        type="image" src="/img/asignar.png"
+                                                                        class="tipoLogo modal_asignar modal_img_asignar"
+                                                                        data-id="<%=i%>" data-toggle="modal"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#asignarTecnico">
+                                                                            <input type="image" src="/img/basura.png"
+                                                                                class="tipoLogo modal_ver_borrar modal_img_borrar"
+                                                                                data-id="<%=i%>" data-toggle="modal"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#verAviso">
+                                                                            <% } %>
+                                                </div>
+                                            </td>
+                                            <% } %>
                         </tr>
 
                         <% }) %>
                 </tbody>
             </table>
-        <% }else{%>
-            <table class="table table-striped table-hover mt-3">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Nombre</th>
-                        <th>Rol</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody> 
-                    <% usuarios.forEach(function(user, i){ %> <!--no llamar usuario a la variable del foreach. Usuario es el usuario loggeado-->
-                        <% if (user.idUser != usuario.idUser) {%>
+            <% }else{%>
+                <table class="table table-striped table-hover mt-3">
+                    <thead class="table-dark">
                         <tr>
-                            <td><%= user.fecha.toString().slice(0,10) %></td>
-                            <td><%= user.userName %></td>
-                            <td><% if(user.tecnico){ %> TECNICO <% }else{ %> USUARIO <% } %></td>
-                            <td>
-                                <form action="/eliminarUsuario" , method="POST" class="">
-                                    <input type="hidden" name="idUser" value="<%= user.idUser %> ">
-                                    <input type="image" src="/img/basura.png" class="tipoLogo"alt="Submit">
-                                </form>
-                            </td>
+                            <th>Fecha</th>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
                         </tr>
-                        <%}%>
-                    <% }) %> 
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <% usuarios.forEach(function(user, i){ %>
+                            <!--no llamar usuario a la variable del foreach. Usuario es el usuario loggeado-->
+                            <% if (user.idUser !=usuario.idUser) {%>
+                                <tr>
+                                    <td>
+                                        <%= user.fecha.toString().slice(0,10) %>
+                                    </td>
+                                    <td class="texto" id="<%= user.userName %> ">
+                                        <%= user.userName %>
+                                    </td>
+                                    <td>
+                                        <% if(user.tecnico){ %> TECNICO <% }else{ %> USUARIO <% } %>
+                                    </td>
+                                    <td>
+                                        <form action="/eliminarUsuario" , method="POST" class="">
+                                            <input type="hidden" name="idUser" value="<%= user.idUser %> ">
+                                            <input type="image" src="/img/basura.png" class="tipoLogo" alt="Submit">
+                                        </form>
+                                    </td>
+                                </tr>
+                                <%}%>
+                                    <% }) %>
+                    </tbody>
+                </table>
 
-        <% } %>
-       
-        <%- include("verAviso") %>
-        <%- include("asignarTecnico") %>
+                <% } %>
 
-        <% if(!usuario.tecnico){%>
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-success" data-toggle="modal" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">Nuevo
-                    aviso</button>
-                <%- include("nuevoAviso")%>
-            </div>
-        <% } %>
+                    <%- include("verAviso") %>
+                        <%- include("asignarTecnico") %>
+
+                            <% if(!usuario.tecnico){%>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-success" data-toggle="modal" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">Nuevo
+                                        aviso</button>
+                                    <%- include("nuevoAviso")%>
+                                </div>
+                                <% } %>
     </div>
 
     <%- include("perfil") %>
-    <%- include("scripts") %>
+        <%- include("scripts") %>
 </body>
 
 
 </html>
 
 
-<% if(vista == 0){ %>
+<% if(vista==0){ %>
 
     <script>
 
         let avisos = `<%-JSON.stringify(avisos)%>`
 
         //A continuación eliminamos caractéres especiales que hacen que falle el parse JSON
-        avisos=avisos.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t"); 
+        avisos = avisos.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t");
         avisos = JSON.parse(avisos)
 
         $(".modal_asignar").on("click", function (event) {
             let id = $(this).data("id")
-          
+
             let t = `Aviso ${avisos[id].idAviso}`
             $("#modalAsig_idAviso").text(t)
             $("#modalAsig_idAvisoEnviar").prop("value", avisos[id].idAviso)
@@ -193,21 +226,21 @@
         })
 
 
-        $(".modal_img_asignar").each(function(i){
+        $(".modal_img_asignar").each(function (i) {
             $(this).css("opacity", (avisos[i].idTecnico) ? 0.5 : 1)
         })
 
 
     </script>
 
-<% } %>
+    <% } %>
 
-<script>
+        <script>
 
             //Al pulsar el boton de eliminar un aviso se muestra el modal debido a que está contenido en 
             //la fila que despliega un modal. Con la siguiente función lo ocultamos para que no se muestre al
             //pulsar el botón
-            $("#completar_submit").on("click", function(event){
+            $("#completar_submit").on("click", function (event) {
                 event.stopPropagation()
                 $(".modal_ver_borrar").hide()
             })
@@ -215,9 +248,9 @@
             $(".modal_ver_borrar").on("click", function (event) {
                 let id = $(this).data("id")
                 let avisos = `<%-JSON.stringify(avisos)%>`
-                avisos=avisos.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t"); //Eliminamos algunos caractéres especiales
+                avisos = avisos.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t"); //Eliminamos algunos caractéres especiales
                 avisos = JSON.parse(avisos)
-               
+
                 let t = `Aviso ${avisos[id].idAviso}`
                 $("#modal_idAviso").text(t)
                 $("#modal_idAvisoEnviar").prop("value", avisos[id].idAviso)
@@ -230,73 +263,97 @@
 
                 let comentarios = (avisos[id].respuesta) ? avisos[id].respuesta : ""
                 $("#modal_res").text(comentarios)
-                
+
             })
 
-            
+
 
             $("#buscar").on("keyup", function (event) {
 
+                let avisos = `<%-JSON.stringify(avisos)%>`
+                avisos = avisos.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t"); //Eliminamos algunos caractéres especiales
+                avisos = JSON.parse(avisos)
+
                 let texto = $("#buscar").prop("value").toUpperCase()
-                let cols = $(".texto") //busca por campo nombre
+                let check = $("#buscUsuarios").prop("checked")
+                let cols = $(".texto")
+                console.log(check)
+                if (check) {
 
-                for (let i = 0; i < cols.length; i++) {
-                    let t = cols.eq(i).text().toUpperCase() //Valor del campo texto
-                    if (t.indexOf(texto) < 0)
-                        cols.eq(i).parent().hide() //El padre de la columna es la fila entera. Se oculta
-                    else
-                        cols.eq(i).parent().show() //El padre de la columna es la fila entera. Se muestra
+                    for (let i = 0; i < cols.length; i++) {
+                        let user = cols.eq(i).prop("id").toUpperCase()
+                        if (user.indexOf(texto) < 0)
+                            cols.eq(i).parent().hide() //El padre de la columna es la fila entera. Se oculta
+                        else
+                            cols.eq(i).parent().show() //El padre de la columna es la fila entera. Se muestra
 
+                    }
+
+                } else {
+
+                    for (let i = 0; i < cols.length; i++) {
+                        let t = cols.eq(i).text().toUpperCase() //Valor del campo texto
+                        if (t.indexOf(texto) < 0)
+                            cols.eq(i).parent().hide() //El padre de la columna es la fila entera. Se oculta
+                        else
+                            cols.eq(i).parent().show() //El padre de la columna es la fila entera. Se muestra
+
+                    }
                 }
+
+
 
             })
 
-</script>
 
 
-<% if (!usuario.tecnico) {%>
-<script>
 
-    //Al principio se ocultan todos los campos y luego se muestran los que sean necesarios
-    $("#in-su").hide()
-    $("#felicitacion").hide()
-    $("#desc").hide()
+        </script>
 
-    function mostrarSelectorInciSugeFeli() {
 
-        let valor = document.getElementById("selectorTipo").value
-        let inciSuge = $("#in-su")
-        let felicitaciones = $("#felicitacion")
+        <% if (!usuario.tecnico) {%>
+            <script>
 
-        $(".area").eq(0).prop("value", "Selecciona uno")
-        $(".area").eq(1).prop("value", "Selecciona uno")
-        $("#desc").hide()
+                //Al principio se ocultan todos los campos y luego se muestran los que sean necesarios
+                $("#in-su").hide()
+                $("#felicitacion").hide()
+                $("#desc").hide()
 
-        if (valor == 1 || valor == 2) {
-            inciSuge.show()
-            felicitaciones.hide()
-        }
-        else if (valor == 3) {
-            inciSuge.hide()
-            felicitaciones.show()
-        }
-        else {
-            inciSuge.hide()
-            felicitaciones.hide()
-        }
+                function mostrarSelectorInciSugeFeli() {
 
-    }
-   
-    function mostrarDesc() {
-        let valor = $(".area").eq(0).prop("value")
-        let valor2 = $(".area").eq(1).prop("value")
-   
-        if (valor || valor2) 
-            $("#desc").show()
-        if (valor === "Selecciona uno" && valor2 === "Selecciona uno")
-            $("#desc").hide()
-        
-    }
+                    let valor = document.getElementById("selectorTipo").value
+                    let inciSuge = $("#in-su")
+                    let felicitaciones = $("#felicitacion")
 
-</script>
-<%}%>
+                    $(".area").eq(0).prop("value", "Selecciona uno")
+                    $(".area").eq(1).prop("value", "Selecciona uno")
+                    $("#desc").hide()
+
+                    if (valor == 1 || valor == 2) {
+                        inciSuge.show()
+                        felicitaciones.hide()
+                    }
+                    else if (valor == 3) {
+                        inciSuge.hide()
+                        felicitaciones.show()
+                    }
+                    else {
+                        inciSuge.hide()
+                        felicitaciones.hide()
+                    }
+
+                }
+
+                function mostrarDesc() {
+                    let valor = $(".area").eq(0).prop("value")
+                    let valor2 = $(".area").eq(1).prop("value")
+
+                    if (valor || valor2)
+                        $("#desc").show()
+                    if (valor === "Selecciona uno" && valor2 === "Selecciona uno")
+                        $("#desc").hide()
+
+                }
+
+            </script>
+            <%}%>

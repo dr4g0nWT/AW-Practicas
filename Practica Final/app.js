@@ -118,7 +118,7 @@ app.use(flashMiddleware)
 //Creamos los middle para meter las sesiones
 function middleLogueado(req, res, next) {
     //if usuario loggueado, next
-  
+
     if (req.session.usuario) {
         next()
     }
@@ -128,7 +128,7 @@ function middleLogueado(req, res, next) {
 function middleNoLogueado(req, res, next) {
     //if usuario loggueado, next
     if (!req.session.usuario) {
-        next()  
+        next()
     }
     else res.redirect("/avisos")
 }
@@ -165,12 +165,12 @@ function middleGetAllTecnicos(request, response, next) {
     })
 }
 
-function middleGetCategorias(request, response, next){
-    daoAvisos.listarAvisosUsuarioCategorias(request.session.usuario.idUser, function(err, res){
-        if (err){
+function middleGetCategorias(request, response, next) {
+    daoAvisos.listarAvisosUsuarioCategorias(request.session.usuario.idUser, function (err, res) {
+        if (err) {
             response.status(500)
         }
-        else{
+        else {
             response.categorias = [0, 0, 0]
             res.forEach(e => response.categorias[e.tipo - 1] = e.contador)
             next()
@@ -225,12 +225,12 @@ app.get("/avisosEntrantes", middleLogueado, middleTecnico, middleGetAllTecnicos,
 //Pagina de avisos
 app.get("/avisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, middleGetCategorias, function (request, response) {
 
-    function func_callback(err, result){
-        if (err){
+    function func_callback(err, result) {
+        if (err) {
             response.status(500)
         }
-        else{
-            response.status(200)  
+        else {
+            response.status(200)
             response.render("avisos", {
                 usuario: request.session.usuario,
                 vista: 1,
@@ -239,10 +239,11 @@ app.get("/avisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, midd
                 usuarios: [],
                 tecnicos: response.allTecnicos,
                 categorias: response.categorias,
-                avisos: result})
+                avisos: result
+            })
         }
     }
-  
+
 
     if (!request.session.usuario.tecnico)
         daoAvisos.listarAvisosUsuario(request.session.usuario.idUser, true, func_callback)
@@ -330,9 +331,9 @@ app.post("/completarAviso", middleLogueado, middleTecnico, function (request, re
 app.post("/asignarRespuesta", middleLogueado, middleTecnico, function (request, response) {
     daoAvisos.asignarRespuesta(request.body.idAviso, request.body.respuesta,
         function (err, result) {
-            if (err) 
+            if (err)
                 response.status(500)
-            else 
+            else
                 response.redirect("/avisos")
         })
 })
@@ -401,7 +402,10 @@ app.get("/register", middleNoLogueado, function (request, response) {
 
 })
 
+
 app.post("/register", multerFactory.single('imagen'),
+
+    check("email", "Direccion de correo no valida").custom((v) => { return v.slice(v.indexOf('@') + 1) == 'ucm.es' }),
 
     check("password", "Contraseña insegura").isStrongPassword({
         minLength: 8,
@@ -415,16 +419,22 @@ app.post("/register", multerFactory.single('imagen'),
     function (request, response) {
 
         const errors = validationResult(request);
-        
+
         if (!errors.isEmpty()) {
-            response.setFlash("Contraseña insegura");
-            response.redirect("/register")
+            if (errors.errors.length == 1) {
+                response.setFlash(errors.errors[0].msg);
+                response.redirect("/register")
+            }
+            else {
+                response.setFlash("Correo no valido y contraseña insegura");
+                response.redirect("/register")
+            }
         }
-        else if (request.body.password !== request.body.cpassword){
+        else if (request.body.password !== request.body.cpassword) {
             response.setFlash("Las contraseñas no coinciden")
             response.redirect("/register")
         }
-        else{
+        else {
 
             let fecha = moment()
             let user = {
@@ -450,7 +460,7 @@ app.post("/register", multerFactory.single('imagen'),
 
         }
 
-        
+
 
 
     })
