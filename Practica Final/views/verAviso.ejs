@@ -8,9 +8,7 @@
             </div>
                 <div class="modal-body">
                     <div class="d-flex justify-content-between">
-                        <h5 class="p-1">
-                            <%= usuario.nombre %>
-                        </h5>
+                        <h5 class="p-1" id="modal_nombre"></h5>
                         <h5 id="modal_idAviso"></h5>
                     </div>
                     <div class="row mb-2">
@@ -36,7 +34,7 @@
                         <textarea readonly id="modal_obs" class="form-control" rows="3"></textarea>
                     </div>
                     
-                    <form action="<% if (vista != 0) {%>/asignarRespuesta<%}else{ %>/completarDirecto<% } %>" method="POST">
+                    <form action="<% if (vista != 0) {%>/asignarRespuesta<%}else{ %>/completarAviso<% } %>" method="POST">
                         <input type="hidden" name="idAviso" id="modal_idAvisoEnviar">
                         <label class="form-label" for="modal_res">Comentarios del técnico: </label>
                         <textarea <% if(!usuario.tecnico || vista == 2){%> readonly <% } %>  id="modal_res" class="form-control" name="respuesta" rows="3" required></textarea>
@@ -46,9 +44,7 @@
                     </form>
 
                 </div>
-                <div class="modal-footer">
-                    
-                </div>
+                <div class="modal-footer"></div>
         </div>
     </div>
 </div>

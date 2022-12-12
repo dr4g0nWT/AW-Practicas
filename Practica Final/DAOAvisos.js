@@ -3,7 +3,6 @@
 class DAOAvisos{
     constructor(pool){
         this.pool = pool
-        console.log("DAO Avisos creado")
     }
 
     insertAviso(aviso, callback){
@@ -15,7 +14,6 @@ class DAOAvisos{
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
-                console.log("Aqui estoy")
                 connection.query(`INSERT INTO UCM_AW_CAU_AVI_Avisos (texto, fecha, tipo, idUser, area, activo)
                 VALUES (?, ?, ?, ?, ?, ?)`,
                 [aviso.texto, aviso.fecha, aviso.tipo, aviso.idUser, aviso.area, true],
@@ -26,7 +24,6 @@ class DAOAvisos{
                     }
                     else{
                         connection.release()
-                        console.log("Final de insert")
                         callback(null)
                     }
                 })
@@ -132,8 +129,10 @@ class DAOAvisos{
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
-                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, idTecnico FROM
-                UCM_AW_CAU_AVI_Avisos WHERE idUser = ? AND activo = ?`,
+                connection.query(`
+                SELECT A.idAviso, A.texto, A.fecha, A.tipo, A.respuesta, A.area, A.idTecnico, U.userName 
+                FROM UCM_AW_CAU_AVI_Avisos A JOIN UCM_AW_CAU_USU_Usuarios U ON(A.idUser = U.idUser)
+                WHERE A.idUser = ? AND A.activo = ?`,
                 [idUser, activo],
                 function(err, result){
                     if(err){
@@ -155,8 +154,10 @@ class DAOAvisos{
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
-                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, area, idTecnico FROM
-                UCM_AW_CAU_AVI_Avisos WHERE idTecnico = ? AND activo = ?`,
+                connection.query(`
+                SELECT A.idAviso, A.texto, A.fecha, A.tipo, A.respuesta, A.area, A.idTecnico, U.userName
+                FROM UCM_AW_CAU_AVI_Avisos A JOIN UCM_AW_CAU_USU_Usuarios U ON(A.idUser = U.idUser)
+                WHERE A.idTecnico = ? AND A.activo = ?`,
                 [idTecnico, activo],
                 function(err, result){
                     if(err){
@@ -178,8 +179,10 @@ class DAOAvisos{
                 callback(new Error("Error de conexión a la base de datos"))
             }
             else{
-                connection.query(`SELECT idAviso, texto, fecha, tipo, respuesta, activo, area, idTecnico FROM
-                UCM_AW_CAU_AVI_Avisos`,
+                connection.query(`
+                SELECT A.idAviso, A.texto, A.fecha, A.tipo, A.respuesta, A.area, A.idTecnico, U.userName
+                FROM UCM_AW_CAU_AVI_Avisos A JOIN UCM_AW_CAU_USU_Usuarios U ON(A.idUser = U.idUser)
+                WHERE A.activo = 1`,
                 function(err, result){
                     if(err){
                         connection.release()

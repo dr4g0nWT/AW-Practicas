@@ -30,7 +30,7 @@
                         </button>
                     </li>
                     <li class="nav-item">
-                        <img class="rounded-circle me-4 ms-4 " src="imagen/<%=usuario.email%>" alt="">
+                        <img class="rounded-circle me-4 ms-4 " src="imagen/<%=usuario.email%>" >
                     </li>
                     <li class="nav-item mt-auto mb-auto">
                         <button type="button" class="btn btn-danger"
@@ -102,7 +102,7 @@
                                             <% }else{ %>
                                                 <input <%if(aviso.idTecnico){%> disabled <%}%> type="image" src="/img/asignar.png" class="tipoLogo modal_asignar modal_img_asignar" 
                                                     data-id="<%=i%>" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#asignarTecnico">
-                                                <input <%if(!aviso.activo){%> disabled <%}%> type="image" src="/img/basura.png" class="tipoLogo modal_ver_borrar modal_img_borrar" 
+                                                <input type="image" src="/img/basura.png" class="tipoLogo modal_ver_borrar modal_img_borrar" 
                                                     data-id="<%=i%>" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#verAviso">
                                             <% } %>
                                         </div>
@@ -123,20 +123,21 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>  <!-- Te dejo puesta la i por si la necesitas para la busqueda por users -->
-                    <% usuarios.forEach(function(usuario, i){ %>
+                <tbody> 
+                    <% usuarios.forEach(function(user, i){ %> <!--no llamar usuario a la variable del foreach. Usuario es el usuario loggeado-->
+                        <% if (user.idUser != usuario.idUser) {%>
                         <tr>
-                            <td><%= usuario.fecha.toString().slice(0,10) %></td>
-                            <td><%= usuario.userName %></td>
-                            <td><% if(usuario.tecnico){ %> TECNICO <% }else{ %> USUARIO <% } %></td>
+                            <td><%= user.fecha.toString().slice(0,10) %></td>
+                            <td><%= user.userName %></td>
+                            <td><% if(user.tecnico){ %> TECNICO <% }else{ %> USUARIO <% } %></td>
                             <td>
                                 <form action="/eliminarUsuario" , method="POST" class="">
-                                    <input type="hidden" name="idUser" value="<%= usuario.idUser %> ">
-                                    <input type="image" src="/img/basura.png" class="tipoLogo"
-                                    alt="Submit">
+                                    <input type="hidden" name="idUser" value="<%= user.idUser %> ">
+                                    <input type="image" src="/img/basura.png" class="tipoLogo"alt="Submit">
                                 </form>
                             </td>
                         </tr>
+                        <%}%>
                     <% }) %> 
                 </tbody>
             </table>
@@ -171,7 +172,7 @@
         let avisos = `<%-JSON.stringify(avisos)%>`
 
         //A continuación eliminamos caractéres especiales que hacen que falle el parse JSON
-        avisos=avisos.replace(/\n/g, "\\n").replace(/\r/g, "\\r"); 
+        avisos=avisos.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t"); 
         avisos = JSON.parse(avisos)
 
         $(".modal_asignar").on("click", function (event) {
@@ -180,6 +181,7 @@
             let t = `Aviso ${avisos[id].idAviso}`
             $("#modalAsig_idAviso").text(t)
             $("#modalAsig_idAvisoEnviar").prop("value", avisos[id].idAviso)
+            $("#modalAsig_nombre").text(avisos[id].userName)
 
             let date = new Date(avisos[id].fecha)
             $("#modalAsig_fecha").prop("value", date.toLocaleDateString("en-US"))
@@ -191,18 +193,16 @@
         })
 
 
-        $(".modal_img_borrar").each(function(i){
-            $(this).css("opacity", (avisos[i].activo) ? 1 : 0.5)
-        })
         $(".modal_img_asignar").each(function(i){
             $(this).css("opacity", (avisos[i].idTecnico) ? 0.5 : 1)
         })
 
+
     </script>
 
-    <% } %>
+<% } %>
 
-        <script>
+<script>
 
             //Al pulsar el boton de eliminar un aviso se muestra el modal debido a que está contenido en 
             //la fila que despliega un modal. Con la siguiente función lo ocultamos para que no se muestre al
@@ -215,12 +215,13 @@
             $(".modal_ver_borrar").on("click", function (event) {
                 let id = $(this).data("id")
                 let avisos = `<%-JSON.stringify(avisos)%>`
-                avisos=avisos.replace(/\n/g, "\\n").replace(/\r/g, "\\r"); //Eliminamos algunos caractéres especiales
+                avisos=avisos.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t"); //Eliminamos algunos caractéres especiales
                 avisos = JSON.parse(avisos)
                
                 let t = `Aviso ${avisos[id].idAviso}`
                 $("#modal_idAviso").text(t)
                 $("#modal_idAvisoEnviar").prop("value", avisos[id].idAviso)
+                $("#modal_nombre").text(avisos[id].userName)
 
                 let date = new Date(avisos[id].fecha)
                 $("#modal_fecha").prop("value", date.toLocaleDateString("en-US"))
@@ -250,9 +251,10 @@
 
             })
 
-        </script>
+</script>
 
 
+<% if (!usuario.tecnico) {%>
 <script>
 
     //Al principio se ocultan todos los campos y luego se muestran los que sean necesarios
@@ -297,3 +299,4 @@
     }
 
 </script>
+<%}%>

@@ -156,8 +156,7 @@ function middleTecnico(request, response, next) {
 function middleGetAllTecnicos(request, response, next) {
     daoUsers.getAllTecnicos(function (err, result) {
         if (err) {
-            response.status(404)
-            response.redirect("avisos")
+            response.status(500)
         }
         else {
             response.allTecnicos = result
@@ -169,9 +168,7 @@ function middleGetAllTecnicos(request, response, next) {
 function middleGetCategorias(request, response, next){
     daoAvisos.listarAvisosUsuarioCategorias(request.session.usuario.idUser, function(err, res){
         if (err){
-            console.log("Error")
-            response.status(404)
-            response.redirect("avisos")
+            response.status(500)
         }
         else{
             response.categorias = [0, 0, 0]
@@ -188,8 +185,7 @@ app.get("/", function (request, response) {
 app.get("/gestionUsuarios", middleLogueado, middleTecnico, middleGetAllTecnicos, function (request, response) {
     daoUsers.getAllUsers(function (err, result) {
         if (err) {
-            console.log("Error en avisos")
-            response.status(404)
+            response.status(500)
         }
         else {
             response.status(200)
@@ -209,8 +205,7 @@ app.get("/gestionUsuarios", middleLogueado, middleTecnico, middleGetAllTecnicos,
 app.get("/avisosEntrantes", middleLogueado, middleTecnico, middleGetAllTecnicos, function (request, response) {
     daoAvisos.listarAvisos(function (err, result) {
         if (err) {
-            console.log("Error en avisos")
-            response.status(404)
+            response.status(500)
         }
         else {
             response.status(200)
@@ -232,8 +227,7 @@ app.get("/avisos", middleLogueado, middleIncidencias, middleGetAllTecnicos, midd
 
     function func_callback(err, result){
         if (err){
-            console.log("Error en avisos")
-            response.status(404)
+            response.status(500)
         }
         else{
             response.status(200)  
@@ -263,8 +257,7 @@ app.get("/historicoAvisos", middleLogueado, middleIncidencias, middleGetAllTecni
 
     let func_callback = function (err, result) {
         if (err) {
-            console.log("Error en avisos")
-            response.status(404)
+            response.status(500)
         }
         else {
             response.status(200)
@@ -292,8 +285,7 @@ app.get("/historicoAvisos", middleLogueado, middleIncidencias, middleGetAllTecni
 app.post("/asignarTecnico", middleLogueado, middleTecnico, function (request, response) {
     daoAvisos.asignarTecnico(request.body.idAviso, request.body.idTecnicoAsig, function (err, result) {
         if (err) {
-            console.log("Fallo en la BD")
-            response.status(404)
+            response.status(500)
         }
         else {
             response.redirect("/avisosEntrantes")
@@ -304,8 +296,7 @@ app.post("/asignarTecnico", middleLogueado, middleTecnico, function (request, re
 app.post("/eliminarUsuario", middleLogueado, middleTecnico, function (request, response) {
     daoUsers.setActivo(request.body.idUser, 0, function (err) {
         if (err) {
-            console.log("Fallo en la BD")
-            response.status(404)
+            response.status(500)
         }
         else {
             response.redirect("/gestionUsuarios")
@@ -316,17 +307,15 @@ app.post("/eliminarUsuario", middleLogueado, middleTecnico, function (request, r
 //Eliminamos un aviso
 app.post("/completarAviso", middleLogueado, middleTecnico, function (request, response) {
     let id = request.body.idAviso
-    let respuesta = "Este aviso ha sido eliminado por el técnico " + request.body.nombre + " debido a: " + request.body.respuesta
+    let respuesta = "Este aviso ha sido eliminado por el técnico " + request.session.usuario.nombre + " debido a: " + request.body.respuesta
     daoAvisos.asignarRespuesta(id, respuesta, function (err, result) {
         if (err) {
-            console.log("Fallo en la BD")
-            response.status(404)
+            response.status(500)
         }
         else {
             daoAvisos.completarAviso(id, function (err, result) {
                 if (err) {
-                    console.log("Fallo en la BD")
-                    response.status(404)
+                    response.status(500)
                 }
                 else {
                     response.redirect("/avisos")
@@ -337,48 +326,14 @@ app.post("/completarAviso", middleLogueado, middleTecnico, function (request, re
 
 })
 
-app.post("/completarDirecto", middleLogueado, middleTecnico, function(request, response){
-    let id = request.body.idAviso
-    let respuesta = "Este aviso ha sido eliminado por el técnico " + request.session.usuario.nombre + " debido a: " + request.body.respuesta
-    daoAvisos.asignarRespuesta(id, respuesta, function (err, result) {
-        if (err) {
-            console.log("Fallo en la BD")
-            response.status(404)
-        }
-        else {
-            daoAvisos.completarAviso(id, function (err, result) {
-                if (err) {
-                    console.log("Fallo en la BD")
-                    response.status(404)
-                }
-                else {
-                    console.log(id)
-                    console.log(request.session.idUser)
-                    daoAvisos.asignarTecnico(id, request.session.usuario.idUser, function(err){
-                        if (err){
-                            console.log("Fallo en la BD")
-                            response.status(404)
-                        }
-                        else{
-                            response.redirect("/avisos")
-                        }
-                    })    
-                }
-            })
-        }
-    })
-})
 
 app.post("/asignarRespuesta", middleLogueado, middleTecnico, function (request, response) {
     daoAvisos.asignarRespuesta(request.body.idAviso, request.body.respuesta,
         function (err, result) {
-            if (err) {
-                console.log("Fallo en la BD")
-                response.status(404)
-            }
-            else {
+            if (err) 
+                response.status(500)
+            else 
                 response.redirect("/avisos")
-            }
         })
 })
 
@@ -485,7 +440,6 @@ app.post("/register", multerFactory.single('imagen'),
 
             daoUsers.insertUser(user, function (err, result) {
                 if (err) {
-                    console.log("Aqui")
                     response.setFlash("Error al registrarse")
                     response.redirect("/register")
                 }
@@ -498,55 +452,15 @@ app.post("/register", multerFactory.single('imagen'),
 
         
 
-        //Descomentar si quieres que se pueda reactivar el user en el register
-
-        // daoUsers.getActivo(user.email, function(err, result){
-        //     if(err){
-        //         console.log("Aqui")
-        //         response.setFlash("Error al registrarse")
-        //         response.redirect("/register")
-        //     }
-        //     else{
-        //         if(result[0] === 0){
-        //             daoUsers.setActivo(result[1], 1, function(err, result){
-        //                 if(err){
-        //                     console.log("Aqui")
-        //                     response.setFlash("Error al registrarse")
-        //                     response.redirect("/register")
-        //                 }
-        //                 else{
-        //                     response.redirect("/login")
-        //                 }
-        //             })
-        //         }
-        //         else{
-        //             daoUsers.insertUser(user, function (err, result) {
-        //                 if (err) {
-        //                     console.log("Aqui")
-        //                     response.setFlash("Error al registrarse")
-        //                     response.redirect("/register")
-        //                 }
-        //                 else {
-        //                     response.redirect("/login")
-        //                 }            
-        //             })
-        //         }
-        //     }
-        // })
-
-        
-
 
     })
 
 app.get("/imagen/:correo", middleLogueado, function (request, response) {
     daoUsers.getUserImageName(request.params.correo, function (err, img) {
-        if (!err) {
+        if (err || !img)
+            response.sendFile(path.join(__dirname, "public", "img", "noUser.png"))
+        else
             response.end(img)
-        }
-        else {
-            console.log("error")
-        }
     })
 
 })

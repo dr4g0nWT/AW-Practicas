@@ -2,16 +2,14 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="border: none;">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Vista de la tarea</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Asignar Tarea</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
             <form action="/asignarTecnico" method="POST">
                 <div class="modal-body">
                     <div class="d-flex justify-content-between">
-                        <h5 class="p-1">
-                            <%= usuario.nombre %>
-                        </h5>
+                        <h5 id="modalAsig_nombre" class="p-1"></h5>
                         <h5 id="modalAsig_idAviso"></h5>
                         <input type="hidden" name="idAviso" id="modalAsig_idAvisoEnviar"></input>
                     </div>
