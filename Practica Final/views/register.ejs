@@ -107,7 +107,7 @@
     else{
       $("#check_tecnico").hide()
       $("#num_empleado").hide()
-      $("#numero").attr("required", false)
+      $("#numero").prop("required", false)
     }
       
     
@@ -116,11 +116,13 @@
   function mostrar_ocultar_number(){
     if ($("#flexCheckDefault").prop("checked")){
       $("#num_empleado").show()
-      $("#numero").attr("required", true)
+      $("#numero").prop("required", true)
     }
-    else
+    else{
       $("#num_empleado").hide()
-      $("#numero").attr("required", false)
+      $("#numero").prop("required", false)
+    }
+      
       
   }
 
