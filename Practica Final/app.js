@@ -188,6 +188,7 @@ app.get("/gestionUsuarios", middleLogueado, middleTecnico, middleGetAllTecnicos,
             response.status(500)
         }
         else {
+            result.forEach((r) => {r.fecha = (new moment(r.fecha)).format("YYYY/MM/DD")})
             response.status(200)
             response.render("avisos", {
                 usuario: request.session.usuario,
