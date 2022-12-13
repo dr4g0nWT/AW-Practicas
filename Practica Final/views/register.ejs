@@ -47,25 +47,27 @@
       <div class="row align-items-center mb-2">
         <div class="col-lg-6 col-md-6 col-sm-12">
           <label for="selector">Perfil universitario</label>
-          <select onchange="mostrar_ocultar()" class="form-select" id="selector" aria-label="Default select example" name="perfil">
+          <select onchange="mostrar_ocultar_check()" class="form-select" id="selector" aria-label="Default select example" name="perfil">
             <option selected value="Alumno">Alumno</option>
             <option value="PAS">Personal de administracion y servicios</option>
             <option value="PDI">Personal Docente e Investigador</option>
             <option value="Antiguo Alumno">Antiguo Alumno</option>
           </select>
         </div>
-        <div class="col-lg-5 col-md-5 col-sm-12 ocultar">
+        <div class="col-lg-6 col-md-6 col-sm-12" id="num_empleado">
           <label for="numero">Nº Empleado</label>
           <input type="text" class="form-control" id="numero" pattern="\d{4}-[a-z]{3}" placeholder="Nº Empleado" name="numero">
-        </div>  
-        <div class="col-lg-1 col-md-1 col-sm-12 mt-4 ocultar">
+        </div>   
+      </div>
+      <div class="row">
+        <div id="check_tecnico">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="tecnico" value="1" id="flexCheckDefault">
+            <input class="form-check-input" onclick="mostrar_ocultar_number()" type="checkbox" name="tecnico" value="1" id="flexCheckDefault">
             <label class="form-check-label" for="flexCheckDefault">Tecnico</label>
           </div>
-        </div>    
+        </div>   
       </div>
-
+      <hr>
       <div class="row align-items-center">
         <div class="col-lg-6 col-md-6 col-sm-12">
           <label for="formFile" class="form-label mb-0">Foto de perfil</label>
@@ -95,18 +97,26 @@
 
 <script>
 
-  function mostrar_ocultar(){
+  $(mostrar_ocultar_check())
+  $(mostrar_ocultar_number())
 
-    let valor = document.getElementById("selector").value
-    let collection = document.getElementsByClassName("ocultar")
-    
-    for (let i = 0; i < collection.length; i++){
-      if (valor === "PAS")
-        collection[i].style.display = "block"
-      else
-        collection[i].style.display = "none"
+  function mostrar_ocultar_check(){
+
+    if ($("#selector").prop("value") === "PAS")
+      $("#check_tecnico").show()
+    else{
+      $("#check_tecnico").hide()
+      $("#num_empleado").hide()
     }
+      
     
+  }
+
+  function mostrar_ocultar_number(){
+    if ($("#flexCheckDefault").prop("checked"))
+      $("#num_empleado").show()
+    else
+      $("#num_empleado").hide()
   }
 
 </script>
