@@ -39,7 +39,9 @@
                         <label class="form-label" for="modal_res">Comentarios del técnico: </label>
                         <textarea <% if(!usuario.tecnico || vista == 2){%> readonly <% } %>  id="modal_res" class="form-control" name="respuesta" rows="3" required></textarea>
                         <% if(usuario.tecnico && vista != 2){ %>
-                            <input id="modal_submit" type="submit" class="btn btn-success mt-3" value="<% if(vista != 0){ %> Añadir Comentario <% }else{ %> Cerrar aviso <% } %>">
+                            <div class="d-flex flex-row-reverse">
+                                <input id="modal_submit" type="submit" class="btn btn-success mt-3" value="<% if(vista != 0){ %> Añadir Comentario <% }else{ %> Cerrar aviso <% } %>">
+                            </div>
                         <% } %>
                     </form>
 
