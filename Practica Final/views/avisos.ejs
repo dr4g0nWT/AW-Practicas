@@ -215,7 +215,7 @@
             $("#modalAsig_idAviso").text(t)
             $("#modalAsig_idAvisoEnviar").prop("value", avisos[id].idAviso)
             $("#modalAsig_nombre").text(avisos[id].userName)
-
+            $("#modalAsig_perfil").prop("value", avisos[id].perfil)
             let date = new Date(avisos[id].fecha)
             $("#modalAsig_fecha").prop("value", date.toLocaleDateString("en-US"))
             $("#modalAsig_area").prop("value", avisos[id].area)
@@ -255,6 +255,8 @@
                 $("#modal_idAviso").text(t)
                 $("#modal_idAvisoEnviar").prop("value", avisos[id].idAviso)
                 $("#modal_nombre").text(avisos[id].userName)
+                
+                $("#modal_perfil").prop("value", avisos[id].perfil)
 
                 let date = new Date(avisos[id].fecha)
                 $("#modal_fecha").prop("value", date.toLocaleDateString("en-US"))

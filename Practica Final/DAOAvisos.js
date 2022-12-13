@@ -130,7 +130,7 @@ class DAOAvisos{
             }
             else{
                 connection.query(`
-                SELECT A.idAviso, A.texto, A.fecha, A.tipo, A.respuesta, A.area, A.idTecnico, U.userName 
+                SELECT A.idAviso, A.texto, A.fecha, A.tipo, A.respuesta, A.area, A.idTecnico, U.userName, U.perfil 
                 FROM UCM_AW_CAU_AVI_Avisos A JOIN UCM_AW_CAU_USU_Usuarios U ON(A.idUser = U.idUser)
                 WHERE A.idUser = ? AND A.activo = ?`,
                 [idUser, activo],
@@ -155,7 +155,7 @@ class DAOAvisos{
             }
             else{
                 connection.query(`
-                SELECT A.idAviso, A.texto, A.fecha, A.tipo, A.respuesta, A.area, A.idTecnico, U.userName
+                SELECT A.idAviso, A.texto, A.fecha, A.tipo, A.respuesta, A.area, A.idTecnico, U.userName, U.perfil 
                 FROM UCM_AW_CAU_AVI_Avisos A JOIN UCM_AW_CAU_USU_Usuarios U ON(A.idUser = U.idUser)
                 WHERE A.idTecnico = ? AND A.activo = ?`,
                 [idTecnico, activo],
@@ -180,7 +180,7 @@ class DAOAvisos{
             }
             else{
                 connection.query(`
-                SELECT A.idAviso, A.texto, A.fecha, A.tipo, A.respuesta, A.area, A.idTecnico, U.userName
+                SELECT A.idAviso, A.texto, A.fecha, A.tipo, A.respuesta, A.area, A.idTecnico, U.userName, U.perfil 
                 FROM UCM_AW_CAU_AVI_Avisos A JOIN UCM_AW_CAU_USU_Usuarios U ON(A.idUser = U.idUser)
                 WHERE A.activo = 1`,
                 function(err, result){
