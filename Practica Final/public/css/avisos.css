@@ -32,6 +32,9 @@ nav img{
 .acciones form{
     width: fit-content;
 }
+.modal-content{
+    border: none;
+}
 
 body {
     background-image: linear-gradient(to right, rgb(192, 230, 242), rgb(250, 191, 245));
