@@ -56,7 +56,7 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12" id="num_empleado">
           <label for="numero">Nº Empleado</label>
-          <input type="text" class="form-control" id="numero" pattern="\d{4}-[a-z]{3}" placeholder="Nº Empleado" name="numero">
+          <input required type="text" class="form-control" id="numero" pattern="\d{4}-[a-z]{3}" placeholder="Nº Empleado" name="numero">
         </div>   
       </div>
       <div class="row">
@@ -107,7 +107,7 @@
     else{
       $("#check_tecnico").hide()
       $("#num_empleado").hide()
-      $("#numero").prop("required", false)
+      $("#numero").attr("required", false)
     }
       
     
@@ -116,11 +116,12 @@
   function mostrar_ocultar_number(){
     if ($("#flexCheckDefault").prop("checked")){
       $("#num_empleado").show()
-      $("#numero").prop("required", true)
+      $("#numero").attr("required", true)
     }
     else
       $("#num_empleado").hide()
-      $("#numero").prop("required", false)
+      $("#numero").attr("required", false)
+      
   }
 
 </script>
