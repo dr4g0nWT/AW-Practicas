@@ -106,17 +106,21 @@
       $("#check_tecnico").show()
     else{
       $("#check_tecnico").hide()
-      $("#num_empleado").hide().prop("required", false)
+      $("#num_empleado").hide()
+      $("#numero").prop("required", false)
     }
       
     
   }
 
   function mostrar_ocultar_number(){
-    if ($("#flexCheckDefault").prop("checked"))
-      $("#num_empleado").show().prop("required", true)
+    if ($("#flexCheckDefault").prop("checked")){
+      $("#num_empleado").show()
+      $("#numero").prop("required", true)
+    }
     else
-      $("#num_empleado").hide().prop("required", false)
+      $("#num_empleado").hide()
+      $("#numero").prop("required", false)
   }
 
 </script>
