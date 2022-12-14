@@ -1,4 +1,3 @@
-// app.js
 const config = require("./config");
 const path = require("path");
 const mysql = require("mysql");
@@ -10,7 +9,6 @@ const { check, validationResult } = require('express-validator');
 const moment = require("moment")
 
 const multer = require("multer")
-
 
 const DAOAvisos = require("./DAOAvisos.js");
 const DAOUsers = require("./DAOUsers.js");
@@ -81,7 +79,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 //Middleware static
-app.use(express.static(ficherosEstaticos)) //Lo que hace es permitir buscar la url estatica
+app.use(express.static(ficherosEstaticos)) 
 app.use(bodyParser.urlencoded({ extended: false }))
 
 //Middleware Sesiones
@@ -117,8 +115,6 @@ app.use(flashMiddleware)
 
 //Creamos los middle para meter las sesiones
 function middleLogueado(req, res, next) {
-    //if usuario loggueado, next
-
     if (req.session.usuario) {
         next()
     }
@@ -126,7 +122,6 @@ function middleLogueado(req, res, next) {
 }
 
 function middleNoLogueado(req, res, next) {
-    //if usuario loggueado, next
     if (!req.session.usuario) {
         next()
     }
@@ -350,7 +345,7 @@ app.post("/nuevoAviso", middleLogueado, function (request, response) {
         idUser: request.session.usuario.idUser,
         area: request.body.area.filter((item) => item !== "Selecciona uno")
     }
-    console.log(aviso)
+
     daoAvisos.insertAviso(aviso, function (err, result) {
         if (err) {
             response.status(500)

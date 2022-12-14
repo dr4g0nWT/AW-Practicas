@@ -3,7 +3,6 @@
 class DAOUsers {
     constructor(pool) {
         this.pool = pool;
-        console.log("Dao creado")
     }
 
     insertUser(user, callback) {
@@ -35,13 +34,13 @@ class DAOUsers {
                 connection.query("SELECT * FROM UCM_AW_CAU_USU_Usuarios WHERE email = ? AND password = ? AND activo = 1",
                     [email, password],
                     function (err, rows) {
-                        connection.release(); // devolver al pool la conexión
+                        connection.release(); 
                         if (err) {
                             callback(new Error("Error de acceso a la base de datos"));
                         }
                         else {
                             if (rows.length === 0) {
-                                callback(null, false); //no está el usuario con el password proporcionado
+                                callback(null, false); 
                             }
                             else {
                                 callback(null, {
@@ -69,7 +68,7 @@ class DAOUsers {
             else {
                 connection.query("SELECT idUser, activo FROM UCM_AW_CAU_USU_Usuarios WHERE email = ?", [email],
                     function (err, rows) {
-                        connection.release(); // devolver al pool la conexión
+                        connection.release();
                         if (err) {
                             callback(new Error("Error de acceso a la base de datos"));
                         }
@@ -93,7 +92,7 @@ class DAOUsers {
             else {
                 connection.query("UPDATE UCM_AW_CAU_USU_Usuarios SET activo = ? WHERE idUser = ?", [activo, idUser],
                     function (err, rows) {
-                        connection.release(); // devolver al pool la conexión
+                        connection.release(); 
                         if (err) {
                             callback(new Error("Error de acceso a la base de datos"));
                         }
@@ -114,13 +113,13 @@ class DAOUsers {
             else {
                 connection.query("SELECT idUser, userName FROM UCM_AW_CAU_USU_Usuarios WHERE tecnico = 1 AND activo = 1",
                     function (err, rows) {
-                        connection.release(); // devolver al pool la conexión
+                        connection.release(); 
                         if (err) {
                             callback(new Error("Error de acceso a la base de datos"));
                         }
                         else {
                             if (rows.length === 0) {
-                                callback(null, []); //no está el usuario con el password proporcionado
+                                callback(null, []); 
                             }
                             else {
                                 callback(null, rows);
@@ -140,13 +139,13 @@ class DAOUsers {
             else {
                 connection.query("SELECT idUser, userName, fecha, tecnico FROM UCM_AW_CAU_USU_Usuarios WHERE activo IS NOT NULL AND activo = 1",
                     function (err, rows) {
-                        connection.release(); // devolver al pool la conexión
+                        connection.release();
                         if (err) {
                             callback(new Error("Error de acceso a la base de datos"));
                         }
                         else {
                             if (rows.length === 0) {
-                                callback(null, []); //no está el usuario con el password proporcionado
+                                callback(null, []); 
                             }
                             else {
                                 callback(null, rows);
